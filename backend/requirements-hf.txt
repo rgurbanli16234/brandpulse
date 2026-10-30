@@ -3,6 +3,16 @@
 # Then run the API with:  ANALYZER=hf
 -r requirements.txt
 
+# The Docker image installs CPU-only torch from the PyTorch CPU index first
+# (see the root Dockerfile); this line is a no-op there and works locally.
 torch>=2.2
-transformers>=4.40
+# transformers 5.x cannot load cardiffnlp/twitter-xlm-roberta-base-sentiment:
+# its tokenizer detection falls back to a tiktoken path that fails while parsing
+# the model's sentencepiece vocab. 4.x is the last line that loads it cleanly.
+transformers>=4.49,<5
+# cardiffnlp/twitter-xlm-roberta-base-sentiment ships no tokenizer_config.json /
+# tokenizer.json, only sentencepiece.bpe.model, so the tokenizer has to be built
+# from it: that needs both of these.
+sentencepiece>=0.2
+protobuf>=4.25
 tiktoken>=0.7
