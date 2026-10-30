@@ -82,6 +82,8 @@ USER user
 EXPOSE 7860
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=5 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:7860/health')" || exit 1
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:' + __import__('os').environ.get('PORT','7860') + '/health')" || exit 1
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860"]
+# PORT defaults to 7860 (Hugging Face Spaces) and is honoured when the platform
+# injects its own value (Render/Koyeb/Railway set PORT at runtime).
+CMD ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-7860}"]
