@@ -1,0 +1,38 @@
+# Version control / CI
+.git
+.gitignore
+.github
+.trae
+
+# Python
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+backend/.venv/
+**/.venv/
+venv/
+
+# Node / frontend build artifacts (rebuilt inside the image)
+**/node_modules/
+frontend/.output/
+frontend/.wrangler/
+frontend/.nitro/
+frontend/.tanstack/
+frontend/dist/
+**/*.log
+
+# Local database + secrets
+*.db
+*.sqlite
+*.sqlite3
+backend/data/
+.env
+.env.*
+!.env.example
+
+# Editor / OS noise
+.idea/
+.vscode/
+.DS_Store

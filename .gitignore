@@ -26,6 +26,7 @@ backend/data/
 .env
 .env.*
 !.env.example
+.hf_token
 
 # Editor / OS
 .idea/

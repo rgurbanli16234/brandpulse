@@ -1,3 +1,13 @@
+---
+title: Brand Complaint Radar
+emoji: 📡
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # BrandPulse
 
 **Real-time brand sentiment & complaint monitoring for small and medium businesses.**
