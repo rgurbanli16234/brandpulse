@@ -35,6 +35,9 @@ FROM python:3.12-slim AS runtime
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
+    # Production mode: the app refuses to start unless JWT_SECRET is a long, non-default
+    # value supplied as a Space secret.
+    ENVIRONMENT=production \
     # Writable model cache for the non-root user below.
     HF_HOME=/app/hf_cache \
     # Serve the built SPA from the same origin as the API.

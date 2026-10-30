@@ -2,7 +2,13 @@
 
 from functools import lru_cache
 
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# Insecure value used by local development only. Production refuses to boot with it.
+DEV_JWT_SECRET = "dev-secret-change-me"
+# Minimum length accepted for a production JWT signing key.
+MIN_PRODUCTION_JWT_SECRET_LENGTH = 32
 
 
 class Settings(BaseSettings):
@@ -10,11 +16,15 @@ class Settings(BaseSettings):
 
     app_name: str = "BrandPulse"
 
+    # "development" (default) or "production". In production insecure defaults are
+    # rejected at startup instead of silently leaking into a deploy.
+    environment: str = "development"
+
     # Single database; swap to Postgres by setting DATABASE_URL.
     database_url: str = "sqlite:///./brandpulse.db"
 
     # Auth
-    jwt_secret: str = "dev-secret-change-me"
+    jwt_secret: str = DEV_JWT_SECRET
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 60 * 24 * 7  # 7 days
 
@@ -55,6 +65,28 @@ class Settings(BaseSettings):
 
     # Optional LLM summary for alerts (template summary is the default).
     llm_api_key: str | None = None
+
+    @property
+    def is_production(self) -> bool:
+        return self.environment.strip().lower() in {"production", "prod"}
+
+    @model_validator(mode="after")
+    def _reject_insecure_production_defaults(self) -> "Settings":
+        """Refuse to start in production with an insecure JWT signing key."""
+        if not self.is_production:
+            return self
+        if self.jwt_secret == DEV_JWT_SECRET:
+            raise ValueError(
+                "JWT_SECRET is still the development default. Set JWT_SECRET to a long "
+                "random value (e.g. `python -c \"import secrets; print(secrets.token_urlsafe(48))\"`) "
+                "or run with ENVIRONMENT=development."
+            )
+        if len(self.jwt_secret) < MIN_PRODUCTION_JWT_SECRET_LENGTH:
+            raise ValueError(
+                f"JWT_SECRET must be at least {MIN_PRODUCTION_JWT_SECRET_LENGTH} characters "
+                "in production."
+            )
+        return self
 
     @property
     def cors_origin_list(self) -> list[str]:

@@ -11,7 +11,8 @@ One public URL, one container: the FastAPI backend serves both the JSON API unde
 |---|---|
 | Platform | [Hugging Face Spaces](https://huggingface.co/spaces), SDK **docker** |
 | Space | `brand-complaint-radar` |
-| Public URL | `https://<username>-brand-complaint-radar.hf.space` |
+| Visibility | **private** (created private first; flip to public in Settings when ready) |
+| URL | `https://<username>-brand-complaint-radar.hf.space` |
 | Space repo | `https://huggingface.co/spaces/<username>/brand-complaint-radar` |
 | Container port | `7860` (HF's `app_port`) |
 | Build | multi-stage `Dockerfile` at the repo root (`node:22-slim` → `python:3.12-slim`) |
@@ -33,12 +34,35 @@ Runtime environment baked into the image:
 
 | Variable | Value | Why |
 |---|---|---|
+| `ENVIRONMENT` | `production` | rejects insecure defaults at startup |
 | `FRONTEND_DIR` | `/app/frontend_dist` | FastAPI serves the SPA at `/` |
 | `DATABASE_URL` | `sqlite:////app/data/brandpulse.db` | single SQLite file (ephemeral) |
 | `ANALYZER` | `hf` | neural model, auto-falls back to `rules` |
 | `AUTO_SEED` | `true` | re-creates the demo dashboard on every cold start |
 | `ENABLE_SCHEDULER` | `true` | pipeline runs every 15 min |
 | `CORS_ORIGIN_REGEX` | *(empty)* | same origin, no cross-origin requests needed |
+
+Secrets (set in the Space, never in the repo): **`JWT_SECRET`** (required) and,
+optionally, `LLM_API_KEY`.
+
+## 2b. JWT_SECRET (required in production)
+
+`ENVIRONMENT=production` makes the app **refuse to start** unless `JWT_SECRET` is a
+non-default value of at least 32 characters (`backend/app/config.py`,
+`_reject_insecure_production_defaults`). This prevents shipping the development
+signing key, which would let anyone forge auth tokens.
+
+Generate a long random value and set it as a Space secret:
+
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(48))"
+```
+
+Space → **Settings → Variables and secrets → New secret** → name `JWT_SECRET`.
+
+Without it the container logs
+`ValidationError ... JWT_SECRET is still the development default` and exits — that is
+the intended behaviour, not a bug.
 
 ## 3. Which analyzer is active
 
