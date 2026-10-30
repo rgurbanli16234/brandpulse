@@ -1,0 +1,29 @@
+# Render blueprint — one free Docker web service that serves the API (under /api/v1)
+# and the built SPA (at /) from a single container.
+#
+# Deploy: https://dashboard.render.com -> New -> Blueprint -> pick this repo.
+# Render reads this file, builds Dockerfile.render and injects PORT at runtime.
+services:
+  - type: web
+    name: brand-complaint-radar
+    runtime: docker
+    dockerfilePath: ./Dockerfile.render
+    plan: free
+    region: frankfurt
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      # Refuse to boot with the development JWT signing key.
+      - key: ENVIRONMENT
+        value: production
+      # Render generates a long random value; never the dev default.
+      - key: JWT_SECRET
+        generateValue: true
+      # 512 MB free instance: the neural model does not fit, so use the rule analyzer.
+      - key: ANALYZER
+        value: rules
+      # The free plan has no persistent disk -> re-seed the demo dashboard on boot.
+      - key: AUTO_SEED
+        value: "true"
+      - key: ENABLE_SCHEDULER
+        value: "true"

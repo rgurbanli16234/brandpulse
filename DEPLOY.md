@@ -21,6 +21,12 @@ Hugging Face was chosen over Vercel because the backend needs scikit-learn (and
 optionally torch/transformers), which are far too large for serverless functions.
 A Space gives ~16 GB RAM and no bundle-size limit on the free tier.
 
+> **Status (2026-10-31): Hugging Face now requires a PRO plan for Docker Spaces.**
+> Creating a Docker Space — private *or* public — on free `cpu-basic` returns
+> `402 Payment Required`. Static Spaces remain free, but they cannot run the Python
+> API. Until the account is upgraded to PRO, deploy with the free **Render** path in
+> section 10 instead; the root `Dockerfile` stays ready for the Space.
+
 ## 2. What the container does
 
 1. **Stage 1** builds the frontend with Vite (`npm ci && npm run build`) into a
@@ -163,3 +169,36 @@ Without Docker (two processes, as in development): see the "Quick start" section
   need the static `public/` output, which is exactly what is copied into the image.
 * **`docker-compose.yml` and `backend/Dockerfile` are unchanged.** They are the local
   development path (ports 8000/8080); the Space uses the root `Dockerfile` only.
+
+## 10. Free fallback: Render (used while HF Docker needs PRO)
+
+Render's free web-service tier runs the same single container — API + SPA on one URL —
+with no credit card.
+
+| | |
+|---|---|
+| Platform | [Render](https://render.com), Runtime **Docker** |
+| Blueprint | [`render.yaml`](render.yaml) (points at `Dockerfile.render`) |
+| URL | `https://brand-complaint-radar.onrender.com` |
+| Plan / RAM | free, 512 MB |
+| Region | `frankfurt` (closest to Baku) |
+
+`Dockerfile.render` is identical to the root `Dockerfile` **minus** torch/transformers
+and the model bake: at 512 MB the neural model cannot load anyway, and skipping it
+turns a multi-gigabyte build into a small, fast one. `render.yaml` sets
+`ANALYZER=rules` for the same reason.
+
+**Deploy:**
+1. Push this repo to GitHub (already the remote `rgurbanli16234/brandpulse`).
+2. On <https://dashboard.render.com> → **New** → **Blueprint** → select the repo.
+3. Render reads `render.yaml`, generates a long random `JWT_SECRET` itself, and builds.
+4. Wait for **Live**, then open the URL.
+
+The `ENVIRONMENT=production` guard applies here too: Render supplies `JWT_SECRET` via
+`generateValue: true`, so the container boots; with the dev default it would exit.
+
+**Redeploy after changes:** push to GitHub — `autoDeploy: true` rebuilds automatically.
+
+**Free-tier caveats:** the service sleeps after ~15 min idle and cold-starts in
+30–60 s; there is no persistent disk, so `AUTO_SEED=true` recreates the demo data on
+every cold start.
