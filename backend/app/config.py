@@ -31,6 +31,13 @@ class Settings(BaseSettings):
     analyzer: str = "rules"
     hf_model: str = "cardiffnlp/twitter-xlm-roberta-base-sentiment"
 
+    # Hosted deployments: serve an already-built SPA from this directory at "/".
+    # Unset locally (the Vite dev server serves the frontend instead).
+    frontend_dir: str | None = None
+    # Seed demo data on startup when the database has no business yet. The Space disk
+    # is ephemeral, so this keeps the hosted dashboard from ever being empty.
+    auto_seed: bool = False
+
     # Pipeline / clustering / scoring thresholds
     pipeline_interval_minutes: int = 15
     enable_scheduler: bool = True
