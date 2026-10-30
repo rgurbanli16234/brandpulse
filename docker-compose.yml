@@ -1,0 +1,37 @@
+# BrandPulse — run the whole MVP with: docker compose up --build
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      # Single SQLite file stored in the named volume below (swap for Postgres via DATABASE_URL).
+      DATABASE_URL: sqlite:////app/data/brandpulse.db
+      JWT_SECRET: change-me-to-a-long-random-string
+      ANALYZER: rules
+      ENABLE_SCHEDULER: "true"
+      PIPELINE_INTERVAL_MINUTES: "15"
+      # Allow the browser app served from :8080 to call the API.
+      CORS_ORIGINS: http://localhost:8080
+    volumes:
+      - brandpulse-data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # The browser (not the container) reaches the API, so use the host address.
+        VITE_API_URL: http://localhost:8000/api/v1
+    ports:
+      - "8080:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  brandpulse-data:

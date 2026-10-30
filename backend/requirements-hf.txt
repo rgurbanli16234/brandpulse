@@ -1,0 +1,8 @@
+# Optional: Hugging Face sentiment analyzer.
+# Install with:  pip install -r requirements-hf.txt
+# Then run the API with:  ANALYZER=hf
+-r requirements.txt
+
+torch>=2.2
+transformers>=4.40
+tiktoken>=0.7
