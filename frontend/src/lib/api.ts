@@ -6,8 +6,9 @@
  * readable message instead of a raw fetch failure.
  */
 
-const API_URL: string =
-  (import.meta.env["VITE_API_URL"] as string | undefined) ?? "http://127.0.0.1:8001/api/v1";
+// Same-origin by default: in production the API is served by the same FastAPI app
+// that serves this SPA (e.g. "/api/v1"). Override with VITE_API_URL for split hosting.
+const API_URL: string = (import.meta.env["VITE_API_URL"] as string | undefined) ?? "/api/v1";
 
 export class ApiError extends Error {
   status: number;
