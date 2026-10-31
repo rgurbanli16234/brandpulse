@@ -16,7 +16,11 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as MentionsRouteImport } from './routes/mentions'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as PlaygroundRouteImport } from './routes/playground'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as ForSlugRouteImport } from './routes/for.$slug'
 import { Route as ThreadsIndexRouteImport } from './routes/threads.index'
 import { Route as ThreadsIdRouteImport } from './routes/threads.$id'
 
@@ -55,9 +59,29 @@ const PlaygroundRoute = PlaygroundRouteImport.update({
   path: '/playground',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForSlugRoute = ForSlugRouteImport.update({
+  id: '/for/$slug',
+  path: '/for/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ThreadsIndexRoute = ThreadsIndexRouteImport.update({
@@ -79,8 +103,12 @@ export interface FileRoutesByFullPath {
   '/mentions': typeof MentionsRoute
   '/onboarding': typeof OnboardingRoute
   '/playground': typeof PlaygroundRoute
+  '/pricing': typeof PricingRoute
   '/settings': typeof SettingsRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/for/$slug': typeof ForSlugRoute
   '/threads/$id': typeof ThreadsIdRoute
+  '/blog/': typeof BlogIndexRoute
   '/threads/': typeof ThreadsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -91,8 +119,12 @@ export interface FileRoutesByTo {
   '/mentions': typeof MentionsRoute
   '/onboarding': typeof OnboardingRoute
   '/playground': typeof PlaygroundRoute
+  '/pricing': typeof PricingRoute
   '/settings': typeof SettingsRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/for/$slug': typeof ForSlugRoute
   '/threads/$id': typeof ThreadsIdRoute
+  '/blog': typeof BlogIndexRoute
   '/threads': typeof ThreadsIndexRoute
 }
 export interface FileRoutesById {
@@ -104,8 +136,12 @@ export interface FileRoutesById {
   '/mentions': typeof MentionsRoute
   '/onboarding': typeof OnboardingRoute
   '/playground': typeof PlaygroundRoute
+  '/pricing': typeof PricingRoute
   '/settings': typeof SettingsRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/for/$slug': typeof ForSlugRoute
   '/threads/$id': typeof ThreadsIdRoute
+  '/blog/': typeof BlogIndexRoute
   '/threads/': typeof ThreadsIndexRoute
 }
 export interface FileRouteTypes {
@@ -118,8 +154,12 @@ export interface FileRouteTypes {
     | '/mentions'
     | '/onboarding'
     | '/playground'
+    | '/pricing'
     | '/settings'
+    | '/blog/$slug'
+    | '/for/$slug'
     | '/threads/$id'
+    | '/blog/'
     | '/threads/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -130,8 +170,12 @@ export interface FileRouteTypes {
     | '/mentions'
     | '/onboarding'
     | '/playground'
+    | '/pricing'
     | '/settings'
+    | '/blog/$slug'
+    | '/for/$slug'
     | '/threads/$id'
+    | '/blog'
     | '/threads'
   id:
     | '__root__'
@@ -142,8 +186,12 @@ export interface FileRouteTypes {
     | '/mentions'
     | '/onboarding'
     | '/playground'
+    | '/pricing'
     | '/settings'
+    | '/blog/$slug'
+    | '/for/$slug'
     | '/threads/$id'
+    | '/blog/'
     | '/threads/'
   fileRoutesById: FileRoutesById
 }
@@ -155,8 +203,12 @@ export interface RootRouteChildren {
   MentionsRoute: typeof MentionsRoute
   OnboardingRoute: typeof OnboardingRoute
   PlaygroundRoute: typeof PlaygroundRoute
+  PricingRoute: typeof PricingRoute
   SettingsRoute: typeof SettingsRoute
+  BlogSlugRoute: typeof BlogSlugRoute
+  ForSlugRoute: typeof ForSlugRoute
   ThreadsIdRoute: typeof ThreadsIdRoute
+  BlogIndexRoute: typeof BlogIndexRoute
   ThreadsIndexRoute: typeof ThreadsIndexRoute
 }
 
@@ -211,11 +263,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlaygroundRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings': {
       id: '/settings'
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/for/$slug': {
+      id: '/for/$slug'
+      path: '/for/$slug'
+      fullPath: '/for/$slug'
+      preLoaderRoute: typeof ForSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/threads/': {
@@ -243,8 +323,12 @@ const rootRouteChildren: RootRouteChildren = {
   MentionsRoute: MentionsRoute,
   OnboardingRoute: OnboardingRoute,
   PlaygroundRoute: PlaygroundRoute,
+  PricingRoute: PricingRoute,
   SettingsRoute: SettingsRoute,
+  BlogSlugRoute: BlogSlugRoute,
+  ForSlugRoute: ForSlugRoute,
   ThreadsIdRoute: ThreadsIdRoute,
+  BlogIndexRoute: BlogIndexRoute,
   ThreadsIndexRoute: ThreadsIndexRoute,
 }
 export const routeTree = rootRouteImport
