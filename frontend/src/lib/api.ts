@@ -6,6 +6,8 @@
  * readable message instead of a raw fetch failure.
  */
 
+import { i18n } from "@/i18n";
+
 // Same-origin by default: in production the API is served by the same FastAPI app
 // that serves this SPA (e.g. "/api/v1"). Override with VITE_API_URL for split hosting.
 const API_URL: string = (import.meta.env["VITE_API_URL"] as string | undefined) ?? "/api/v1";
@@ -32,10 +34,22 @@ export const UNAUTHORIZED_EVENT = "brandpulse:unauthorized";
  * Turn any thrown value into a message we can show the user. API failures carry the
  * real reason (network / 401 / 409 / 422 / 500); anything else falls back.
  */
-export function describeError(error: unknown, fallback: string): string {
-  if (error instanceof ApiError) return error.message || fallback;
-  if (error instanceof Error) return error.message || fallback;
-  return fallback;
+export function describeError(error: unknown, fallback?: string): string {
+  const text = fallback ?? i18n.t("errors:api.requestFailed");
+  if (error instanceof ApiError) return error.message || text;
+  if (error instanceof Error) return error.message || text;
+  return text;
+}
+
+/** Translated fallback for the statuses the API does not describe itself. */
+function statusMessage(status: number): string {
+  if (status === 401) return i18n.t("errors:api.unauthorized");
+  if (status === 403) return i18n.t("errors:api.forbidden");
+  if (status === 404) return i18n.t("errors:api.notFound");
+  if (status === 409) return i18n.t("errors:api.conflict");
+  if (status === 422) return i18n.t("errors:api.validation");
+  if (status >= 500) return i18n.t("errors:api.server");
+  return i18n.t("errors:api.requestFailed");
 }
 
 function notifyUnauthorized(): void {
@@ -91,21 +105,23 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
     response = await fetch(url, init);
   } catch {
     // fetch only rejects for network-level failures, so surface the real cause.
-    throw new ApiError(0, `Cannot reach the API at ${API_URL}. Make sure the backend is running.`);
+    throw new ApiError(0, i18n.t("errors:api.unreachable", { url: API_URL }));
   }
 
   if (!response.ok) {
-    let detail = response.statusText;
+    // A human-readable `detail` from the API wins; otherwise we fall back to a
+    // translated message for the status code instead of the English status text.
+    let detail = "";
     try {
       const data = (await response.json()) as { detail?: unknown };
       if (typeof data.detail === "string") detail = data.detail;
     } catch {
-      /* keep the status text */
+      /* no JSON body — fall back to the status message below */
     }
     // Only a *token-authenticated* 401 means the session is dead; a failed login
     // (no token was attached) must not sign the user out.
     if (response.status === 401 && authToken) notifyUnauthorized();
-    throw new ApiError(response.status, detail || "Request failed");
+    throw new ApiError(response.status, detail || statusMessage(response.status));
   }
 
   if (response.status === 204) return undefined as T;

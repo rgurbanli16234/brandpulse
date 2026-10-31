@@ -2,9 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2, Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { ApiError, api, type AnalyzeResult, type SentimentLabel } from "@/lib/api";
-import { SENTIMENT_TEXT } from "@/lib/format";
+import { MENTION_LANGUAGE_KEYS, SENTIMENT_KEYS, topicKey } from "@/lib/enums";
+import { formatDecimal } from "@/i18n/format";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +20,7 @@ export const Route = createFileRoute("/playground")({
   component: PlaygroundPage,
 });
 
+/** Sample texts stay in the language they were written in. */
 const EXAMPLES = [
   "They double charged my card and support refuses to refund my money. Terrible service!",
   "The store was busy today but the staff was friendly.",
@@ -33,6 +36,7 @@ const SENTIMENT_TONE: Record<SentimentLabel, string> = {
 };
 
 function PlaygroundPage() {
+  const { t } = useTranslation(["app", "common"]);
   const [text, setText] = useState("");
   const [result, setResult] = useState<AnalyzeResult | null>(null);
 
@@ -41,19 +45,27 @@ function PlaygroundPage() {
     onSuccess: (data) => setResult(data),
   });
 
+  /** Analyser output is an API value; the UI shows the translated label. */
+  const topicLabel = (value: string | null): string => {
+    const key = topicKey(value);
+    return key ? t(`common:${key}`) : (value ?? "");
+  };
+
+  const languageLabel = (value: string): string => {
+    const key = MENTION_LANGUAGE_KEYS[value as keyof typeof MENTION_LANGUAGE_KEYS];
+    return key ? t(`common:${key}`) : value;
+  };
+
   return (
     <AppShell>
       <div className="mx-auto max-w-3xl">
-        <h1 className="text-2xl font-bold tracking-tight">Analyze Playground</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Paste any comment or message to see how BrandPulse reads it — sentiment, whether it is an
-          actionable complaint, and which topic it belongs to.
-        </p>
+        <h1 className="text-2xl font-bold tracking-tight">{t("app:playground.title")}</h1>
+        <p className="mt-2 text-sm text-muted-foreground">{t("app:playground.subtitle")}</p>
 
         <Card className="mt-6">
           <CardHeader>
-            <CardTitle>Text to analyze</CardTitle>
-            <CardDescription>English, Azerbaijani and Russian are supported.</CardDescription>
+            <CardTitle>{t("app:playground.card.title")}</CardTitle>
+            <CardDescription>{t("app:playground.card.subtitle")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <Textarea
@@ -61,7 +73,7 @@ function PlaygroundPage() {
               onChange={(event) => setText(event.target.value)}
               rows={5}
               maxLength={5000}
-              placeholder="e.g. They charged me twice and won't refund it."
+              placeholder={t("app:playground.card.placeholder")}
             />
             <div className="flex flex-wrap gap-2">
               {EXAMPLES.map((example) => (
@@ -75,15 +87,12 @@ function PlaygroundPage() {
                 </button>
               ))}
             </div>
-            <Button
-              onClick={() => analyze.mutate()}
-              disabled={!text.trim() || analyze.isPending}
-            >
+            <Button onClick={() => analyze.mutate()} disabled={!text.trim() || analyze.isPending}>
               {analyze.isPending ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 <>
-                  <Sparkles className="h-4 w-4" /> Analyze
+                  <Sparkles className="h-4 w-4" /> {t("app:playground.card.analyze")}
                 </>
               )}
             </Button>
@@ -93,7 +102,7 @@ function PlaygroundPage() {
         {analyze.isError ? (
           <Alert variant="destructive" className="mt-6">
             <AlertDescription>
-              {analyze.error instanceof ApiError ? analyze.error.message : "Analysis failed."}
+              {analyze.error instanceof ApiError ? analyze.error.message : t("app:playground.error")}
             </AlertDescription>
           </Alert>
         ) : null}
@@ -101,26 +110,32 @@ function PlaygroundPage() {
         {result ? (
           <Card className="mt-6">
             <CardHeader>
-              <CardTitle>Result</CardTitle>
+              <CardTitle>{t("app:playground.result.title")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <p className="text-xs uppercase tracking-wide text-muted-foreground">Sentiment</p>
+                  <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                    {t("app:playground.result.sentiment")}
+                  </p>
                   <p className={`mt-1 text-lg font-semibold ${SENTIMENT_TONE[result.sentiment_label]}`}>
-                    {SENTIMENT_TEXT[result.sentiment_label]}
+                    {t(`common:${SENTIMENT_KEYS[result.sentiment_label]}`)}
                   </p>
                   <p className="text-numeric text-xs text-muted-foreground">
-                    score {result.sentiment_score.toFixed(2)}
+                    {t("app:playground.result.score", {
+                      score: formatDecimal(result.sentiment_score),
+                    })}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-wide text-muted-foreground">Complaint?</p>
+                  <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                    {t("app:playground.result.complaintQuestion")}
+                  </p>
                   <div className="mt-1">
                     {result.is_complaint ? (
-                      <Badge variant="destructive">Actionable complaint</Badge>
+                      <Badge variant="destructive">{t("app:playground.result.actionable")}</Badge>
                     ) : (
-                      <Badge variant="secondary">Not a complaint</Badge>
+                      <Badge variant="secondary">{t("app:playground.result.notComplaint")}</Badge>
                     )}
                   </div>
                 </div>
@@ -128,12 +143,16 @@ function PlaygroundPage() {
               <Separator />
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <p className="text-xs uppercase tracking-wide text-muted-foreground">Topic</p>
-                  <p className="mt-1 text-sm font-medium">{result.topic}</p>
+                  <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                    {t("app:playground.result.topic")}
+                  </p>
+                  <p className="mt-1 text-sm font-medium">{topicLabel(result.topic)}</p>
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-wide text-muted-foreground">Language</p>
-                  <p className="mt-1 text-sm font-medium uppercase">{result.language}</p>
+                  <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                    {t("app:playground.result.language")}
+                  </p>
+                  <p className="mt-1 text-sm font-medium">{languageLabel(result.language)}</p>
                 </div>
               </div>
             </CardContent>

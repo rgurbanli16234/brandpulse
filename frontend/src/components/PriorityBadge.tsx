@@ -1,9 +1,14 @@
+import { useTranslation } from "react-i18next";
+
 import { cn } from "@/lib/utils";
 import { TIER_CLASSES } from "@/lib/format";
+import { PRIORITY_KEYS } from "@/lib/enums";
 import type { PriorityTier } from "@/lib/api";
 
 /** Priority tier chip (Low / Medium / High / Critical) with the shared color scale. */
 export function PriorityBadge({ tier, className }: { tier: PriorityTier; className?: string }) {
+  const { t } = useTranslation();
+
   return (
     <span
       className={cn(
@@ -12,7 +17,7 @@ export function PriorityBadge({ tier, className }: { tier: PriorityTier; classNa
         className,
       )}
     >
-      {tier}
+      {t(PRIORITY_KEYS[tier])}
     </span>
   );
 }

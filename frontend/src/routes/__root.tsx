@@ -7,29 +7,35 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "../lib/auth";
 import { Toaster } from "../components/ui/sonner";
+import { ensureI18n, i18n } from "../i18n";
+import { useDocumentMeta } from "../i18n/useDocumentMeta";
 
+// Start loading the active language (plus the English fallback) before React
+// mounts, so the first paint has real copy instead of raw translation keys.
+void ensureI18n();
 
 function NotFoundComponent() {
+  const { t } = useTranslation(["errors", "common"]);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">{t("errors:notFound.title")}</h2>
+        <p className="mt-2 text-sm text-muted-foreground">{t("errors:notFound.body")}</p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Go home
+            {t("common:actions.goHome")}
           </Link>
         </div>
       </div>
@@ -40,20 +46,19 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
+  const { t } = useTranslation(["errors", "common"]);
+
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
-  const detail =
-    error instanceof Error && error.message
-      ? error.message
-      : "Something went wrong on our end. You can try refreshing or head back home.";
+  const detail = error instanceof Error && error.message ? error.message : t("errors:crash.body");
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+          {t("errors:crash.title")}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">{detail}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
@@ -64,13 +69,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Try again
+            {t("common:actions.retry")}
           </button>
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            Go home
+            {t("common:actions.goHome")}
           </a>
         </div>
       </div>
@@ -79,6 +84,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  // English defaults for the prerendered HTML and crawlers; the client replaces
+  // title + description with the active language (see `useDocumentMeta`).
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -106,7 +113,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap",
+        // Inter and JetBrains Mono already cover Latin + Cyrillic; Noto Sans and
+        // Noto Serif are the per-glyph fallbacks for Azerbaijani `ə` and for
+        // Cyrillic headings, which Fraunces (Latin-only display serif) lacks.
+        href: "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Noto+Sans:wght@400..700&family=Noto+Serif:wght@400..700&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
@@ -119,6 +129,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  // The initial language is applied to <html lang> by `syncDocumentLanguage`
+  // as soon as i18n is ready, so the shell can stay static.
   return (
     <html lang="en">
       <head>
@@ -132,12 +144,38 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+/** Route- and language-aware <title> / meta description. */
+function DocumentMeta() {
+  useDocumentMeta();
+  return null;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const [ready, setReady] = useState(() => i18n.isInitialized);
+
+  useEffect(() => {
+    let active = true;
+    void ensureI18n().then(() => {
+      if (active) setReady(true);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  if (!ready) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-muted border-t-primary" />
+      </div>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        <DocumentMeta />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
         <Toaster position="top-right" />
@@ -145,4 +183,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-

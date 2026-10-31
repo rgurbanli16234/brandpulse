@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import type { LucideIcon } from "lucide-react";
 import {
   Activity,
@@ -33,7 +34,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api, describeError } from "@/lib/api";
-import { formatNumber, relativeTime, SENTIMENT_COLORS } from "@/lib/format";
+import { SENTIMENT_KEYS, topicKey } from "@/lib/enums";
+import { formatDecimal, formatNumber } from "@/i18n/format";
+import { relativeTime, SENTIMENT_COLORS } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/dashboard")({
@@ -59,6 +62,9 @@ const TOOLTIP_STYLE = {
   fontSize: "0.75rem",
   color: "var(--popover-foreground)",
 } as const;
+
+/** Sentiment series in the order they are stacked in the trend chart. */
+const TREND_SERIES = ["positive", "neutral", "negative", "strongly_negative"] as const;
 
 function KpiCard({
   label,
@@ -99,17 +105,21 @@ function ErrorNote({ title, description }: { title: string; description: string 
 }
 
 function EmptyNote({ message }: { message: string }) {
+  const { t } = useTranslation("app");
+
   return (
     <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-border py-10 text-center">
       <p className="text-sm text-muted-foreground">{message}</p>
       <Button variant="outline" size="sm" asChild>
-        <Link to="/mentions">Add mentions</Link>
+        <Link to="/mentions">{t("dashboard.addMentions")}</Link>
       </Button>
     </div>
   );
 }
 
 function DashboardPage() {
+  const { t } = useTranslation(["app", "common"]);
+
   const summary = useQuery({ queryKey: ["summary"], queryFn: () => api.summary() });
   const spikes = useQuery({ queryKey: ["spikes"], queryFn: () => api.spikes() });
   const trend = useQuery({
@@ -122,19 +132,25 @@ function DashboardPage() {
     queryFn: () => api.threads({ limit: 6 }),
   });
 
-  const detectedSpikes = (spikes.data?.spikes ?? []).filter((s) => s.detected);
+  /** Analyser topics come back as API values; the UI shows the translated label. */
+  const topicLabel = (value: string): string => {
+    const key = topicKey(value);
+    return key ? t(`common:${key}`) : value;
+  };
+
+  const detectedSpikes = (spikes.data?.spikes ?? []).filter((spike) => spike.detected);
   const highPriorityThreads = (threads.data ?? []).filter(
-    (t) => t.priority_tier === "High" || t.priority_tier === "Critical",
+    (thread) => thread.priority_tier === "High" || thread.priority_tier === "Critical",
   );
 
   return (
     <AppShell>
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Dashboard</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            A live overview of what people are saying about your brand.
-          </p>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+            {t("app:dashboard.title")}
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t("app:dashboard.subtitle")}</p>
         </div>
 
         {summary.isLoading ? (
@@ -145,56 +161,56 @@ function DashboardPage() {
           </div>
         ) : summary.isError ? (
           <ErrorNote
-            title="Couldn't load your numbers"
-            description={describeError(summary.error, "The summary is unavailable right now.")}
+            title={t("app:dashboard.errors.summaryTitle")}
+            description={describeError(summary.error, t("app:dashboard.errors.summaryBody"))}
           />
         ) : summary.data ? (
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <KpiCard
-              label="Total mentions"
+              label={t("app:dashboard.kpi.totalMentions")}
               value={formatNumber(summary.data.total_mentions)}
               icon={MessageSquare}
               tone="text-primary"
             />
             <KpiCard
-              label="Mentions (24h)"
+              label={t("app:dashboard.kpi.mentions24h")}
               value={formatNumber(summary.data.mentions_24h)}
               icon={Activity}
               tone="text-primary"
             />
             <KpiCard
-              label="Complaints"
+              label={t("app:dashboard.kpi.complaints")}
               value={formatNumber(summary.data.complaints)}
               icon={TrendingDown}
               tone="text-risk-critical"
             />
             <KpiCard
-              label="Open threads"
+              label={t("app:dashboard.kpi.openThreads")}
               value={formatNumber(summary.data.open_threads)}
               icon={Layers}
               tone="text-muted-foreground"
             />
             <KpiCard
-              label="High priority"
+              label={t("app:dashboard.kpi.highPriority")}
               value={formatNumber(summary.data.high_threads)}
               icon={Flame}
               tone="text-risk-high"
             />
             <KpiCard
-              label="Critical priority"
+              label={t("app:dashboard.kpi.criticalPriority")}
               value={formatNumber(summary.data.critical_threads)}
               icon={AlertOctagon}
               tone="text-risk-critical"
             />
             <KpiCard
-              label="Unacknowledged alerts"
+              label={t("app:dashboard.kpi.unacknowledgedAlerts")}
               value={formatNumber(summary.data.unacknowledged_alerts)}
               icon={BellRing}
               tone="text-risk-critical"
             />
             <KpiCard
-              label="Avg sentiment"
-              value={summary.data.avg_sentiment.toFixed(2)}
+              label={t("app:dashboard.kpi.avgSentiment")}
+              value={formatDecimal(summary.data.avg_sentiment)}
               icon={Smile}
               tone="text-risk-low"
             />
@@ -204,34 +220,37 @@ function DashboardPage() {
         {spikes.isSuccess && detectedSpikes.length > 0 ? (
           <Alert variant="destructive">
             <AlertTriangle className="h-4 w-4" />
-            <AlertTitle>Unusual activity in the last 24 hours</AlertTitle>
+            <AlertTitle>{t("app:dashboard.spikes.title")}</AlertTitle>
             <AlertDescription>
               <ul className="mt-1 list-disc space-y-1 pl-5">
                 {detectedSpikes.map((spike) => (
                   <li key={spike.topic}>
-                    <span className="font-medium">{spike.topic}</span> — {spike.ratio.toFixed(1)}x normal
-                    volume (last 24h: {formatNumber(spike.last_24h)})
+                    {t("app:dashboard.spikes.item", {
+                      topic: topicLabel(spike.topic),
+                      ratio: formatDecimal(spike.ratio, 1),
+                      count: formatNumber(spike.last_24h),
+                    })}
                   </li>
                 ))}
               </ul>
             </AlertDescription>
           </Alert>
         ) : spikes.isSuccess ? (
-          <p className="text-xs text-muted-foreground">No unusual activity right now.</p>
+          <p className="text-xs text-muted-foreground">{t("app:dashboard.spikes.none")}</p>
         ) : null}
 
         <Card>
           <CardHeader>
-            <CardTitle>Sentiment over the last 14 days</CardTitle>
-            <CardDescription>How positive and negative mentions stack up each day.</CardDescription>
+            <CardTitle>{t("app:dashboard.trend.title")}</CardTitle>
+            <CardDescription>{t("app:dashboard.trend.subtitle")}</CardDescription>
           </CardHeader>
           <CardContent>
             {trend.isLoading ? (
               <Skeleton className="h-64 w-full" />
             ) : trend.isError ? (
               <ErrorNote
-                title="Couldn't load the trend"
-                description={describeError(trend.error, "The sentiment trend is unavailable right now.")}
+                title={t("app:dashboard.errors.trendTitle")}
+                description={describeError(trend.error, t("app:dashboard.errors.trendBody"))}
               />
             ) : trend.data && trend.data.points.length > 0 ? (
               <div className="h-64 w-full">
@@ -253,47 +272,23 @@ function DashboardPage() {
                     />
                     <Tooltip contentStyle={TOOLTIP_STYLE} />
                     <Legend wrapperStyle={{ fontSize: 11 }} />
-                    <Area
-                      type="monotone"
-                      dataKey="positive"
-                      name="Positive"
-                      stackId="1"
-                      stroke={SENTIMENT_COLORS.positive}
-                      fill={SENTIMENT_COLORS.positive}
-                      fillOpacity={0.5}
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="neutral"
-                      name="Neutral"
-                      stackId="1"
-                      stroke={SENTIMENT_COLORS.neutral}
-                      fill={SENTIMENT_COLORS.neutral}
-                      fillOpacity={0.5}
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="negative"
-                      name="Negative"
-                      stackId="1"
-                      stroke={SENTIMENT_COLORS.negative}
-                      fill={SENTIMENT_COLORS.negative}
-                      fillOpacity={0.5}
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="strongly_negative"
-                      name="Strongly negative"
-                      stackId="1"
-                      stroke={SENTIMENT_COLORS.strongly_negative}
-                      fill={SENTIMENT_COLORS.strongly_negative}
-                      fillOpacity={0.5}
-                    />
+                    {TREND_SERIES.map((label) => (
+                      <Area
+                        key={label}
+                        type="monotone"
+                        dataKey={label}
+                        name={t(`common:${SENTIMENT_KEYS[label]}`)}
+                        stackId="1"
+                        stroke={SENTIMENT_COLORS[label]}
+                        fill={SENTIMENT_COLORS[label]}
+                        fillOpacity={0.5}
+                      />
+                    ))}
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
             ) : (
-              <EmptyNote message="No sentiment data yet. Add some mentions to see the trend." />
+              <EmptyNote message={t("app:dashboard.trend.empty")} />
             )}
           </CardContent>
         </Card>
@@ -301,16 +296,16 @@ function DashboardPage() {
         <div className="grid gap-6 lg:grid-cols-2">
           <Card>
             <CardHeader>
-              <CardTitle>Mentions by topic</CardTitle>
-              <CardDescription>Which parts of the business people talk about most.</CardDescription>
+              <CardTitle>{t("app:dashboard.topics.volumeTitle")}</CardTitle>
+              <CardDescription>{t("app:dashboard.topics.volumeSubtitle")}</CardDescription>
             </CardHeader>
             <CardContent>
               {topics.isLoading ? (
                 <Skeleton className="h-72 w-full" />
               ) : topics.isError ? (
                 <ErrorNote
-                  title="Couldn't load topics"
-                  description={describeError(topics.error, "The topic breakdown is unavailable right now.")}
+                  title={t("app:dashboard.errors.topicsTitle")}
+                  description={describeError(topics.error, t("app:dashboard.errors.topicsBody"))}
                 />
               ) : topics.data && topics.data.topics.length > 0 ? (
                 <div className="h-72 w-full">
@@ -335,9 +330,10 @@ function DashboardPage() {
                         tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
                         tickLine={false}
                         axisLine={false}
+                        tickFormatter={(value) => topicLabel(String(value))}
                       />
                       <Tooltip contentStyle={TOOLTIP_STYLE} />
-                      <Bar dataKey="count" name="Mentions" radius={4}>
+                      <Bar dataKey="count" name={t("app:mentions.title")} radius={4}>
                         {topics.data.topics.map((entry, index) => (
                           <Cell
                             key={entry.topic}
@@ -349,15 +345,15 @@ function DashboardPage() {
                   </ResponsiveContainer>
                 </div>
               ) : (
-                <EmptyNote message="No topics yet. Add some mentions to see the breakdown." />
+                <EmptyNote message={t("app:dashboard.topics.empty")} />
               )}
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>Topic details</CardTitle>
-              <CardDescription>Volume, complaints and average sentiment per topic.</CardDescription>
+              <CardTitle>{t("app:dashboard.topics.detailsTitle")}</CardTitle>
+              <CardDescription>{t("app:dashboard.topics.detailsSubtitle")}</CardDescription>
             </CardHeader>
             <CardContent>
               {topics.isLoading ? (
@@ -368,28 +364,30 @@ function DashboardPage() {
                 </div>
               ) : topics.isError ? (
                 <ErrorNote
-                  title="Couldn't load topics"
-                  description={describeError(topics.error, "The topic breakdown is unavailable right now.")}
+                  title={t("app:dashboard.errors.topicsTitle")}
+                  description={describeError(topics.error, t("app:dashboard.errors.topicsBody"))}
                 />
               ) : topics.data && topics.data.topics.length > 0 ? (
                 <ul className="divide-y divide-border">
                   {topics.data.topics.map((topic) => (
                     <li key={topic.topic} className="flex items-center justify-between gap-3 py-2.5">
-                      <span className="min-w-0 truncate text-sm text-foreground">{topic.topic}</span>
+                      <span className="min-w-0 truncate text-sm text-foreground">
+                        {topicLabel(topic.topic)}
+                      </span>
                       <span className="flex shrink-0 items-center gap-4 text-xs text-muted-foreground">
                         <span className="text-numeric">{formatNumber(topic.count)}</span>
                         <span className="text-numeric text-risk-critical">
-                          {formatNumber(topic.complaints)} complaints
+                          {t("common:counts.complaints", { count: topic.complaints })}
                         </span>
                         <span className="text-numeric w-10 text-right">
-                          {topic.avg_sentiment.toFixed(2)}
+                          {formatDecimal(topic.avg_sentiment)}
                         </span>
                       </span>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <EmptyNote message="No topics yet. Add some mentions to see the breakdown." />
+                <EmptyNote message={t("app:dashboard.topics.empty")} />
               )}
             </CardContent>
           </Card>
@@ -397,8 +395,8 @@ function DashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Latest high-priority threads</CardTitle>
-            <CardDescription>The conversations that need attention first.</CardDescription>
+            <CardTitle>{t("app:dashboard.threads.title")}</CardTitle>
+            <CardDescription>{t("app:dashboard.threads.subtitle")}</CardDescription>
           </CardHeader>
           <CardContent>
             {threads.isLoading ? (
@@ -409,8 +407,8 @@ function DashboardPage() {
               </div>
             ) : threads.isError ? (
               <ErrorNote
-                title="Couldn't load threads"
-                description={describeError(threads.error, "Your incident threads are unavailable right now.")}
+                title={t("app:dashboard.errors.threadsTitle")}
+                description={describeError(threads.error, t("app:dashboard.errors.threadsBody"))}
               />
             ) : highPriorityThreads.length > 0 ? (
               <ul className="divide-y divide-border">
@@ -424,7 +422,8 @@ function DashboardPage() {
                       <div className="min-w-0">
                         <p className="truncate text-sm font-medium text-foreground">{thread.title}</p>
                         <p className="mt-0.5 text-xs text-muted-foreground">
-                          {thread.topic} · {formatNumber(thread.mention_count)} mentions ·{" "}
+                          {topicLabel(thread.topic)} ·{" "}
+                          {t("common:counts.mentions", { count: thread.mention_count })} ·{" "}
                           {relativeTime(thread.last_seen)}
                         </p>
                       </div>
@@ -434,7 +433,7 @@ function DashboardPage() {
                 ))}
               </ul>
             ) : (
-              <EmptyNote message="No high-priority threads right now — nice and calm." />
+              <EmptyNote message={t("app:dashboard.threads.empty")} />
             )}
           </CardContent>
         </Card>

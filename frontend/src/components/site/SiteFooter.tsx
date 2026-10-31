@@ -1,10 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { Activity } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-import { AUDIENCES } from "@/lib/audiences";
+import { AUDIENCES, type AudienceShortKey } from "@/lib/audiences";
 
 /** Shared public footer. Only points at pages that actually exist. */
 export function SiteFooter() {
+  const { t } = useTranslation(["nav", "audiences"]);
+
   return (
     <footer className="border-t border-border/40 bg-card px-6 py-16 md:px-12">
       <div className="mx-auto max-w-7xl">
@@ -17,34 +20,33 @@ export function SiteFooter() {
               <span className="text-2xl font-bold tracking-tight">BrandPulse</span>
             </Link>
             <p className="mt-5 max-w-sm leading-relaxed text-muted-foreground">
-              Built for small and medium businesses in Azerbaijan and beyond. BrandPulse separates
-              urgent complaints from everyday chatter so one person can keep up with every channel.
+              {t("nav:footer.tagline")}
             </p>
           </div>
 
           <div>
             <h4 className="mb-5 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-              Product
+              {t("nav:footer.productHeading")}
             </h4>
             <ul className="space-y-3 text-sm font-medium">
               <li>
                 <Link to="/" hash="features" className="transition-colors hover:text-primary">
-                  Features
+                  {t("nav:features")}
                 </Link>
               </li>
               <li>
                 <Link to="/" hash="how-it-works" className="transition-colors hover:text-primary">
-                  How it works
+                  {t("nav:howItWorks")}
                 </Link>
               </li>
               <li>
                 <Link to="/pricing" className="transition-colors hover:text-primary">
-                  Pricing
+                  {t("nav:pricing")}
                 </Link>
               </li>
               <li>
                 <Link to="/blog" className="transition-colors hover:text-primary">
-                  Blog
+                  {t("nav:blog")}
                 </Link>
               </li>
             </ul>
@@ -52,7 +54,7 @@ export function SiteFooter() {
 
           <div>
             <h4 className="mb-5 text-xs font-bold uppercase tracking-widest text-muted-foreground">
-              Use cases
+              {t("nav:footer.useCasesHeading")}
             </h4>
             <ul className="space-y-3 text-sm font-medium">
               {AUDIENCES.slice(0, 4).map((audience) => (
@@ -62,7 +64,7 @@ export function SiteFooter() {
                     params={{ slug: audience.slug }}
                     className="transition-colors hover:text-primary"
                   >
-                    {audience.short}
+                    {t(`audiences:${audience.slug}.short` as AudienceShortKey)}
                   </Link>
                 </li>
               ))}
@@ -71,10 +73,8 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-14 flex flex-col gap-4 border-t border-border/30 pt-8 text-xs text-muted-foreground md:flex-row md:items-center md:justify-between">
-          <p>© {new Date().getFullYear()} BrandPulse. A prototype for demonstration purposes.</p>
-          <p>
-            Mentions come from CSV, manual paste and RSS feeds. No social network monitoring.
-          </p>
+          <p>{t("nav:footer.copyright", { year: new Date().getFullYear() })}</p>
+          <p>{t("nav:footer.sourcesNote")}</p>
         </div>
       </div>
     </footer>

@@ -1,49 +1,48 @@
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Activity, ChevronDown, Globe, LayoutGrid, Menu, type LucideIcon } from "lucide-react";
+import { Activity, ChevronDown, LayoutGrid, Menu, type LucideIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
+import { LanguageOptions, LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { AUDIENCES } from "@/lib/audiences";
+import type { AppResources } from "@/i18n/locale-types";
+import { AUDIENCES, type AudienceLabelKey, type AudienceSlug } from "@/lib/audiences";
 import { SECTION_IDS, scrollToSection, type SectionId } from "@/lib/scroll";
 import { cn } from "@/lib/utils";
 
 /** Center links that scroll to a section of the landing page. */
-const SECTION_LINKS: { id: SectionId; label: string }[] = [
-  { id: "how-it-works", label: "How it works" },
-  { id: "use-cases", label: "Use cases" },
-  { id: "pricing", label: "Pricing" },
+const SECTION_LINKS: { id: SectionId; key: "nav:howItWorks" | "nav:useCases" | "nav:pricing" }[] = [
+  { id: "how-it-works", key: "nav:howItWorks" },
+  { id: "use-cases", key: "nav:useCases" },
+  { id: "pricing", key: "nav:pricing" },
 ];
 
-/** One-line descriptions for the Product menu. */
-const MENU_DESCRIPTIONS: Record<string, string> = {
-  features: "Everything BrandPulse does, at a glance",
-  cafes: "Reviews, wait times and service feedback",
-  "online-shops": "Orders, returns and delivery complaints",
-  delivery: "Late parcels, lost items and courier notes",
-  clinics: "Bookings, wait times and billing questions",
-  hotels: "Rooms, breakfast, transfers and reviews",
-  agencies: "Client feedback across every project",
-};
+type MenuDescriptionKey = `nav:menuDescriptions.${keyof AppResources["nav"]["menuDescriptions"]}`;
 
 type MenuEntry = {
   key: string;
-  label: string;
-  description: string;
+  labelKey: "nav:features" | AudienceLabelKey;
+  descriptionKey: MenuDescriptionKey;
   icon: LucideIcon;
-  slug?: string;
+  slug?: AudienceSlug;
 };
 
 const PRODUCT_ENTRIES: MenuEntry[] = [
-  { key: "features", label: "Features", description: MENU_DESCRIPTIONS["features"] ?? "", icon: LayoutGrid },
+  {
+    key: "features",
+    labelKey: "nav:features",
+    descriptionKey: "nav:menuDescriptions.features",
+    icon: LayoutGrid,
+  },
   ...AUDIENCES.map((audience) => ({
     key: audience.slug,
-    label: audience.menuLabel,
-    description: MENU_DESCRIPTIONS[audience.slug] ?? "",
+    labelKey: `audiences:${audience.slug}.menuLabel` as AudienceLabelKey,
+    descriptionKey: `nav:menuDescriptions.${audience.slug}` as MenuDescriptionKey,
     icon: audience.icon,
-    slug: audience.slug,
+    slug: audience.slug as AudienceSlug,
   })),
 ];
 
@@ -68,6 +67,7 @@ function Logo({ onNavigate }: { onNavigate?: () => void }) {
  * from anywhere else.
  */
 export function SiteNav() {
+  const { t } = useTranslation(["nav", "audiences"]);
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
@@ -212,7 +212,7 @@ export function SiteNav() {
 
   const navLinkClass = (isActive: boolean) =>
     cn(
-      "relative rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+      "relative whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
       isActive ? "text-primary" : "text-foreground/70 hover:text-foreground",
     );
 
@@ -228,8 +228,9 @@ export function SiteNav() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 md:px-10">
         <Logo />
 
-        {/* Center links (desktop) */}
-        <div className="hidden items-center gap-1 lg:flex">
+        {/* Center links (desktop). Shown from xl: the Russian/Azerbaijani labels
+            are ~25% longer than English and would overflow the lg (1024px) row. */}
+        <div className="hidden items-center gap-1 xl:flex">
           <div
             ref={dropdownRef}
             className="relative"
@@ -255,7 +256,7 @@ export function SiteNav() {
                 "flex items-center gap-1",
               )}
             >
-              Product
+              {t("nav:product")}
               <ChevronDown
                 className={cn("h-4 w-4 transition-transform duration-200", productOpen && "rotate-180")}
               />
@@ -266,7 +267,7 @@ export function SiteNav() {
                 <motion.div
                   id="product-menu"
                   role="menu"
-                  aria-label="Product"
+                  aria-label={t("nav:productMenuLabel")}
                   onKeyDown={handleMenuKeyDown}
                   initial={reduce ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -283,10 +284,10 @@ export function SiteNav() {
                         </span>
                         <span className="min-w-0">
                           <span className="block truncate text-sm font-semibold text-foreground">
-                            {entry.label}
+                            {t(entry.labelKey)}
                           </span>
                           <span className="block truncate text-xs text-muted-foreground">
-                            {entry.description}
+                            {t(entry.descriptionKey)}
                           </span>
                         </span>
                       </>
@@ -334,40 +335,33 @@ export function SiteNav() {
               onClick={() => goToSection(link.id)}
               className={navLinkClass(pathname === "/" && activeSection === link.id)}
             >
-              {link.label}
+              {t(link.key)}
             </button>
           ))}
 
           <Link to="/blog" className={navLinkClass(pathname.startsWith("/blog"))}>
-            Blog
+            {t("nav:blog")}
           </Link>
         </div>
 
         {/* Right side */}
         <div className="flex items-center gap-2 sm:gap-3">
-          <button
-            type="button"
-            aria-label="Language: English"
-            className="hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-foreground/70 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:flex"
-          >
-            <Globe className="h-4 w-4" />
-            EN
-          </button>
+          <LanguageSwitcher className="hidden sm:inline-flex" />
           <Button
             variant="ghost"
             asChild
-            className="hidden rounded-full bg-primary-tint px-5 font-semibold text-primary hover:bg-primary-tint/70 sm:inline-flex"
+            className="hidden whitespace-nowrap rounded-full bg-primary-tint px-5 font-semibold text-primary hover:bg-primary-tint/70 sm:inline-flex"
           >
             <Link to="/login" search={{ tab: "signin" }}>
-              Login
+              {t("nav:login")}
             </Link>
           </Button>
           <Button
             asChild
-            className="hidden rounded-full bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary/90 lg:inline-flex"
+            className="hidden whitespace-nowrap rounded-full bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary/90 lg:inline-flex"
           >
             <Link to="/login" search={{ tab: "signup" }}>
-              Start trial
+              {t("nav:startTrial")}
             </Link>
           </Button>
 
@@ -376,14 +370,14 @@ export function SiteNav() {
             <SheetTrigger asChild>
               <button
                 type="button"
-                aria-label="Open menu"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition-colors hover:bg-secondary-tint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:hidden"
+                aria-label={t("nav:openMenu")}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition-colors hover:bg-secondary-tint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring xl:hidden"
               >
                 <Menu className="h-5 w-5" />
               </button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[19rem] overflow-y-auto bg-background p-6">
-              <SheetTitle className="sr-only">Navigation</SheetTitle>
+              <SheetTitle className="sr-only">{t("nav:navigation")}</SheetTitle>
               <div className="mt-2">
                 <Logo onNavigate={() => setMobileOpen(false)} />
               </div>
@@ -392,7 +386,7 @@ export function SiteNav() {
                 <Accordion type="single" collapsible>
                   <AccordionItem value="product" className="border-b-0">
                     <AccordionTrigger className="rounded-lg px-3 py-3 text-sm font-semibold hover:no-underline">
-                      Product
+                      {t("nav:product")}
                     </AccordionTrigger>
                     <AccordionContent className="pb-1 pl-2">
                       <div className="flex flex-col gap-1">
@@ -407,7 +401,7 @@ export function SiteNav() {
                               className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-foreground/80 transition-colors hover:bg-secondary-tint"
                             >
                               <Icon className="h-4 w-4 text-primary" />
-                              {entry.label}
+                              {t(entry.labelKey)}
                             </Link>
                           ) : (
                             <button
@@ -417,7 +411,7 @@ export function SiteNav() {
                               className="flex items-center gap-3 rounded-lg px-3 py-2 text-left text-sm text-foreground/80 transition-colors hover:bg-secondary-tint"
                             >
                               <Icon className="h-4 w-4 text-primary" />
-                              {entry.label}
+                              {t(entry.labelKey)}
                             </button>
                           );
                         })}
@@ -433,7 +427,7 @@ export function SiteNav() {
                     onClick={() => goToSection(link.id)}
                     className="rounded-lg px-3 py-3 text-left text-sm font-semibold text-foreground/80 transition-colors hover:bg-secondary-tint"
                   >
-                    {link.label}
+                    {t(link.key)}
                   </button>
                 ))}
                 <Link
@@ -441,15 +435,16 @@ export function SiteNav() {
                   onClick={() => setMobileOpen(false)}
                   className="rounded-lg px-3 py-3 text-sm font-semibold text-foreground/80 transition-colors hover:bg-secondary-tint"
                 >
-                  Blog
+                  {t("nav:blog")}
                 </Link>
                 <Link
                   to="/pricing"
                   onClick={() => setMobileOpen(false)}
                   className="rounded-lg px-3 py-3 text-sm font-semibold text-foreground/80 transition-colors hover:bg-secondary-tint"
                 >
-                  Pricing page
+                  {t("nav:pricingPage")}
                 </Link>
+                <LanguageOptions className="mt-2 border-t border-border pt-2" />
               </div>
 
               <div className="mt-8 flex flex-col gap-3">
@@ -459,12 +454,12 @@ export function SiteNav() {
                   className="w-full rounded-full bg-primary-tint font-semibold text-primary hover:bg-primary-tint/70"
                 >
                   <Link to="/login" search={{ tab: "signin" }} onClick={() => setMobileOpen(false)}>
-                    Login
+                    {t("nav:login")}
                   </Link>
                 </Button>
                 <Button asChild className="w-full rounded-full bg-primary font-semibold text-primary-foreground">
                   <Link to="/login" search={{ tab: "signup" }} onClick={() => setMobileOpen(false)}>
-                    Start trial
+                    {t("nav:startTrial")}
                   </Link>
                 </Button>
               </div>

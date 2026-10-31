@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Activity, Loader2, ArrowLeft, Star, Users, Check } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 import { ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
@@ -11,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export const Route = createFileRoute("/login")({
   head: () => ({ meta: [{ title: "Sign in — BrandPulse" }] }),
@@ -29,21 +31,16 @@ export const Route = createFileRoute("/login")({
   component: LoginPage,
 });
 
-/** Turn an API failure into a message that names the actual problem. */
-function authErrorMessage(error: unknown, mode: "signin" | "signup"): string {
-  if (error instanceof ApiError) {
-    if (error.isNetworkError) return error.message;
-    if (error.status === 401) return "Incorrect email or password.";
-    if (error.status === 409) {
-      return "That email is already registered. Try signing in instead.";
-    }
-    if (error.status === 422) return "Please check the email and password you entered.";
-    return error.message;
-  }
-  return `Something went wrong${mode === "signup" ? " creating your account" : ""}. Please try again.`;
-}
+/** The four value points shown on the branding panel. */
+const POINT_KEYS = [
+  "auth:login.hero.points.languages",
+  "auth:login.hero.points.clustering",
+  "auth:login.hero.points.priority",
+  "auth:login.hero.points.privacy",
+] as const;
 
 function LoginPage() {
+  const { t } = useTranslation(["auth", "pricing", "common"]);
   const { session, ready, login, register } = useAuth();
   const navigate = useNavigate();
   const search = Route.useSearch();
@@ -67,6 +64,21 @@ function LoginPage() {
     if (search.tab) setMode(search.tab);
   }, [search.tab]);
 
+  /** Turn an API failure into a message that names the actual problem. */
+  const authErrorMessage = (err: unknown): string => {
+    if (err instanceof ApiError) {
+      if (err.isNetworkError) return err.message;
+      if (err.status === 401) return t("auth:login.errors.invalidCredentials");
+      if (err.status === 409) return t("auth:login.errors.alreadyRegistered");
+      if (err.status === 422) return t("auth:login.errors.invalidInput");
+      // Remaining server messages are backend-generated and stay in their own language.
+      return err.message;
+    }
+    return mode === "signup"
+      ? t("auth:login.errors.genericSignup")
+      : t("auth:login.errors.generic");
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
@@ -85,14 +97,22 @@ function LoginPage() {
         navigate({ to: "/onboarding" });
       }
     } catch (err) {
-      setError(authErrorMessage(err, mode));
+      setError(authErrorMessage(err));
     } finally {
       setLoading(false);
     }
   };
 
+  // The locale string carries a manual line break marker so each language decides
+  // where the two-line stack falls.
+  const [noteFirst, noteRest] = t("auth:login.hero.note").split("<br/>");
+
   return (
-    <div className="grid min-h-screen lg:grid-cols-2 bg-background selection:bg-primary selection:text-primary-foreground">
+    <div className="relative grid min-h-screen lg:grid-cols-2 bg-background selection:bg-primary selection:text-primary-foreground">
+      <div className="absolute right-4 top-4 z-20">
+        <LanguageSwitcher />
+      </div>
+
       {/* Left Panel: Branding & Value Prop */}
       <div
         className="relative hidden flex-col justify-between p-12 lg:flex overflow-hidden"
@@ -113,7 +133,7 @@ function LoginPage() {
             <span>
               <span className="block text-xl font-bold tracking-tight">BrandPulse</span>
               <span className="block text-[10px] uppercase tracking-[0.2em] text-foreground/40 font-bold mt-0.5">
-                Sentiment Monitoring
+                {t("auth:brand.tagline")}
               </span>
             </span>
           </Link>
@@ -127,20 +147,15 @@ function LoginPage() {
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-foreground/60 mb-8">
               <Star className="h-3 w-3 text-primary fill-primary" />
-              Built for small and medium businesses
+              {t("auth:login.hero.badge")}
             </div>
             <h1 className="text-5xl font-serif leading-[1.1] tracking-tight mb-8">
-              Know what your customers are saying — and which complaints matter.
+              {t("auth:login.hero.title")}
             </h1>
             <ul className="space-y-4 mb-10">
-              {[
-                "Multi-language support (EN, AZ, RU)",
-                "AI-powered incident clustering",
-                "Real-time sentiment priority scoring",
-                "Privacy-first data handling"
-              ].map((text, i) => (
+              {POINT_KEYS.map((key, i) => (
                 <motion.li 
-                  key={i}
+                  key={key}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 + i * 0.1 }}
@@ -149,7 +164,7 @@ function LoginPage() {
                   <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center">
                     <Check className="h-3 w-3 text-primary" />
                   </div>
-                  {text}
+                  {t(key)}
                 </motion.li>
               ))}
             </ul>
@@ -170,7 +185,9 @@ function LoginPage() {
             ))}
           </div>
           <p className="text-[11px] font-bold uppercase tracking-widest text-foreground/30 leading-relaxed">
-            PROTOTYPE FOR SMALL BUSINESSES.<br />ANALYSIS IS ILLUSTRATIVE.
+            {noteFirst}
+            <br />
+            {noteRest}
           </p>
         </motion.div>
       </div>
@@ -190,23 +207,27 @@ function LoginPage() {
             animate={{ opacity: 1, scale: 1 }}
           >
             <div className="mb-8">
-              <h2 className="text-3xl font-serif mb-2">{mode === "signin" ? "Welcome back" : "Get started"}</h2>
+              <h2 className="text-3xl font-serif mb-2">
+                {mode === "signin" ? t("auth:login.modes.signin.title") : t("auth:login.modes.signup.title")}
+              </h2>
               <p className="text-sm text-foreground/40 font-medium">
-                {mode === "signin" 
-                  ? "Enter your credentials to access your dashboard." 
-                  : "Create an account to start monitoring your brand."}
+                {mode === "signin"
+                  ? t("auth:login.modes.signin.body")
+                  : t("auth:login.modes.signup.body")}
               </p>
               {mode === "signup" && selectedPlan && (
                 <p className="mt-3 inline-flex items-center gap-2 rounded-full bg-primary-tint px-3 py-1.5 text-[11px] font-bold text-primary">
-                  {selectedPlan.name} plan selected — trial, no payment
+                  {t("auth:login.planSelected", {
+                    plan: t(`pricing:plans.items.${selectedPlan.id}.name`),
+                  })}
                 </p>
               )}
             </div>
 
             <Tabs value={mode} onValueChange={(value) => setMode(value as "signin" | "signup")} className="w-full">
               <TabsList className="grid w-full grid-cols-2 bg-secondary-tint rounded-2xl p-1 h-12">
-                <TabsTrigger value="signin" className="rounded-xl text-xs font-bold data-[state=active]:bg-background data-[state=active]:shadow-sm">Sign in</TabsTrigger>
-                <TabsTrigger value="signup" className="rounded-xl text-xs font-bold data-[state=active]:bg-background data-[state=active]:shadow-sm">Create account</TabsTrigger>
+                <TabsTrigger value="signin" className="rounded-xl text-xs font-bold data-[state=active]:bg-background data-[state=active]:shadow-sm">{t("auth:login.tabs.signin")}</TabsTrigger>
+                <TabsTrigger value="signup" className="rounded-xl text-xs font-bold data-[state=active]:bg-background data-[state=active]:shadow-sm">{t("auth:login.tabs.signup")}</TabsTrigger>
               </TabsList>
             </Tabs>
 
@@ -214,19 +235,19 @@ function LoginPage() {
               <form onSubmit={handleSubmit} className="space-y-5">
                 {mode === "signup" && (
                   <div className="space-y-2">
-                    <Label htmlFor="signup-business" className="text-xs font-bold uppercase tracking-widest text-foreground/40 ml-1">Business name</Label>
+                    <Label htmlFor="signup-business" className="text-xs font-bold uppercase tracking-widest text-foreground/40 ml-1">{t("auth:login.fields.businessName")}</Label>
                     <Input
                       id="signup-business"
                       required
                       className="rounded-xl h-12 bg-secondary-tint border-transparent focus:border-primary/20"
                       value={businessName}
                       onChange={(event) => setBusinessName(event.target.value)}
-                      placeholder="Kofe Evi"
+                      placeholder={t("auth:login.placeholders.businessName")}
                     />
                   </div>
                 )}
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-foreground/40 ml-1">Email</Label>
+                  <Label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-foreground/40 ml-1">{t("auth:login.fields.email")}</Label>
                   <Input
                     id="email"
                     type="email"
@@ -234,11 +255,11 @@ function LoginPage() {
                     className="rounded-xl h-12 bg-secondary-tint border-transparent focus:border-primary/20"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
-                    placeholder="you@business.com"
+                    placeholder={t("auth:login.placeholders.email")}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-xs font-bold uppercase tracking-widest text-foreground/40 ml-1">Password</Label>
+                  <Label htmlFor="password" className="text-xs font-bold uppercase tracking-widest text-foreground/40 ml-1">{t("auth:login.fields.password")}</Label>
                   <Input
                     id="password"
                     type="password"
@@ -246,19 +267,19 @@ function LoginPage() {
                     className="rounded-xl h-12 bg-secondary-tint border-transparent focus:border-primary/20"
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
-                    placeholder="••••••••"
+                    placeholder={t("auth:login.placeholders.password")}
                   />
                 </div>
                 {mode === "signup" && (
                   <div className="space-y-2">
-                    <Label htmlFor="signup-alert" className="text-xs font-bold uppercase tracking-widest text-foreground/40 ml-1">Alert email (optional)</Label>
+                    <Label htmlFor="signup-alert" className="text-xs font-bold uppercase tracking-widest text-foreground/40 ml-1">{t("auth:login.fields.alertEmail")}</Label>
                     <Input
                       id="signup-alert"
                       type="email"
                       className="rounded-xl h-12 bg-secondary-tint border-transparent focus:border-primary/20"
                       value={alertEmail}
                       onChange={(event) => setAlertEmail(event.target.value)}
-                      placeholder="alerts@business.com"
+                      placeholder={t("auth:login.placeholders.alertEmail")}
                     />
                   </div>
                 )}
@@ -270,14 +291,14 @@ function LoginPage() {
                 ) : null}
 
                 <Button type="submit" className="w-full h-14 rounded-full bg-primary text-primary-foreground text-lg font-bold hover:bg-primary/90 transition-all active:scale-95 shadow-lg shadow-primary/20" disabled={loading}>
-                  {loading ? <Loader2 className="h-5 w-5 animate-spin mx-auto" /> : (mode === "signin" ? "Sign in" : "Create account")}
+                  {loading ? <Loader2 className="h-5 w-5 animate-spin mx-auto" /> : (mode === "signin" ? t("auth:login.tabs.signin") : t("auth:login.tabs.signup"))}
                 </Button>
               </form>
             </div>
 
             <div className="mt-8 pt-8 border-t border-border/50 text-center">
               <Link to="/" className="inline-flex items-center gap-2 text-xs font-bold text-foreground/40 hover:text-primary transition-colors">
-                <ArrowLeft className="h-3 w-3" /> Back to landing page
+                <ArrowLeft className="h-3 w-3" /> {t("auth:login.backToLanding")}
               </Link>
             </div>
           </motion.div>

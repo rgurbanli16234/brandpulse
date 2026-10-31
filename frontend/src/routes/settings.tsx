@@ -3,8 +3,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, type FormEvent } from "react";
 import { Building2, Gauge, Hash, Plus, Radar, RefreshCw, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { Trans, useTranslation } from "react-i18next";
 
 import { AppShell } from "@/components/AppShell";
+import { LanguageOptions } from "@/components/LanguageSwitcher";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -30,47 +32,39 @@ import {
   type SourceType,
 } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
+import { KEYWORD_TYPE_KEYS, SOURCE_KEYS } from "@/lib/enums";
+import { isPlanId } from "@/lib/plans";
 
 export const Route = createFileRoute("/settings")({
   head: () => ({ meta: [{ title: "Settings — BrandPulse" }] }),
   component: SettingsPage,
 });
 
-const KEYWORD_TYPES: { value: KeywordType; label: string }[] = [
-  { value: "brand", label: "Brand" },
-  { value: "product", label: "Product" },
-  { value: "executive", label: "Executive" },
-  { value: "typo", label: "Typo" },
-  { value: "competitor", label: "Competitor" },
-];
+const KEYWORD_TYPES = [
+  { value: "brand", labelKey: `common:${KEYWORD_TYPE_KEYS.brand}` },
+  { value: "product", labelKey: `common:${KEYWORD_TYPE_KEYS.product}` },
+  { value: "executive", labelKey: `common:${KEYWORD_TYPE_KEYS.executive}` },
+  { value: "typo", labelKey: `common:${KEYWORD_TYPE_KEYS.typo}` },
+  { value: "competitor", labelKey: `common:${KEYWORD_TYPE_KEYS.competitor}` },
+] as const satisfies ReadonlyArray<{ value: KeywordType; labelKey: string }>;
 
-const SOURCE_TYPES: { value: SourceType; label: string }[] = [
-  { value: "csv", label: "CSV import" },
-  { value: "manual", label: "Manual entry" },
-  { value: "reddit", label: "Reddit" },
-  { value: "rss", label: "RSS feed" },
-  { value: "demo", label: "Demo data" },
-];
+const SOURCE_TYPES = [
+  { value: "csv", labelKey: `common:${SOURCE_KEYS.csv}` },
+  { value: "manual", labelKey: `common:${SOURCE_KEYS.manual}` },
+  { value: "reddit", labelKey: `common:${SOURCE_KEYS.reddit}` },
+  { value: "rss", labelKey: `common:${SOURCE_KEYS.rss}` },
+  { value: "demo", labelKey: `common:${SOURCE_KEYS.demo}` },
+] as const satisfies ReadonlyArray<{ value: SourceType; labelKey: string }>;
+
+/** Source types the backend pulls on a schedule (and that can be synced on demand). */
+const PULL_SOURCE_TYPES: SourceType[] = ["rss"];
 
 function errorMessage(error: unknown, fallback: string): string {
   return error instanceof ApiError ? error.message : fallback;
 }
 
-/** Source types the backend pulls on a schedule (and that can be synced on demand). */
-const PULL_SOURCE_TYPES: SourceType[] = ["rss"];
-
-function describeSource(source: Source): string {
-  if (source.type === "rss") {
-    const feeds = source.config_json?.["feeds"];
-    const count = Array.isArray(feeds) ? feeds.length : 0;
-    return count > 0
-      ? `${count} feed${count === 1 ? "" : "s"} · ${source.enabled ? "enabled" : "disabled"}`
-      : "No feeds configured";
-  }
-  return source.enabled ? "Enabled" : "Disabled";
-}
-
 function SettingsPage() {
+  const { t } = useTranslation(["app", "common"]);
   const { session } = useAuth();
 
   return (
@@ -78,15 +72,16 @@ function SettingsPage() {
       {session ? (
         <div className="mx-auto w-full max-w-3xl space-y-6">
           <header className="space-y-1">
-            <h1 className="text-2xl font-semibold tracking-tight text-foreground">Settings</h1>
-            <p className="text-sm text-muted-foreground">
-              Configure what BrandPulse monitors and how it delivers alerts.
-            </p>
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+              {t("app:settings.title")}
+            </h1>
+            <p className="text-sm text-muted-foreground">{t("app:settings.subtitle")}</p>
           </header>
 
           <BusinessSection business={session.business} />
           <KeywordsSection />
           <SourcesSection />
+          <LanguageSection />
           <AnalyzerSection />
           <ThresholdsSection />
         </div>
@@ -98,33 +93,40 @@ function SettingsPage() {
 /* ---------- Business ---------- */
 
 function BusinessSection({ business }: { business: Business }) {
+  const { t } = useTranslation(["app", "pricing"]);
+
+  /** Plan values are ids from the API; the UI shows the translated plan name. */
+  const planLabel = isPlanId(business.plan)
+    ? t(`pricing:plans.items.${business.plan}.name`)
+    : business.plan;
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
-          <Building2 className="h-4 w-4 text-primary" /> Business
+          <Building2 className="h-4 w-4 text-primary" /> {t("app:settings.business.title")}
         </CardTitle>
-        <CardDescription>
-          Alert delivery uses these values — notifications are sent to the alert email and posted to
-          the webhook URL when one is configured.
-        </CardDescription>
+        <CardDescription>{t("app:settings.business.subtitle")}</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-3 sm:grid-cols-2">
-        <Field label="Business name" value={business.name} />
-        <Field label="Plan" value={business.plan} />
-        <Field label="Alert email" value={business.alert_email} />
-        <Field label="Webhook URL" value={business.webhook_url} />
+        <Field label={t("app:settings.business.name")} value={business.name} />
+        <Field label={t("app:settings.business.plan")} value={planLabel} />
+        <Field label={t("app:settings.business.alertEmail")} value={business.alert_email} />
+        <Field label={t("app:settings.business.webhook")} value={business.webhook_url} />
       </CardContent>
     </Card>
   );
 }
 
 function Field({ label, value }: { label: string; value: string | null }) {
+  const { t } = useTranslation("app");
+  const notSet = t("settings.business.notSet");
+
   return (
     <div className="rounded-md border border-border bg-muted/30 px-3 py-2">
       <p className="text-[10px] uppercase tracking-widest text-muted-foreground">{label}</p>
-      <p className="mt-1 truncate text-sm text-foreground" title={value ?? "Not set"}>
-        {value && value.length > 0 ? value : "Not set"}
+      <p className="mt-1 truncate text-sm text-foreground" title={value ?? notSet}>
+        {value && value.length > 0 ? value : notSet}
       </p>
     </div>
   );
@@ -133,6 +135,7 @@ function Field({ label, value }: { label: string; value: string | null }) {
 /* ---------- Keywords ---------- */
 
 function KeywordsSection() {
+  const { t } = useTranslation(["app", "common"]);
   const queryClient = useQueryClient();
   const [term, setTerm] = useState("");
   const [type, setType] = useState<KeywordType>("brand");
@@ -145,25 +148,27 @@ function KeywordsSection() {
     onSuccess: async () => {
       setTerm("");
       await queryClient.invalidateQueries({ queryKey: ["keywords"] });
-      toast.success("Keyword added");
+      toast.success(t("app:settings.keywords.added"));
     },
-    onError: (error) => toast.error(errorMessage(error, "Could not add the keyword")),
+    onError: (error) =>
+      toast.error(errorMessage(error, t("app:settings.keywords.addFailed"))),
   });
 
   const deleteKeyword = useMutation({
     mutationFn: (id: number) => api.deleteKeyword(id),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["keywords"] });
-      toast.success("Keyword removed");
+      toast.success(t("app:settings.keywords.removed"));
     },
-    onError: (error) => toast.error(errorMessage(error, "Could not remove the keyword")),
+    onError: (error) =>
+      toast.error(errorMessage(error, t("app:settings.keywords.removeFailed"))),
   });
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const trimmed = term.trim();
     if (trimmed.length === 0) {
-      toast.error("Enter a keyword term");
+      toast.error(t("app:settings.keywords.enterTerm"));
       return;
     }
     createKeyword.mutate({ term: trimmed, type });
@@ -173,26 +178,23 @@ function KeywordsSection() {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
-          <Hash className="h-4 w-4 text-primary" /> Keywords
+          <Hash className="h-4 w-4 text-primary" /> {t("app:settings.keywords.title")}
         </CardTitle>
-        <CardDescription>
-          Keywords define what the business monitors — every incoming mention is matched against
-          these terms to decide whether it is relevant to your brand.
-        </CardDescription>
+        <CardDescription>{t("app:settings.keywords.subtitle")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <form onSubmit={onSubmit} className="flex flex-col gap-2 sm:flex-row sm:items-end">
           <div className="flex-1 space-y-1.5">
-            <Label htmlFor="keyword-term">Term</Label>
+            <Label htmlFor="keyword-term">{t("app:settings.keywords.term")}</Label>
             <Input
               id="keyword-term"
               value={term}
               onChange={(event) => setTerm(event.target.value)}
-              placeholder="e.g. BrandPulse"
+              placeholder={t("app:settings.keywords.placeholder")}
             />
           </div>
           <div className="space-y-1.5">
-            <Label>Type</Label>
+            <Label>{t("app:settings.keywords.type")}</Label>
             <Select value={type} onValueChange={(value) => setType(value as KeywordType)}>
               <SelectTrigger className="w-full sm:w-[160px]">
                 <SelectValue />
@@ -200,14 +202,14 @@ function KeywordsSection() {
               <SelectContent>
                 {KEYWORD_TYPES.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
-                    {option.label}
+                    {t(option.labelKey)}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           <Button type="submit" disabled={createKeyword.isPending}>
-            <Plus className="h-4 w-4" /> Add
+            <Plus className="h-4 w-4" /> {t("app:settings.keywords.add")}
           </Button>
         </form>
 
@@ -221,14 +223,14 @@ function KeywordsSection() {
           </div>
         ) : keywords.isError ? (
           <Alert variant="destructive">
-            <AlertTitle>Couldn't load keywords</AlertTitle>
+            <AlertTitle>{t("app:settings.keywords.loadError")}</AlertTitle>
             <AlertDescription>
-              {errorMessage(keywords.error, "Something went wrong while fetching keywords.")}
+              {errorMessage(keywords.error, t("app:settings.keywords.loadErrorBody"))}
             </AlertDescription>
           </Alert>
         ) : keywordItems.length === 0 ? (
           <p className="py-4 text-center text-sm text-muted-foreground">
-            No keywords yet. Add your first term above.
+            {t("app:settings.keywords.empty")}
           </p>
         ) : (
           <ul className="divide-y divide-border">
@@ -238,14 +240,12 @@ function KeywordsSection() {
                   <span className="truncate text-sm font-medium text-foreground">
                     {keyword.term}
                   </span>
-                  <Badge variant="outline" className="capitalize">
-                    {keyword.type}
-                  </Badge>
+                  <Badge variant="outline">{t(`common:${KEYWORD_TYPE_KEYS[keyword.type]}`)}</Badge>
                 </div>
                 <Button
                   variant="ghost"
                   size="icon"
-                  aria-label={`Delete ${keyword.term}`}
+                  aria-label={t("app:settings.keywords.deleteAria", { term: keyword.term })}
                   disabled={deleteKeyword.isPending && deleteKeyword.variables === keyword.id}
                   onClick={() => deleteKeyword.mutate(keyword.id)}
                 >
@@ -263,6 +263,7 @@ function KeywordsSection() {
 /* ---------- Sources ---------- */
 
 function SourcesSection() {
+  const { t } = useTranslation(["app", "common"]);
   const queryClient = useQueryClient();
   const [type, setType] = useState<SourceType>("csv");
   const [feedUrls, setFeedUrls] = useState("");
@@ -270,15 +271,33 @@ function SourcesSection() {
   const sources = useQuery({ queryKey: ["sources"], queryFn: () => api.sources() });
   const sourceItems = sources.data ?? [];
 
+  /** Source types come back as API values; the UI shows the translated label. */
+  const sourceTypeLabel = (value: string): string => {
+    const key = SOURCE_KEYS[value as keyof typeof SOURCE_KEYS];
+    return key ? t(`common:${key}`) : value;
+  };
+
+  const describeSource = (source: Source): string => {
+    const state = source.enabled ? t("common:labels.enabled") : t("common:labels.disabled");
+    if (source.type === "rss") {
+      const feeds = source.config_json?.["feeds"];
+      const count = Array.isArray(feeds) ? feeds.length : 0;
+      return count > 0
+        ? t("app:settings.sources.feedSummary", { count, state })
+        : t("app:settings.sources.noFeeds");
+    }
+    return state;
+  };
+
   const createSource = useMutation({
     mutationFn: (input: { type: SourceType; config_json?: Record<string, unknown> }) =>
       api.createSource(input),
     onSuccess: async () => {
       setFeedUrls("");
       await queryClient.invalidateQueries({ queryKey: ["sources"] });
-      toast.success("Source added");
+      toast.success(t("app:settings.sources.added"));
     },
-    onError: (error) => toast.error(errorMessage(error, "Could not add the source")),
+    onError: (error) => toast.error(errorMessage(error, t("app:settings.sources.addFailed"))),
   });
 
   const syncSource = useMutation({
@@ -288,11 +307,11 @@ function SourcesSection() {
       await queryClient.invalidateQueries({ queryKey: ["mentions"] });
       toast.success(
         result.mentions_created > 0
-          ? `Pulled ${result.mentions_created} new mention(s)`
-          : "No new mentions found",
+          ? t("app:settings.sources.pulled", { count: result.mentions_created })
+          : t("app:settings.sources.noNew"),
       );
     },
-    onError: (error) => toast.error(errorMessage(error, "Could not sync the source")),
+    onError: (error) => toast.error(errorMessage(error, t("app:settings.sources.syncFailed"))),
   });
 
   const updateSource = useMutation({
@@ -301,16 +320,16 @@ function SourcesSection() {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["sources"] });
     },
-    onError: (error) => toast.error(errorMessage(error, "Could not update the source")),
+    onError: (error) => toast.error(errorMessage(error, t("app:settings.sources.updateFailed"))),
   });
 
   const deleteSource = useMutation({
     mutationFn: (id: number) => api.deleteSource(id),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["sources"] });
-      toast.success("Source removed");
+      toast.success(t("app:settings.sources.removed"));
     },
-    onError: (error) => toast.error(errorMessage(error, "Could not remove the source")),
+    onError: (error) => toast.error(errorMessage(error, t("app:settings.sources.removeFailed"))),
   });
 
   function addSource() {
@@ -323,7 +342,7 @@ function SourcesSection() {
       .map((url) => url.trim())
       .filter((url) => url.length > 0);
     if (feeds.length === 0) {
-      toast.error("Add at least one RSS feed URL");
+      toast.error(t("app:settings.sources.addFeed"));
       return;
     }
     createSource.mutate({ type, config_json: { feeds } });
@@ -333,17 +352,14 @@ function SourcesSection() {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
-          <Radar className="h-4 w-4 text-primary" /> Sources
+          <Radar className="h-4 w-4 text-primary" /> {t("app:settings.sources.title")}
         </CardTitle>
-        <CardDescription>
-          Sources are where BrandPulse collects mentions from. Enable or disable them without
-          deleting their configuration.
-        </CardDescription>
+        <CardDescription>{t("app:settings.sources.subtitle")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
           <div className="space-y-1.5">
-            <Label>Type</Label>
+            <Label>{t("app:settings.sources.type")}</Label>
             <Select value={type} onValueChange={(value) => setType(value as SourceType)}>
               <SelectTrigger className="w-full sm:w-[200px]">
                 <SelectValue />
@@ -351,7 +367,7 @@ function SourcesSection() {
               <SelectContent>
                 {SOURCE_TYPES.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
-                    {option.label}
+                    {t(option.labelKey)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -359,7 +375,7 @@ function SourcesSection() {
           </div>
           {type === "rss" ? (
             <div className="flex-1 space-y-1.5">
-              <Label htmlFor="feed-urls">Feed URLs</Label>
+              <Label htmlFor="feed-urls">{t("app:settings.sources.feedUrls")}</Label>
               <Input
                 id="feed-urls"
                 value={feedUrls}
@@ -369,7 +385,7 @@ function SourcesSection() {
             </div>
           ) : null}
           <Button type="button" disabled={createSource.isPending} onClick={addSource}>
-            <Plus className="h-4 w-4" /> Add source
+            <Plus className="h-4 w-4" /> {t("app:settings.sources.addSource")}
           </Button>
         </div>
 
@@ -383,14 +399,14 @@ function SourcesSection() {
           </div>
         ) : sources.isError ? (
           <Alert variant="destructive">
-            <AlertTitle>Couldn't load sources</AlertTitle>
+            <AlertTitle>{t("app:settings.sources.loadError")}</AlertTitle>
             <AlertDescription>
-              {errorMessage(sources.error, "Something went wrong while fetching sources.")}
+              {errorMessage(sources.error, t("app:settings.sources.loadErrorBody"))}
             </AlertDescription>
           </Alert>
         ) : sourceItems.length === 0 ? (
           <p className="py-4 text-center text-sm text-muted-foreground">
-            No sources configured yet. Add one above to start collecting mentions.
+            {t("app:settings.sources.empty")}
           </p>
         ) : (
           <ul className="divide-y divide-border">
@@ -399,14 +415,16 @@ function SourcesSection() {
                 <div className="flex min-w-0 items-center gap-3">
                   <Switch
                     checked={source.enabled}
-                    aria-label={`Toggle ${source.type}`}
+                    aria-label={t("app:settings.sources.toggleAria", {
+                      type: sourceTypeLabel(source.type),
+                    })}
                     onCheckedChange={(checked) =>
                       updateSource.mutate({ id: source.id, enabled: checked })
                     }
                   />
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium capitalize text-foreground">
-                      {source.type}
+                    <p className="truncate text-sm font-medium text-foreground">
+                      {sourceTypeLabel(source.type)}
                     </p>
                     <p className="truncate text-xs text-muted-foreground">
                       {describeSource(source)}
@@ -421,13 +439,15 @@ function SourcesSection() {
                       disabled={syncSource.isPending && syncSource.variables === source.id}
                       onClick={() => syncSource.mutate(source.id)}
                     >
-                      <RefreshCw className="h-4 w-4" /> Sync now
+                      <RefreshCw className="h-4 w-4" /> {t("common:actions.syncNow")}
                     </Button>
                   ) : null}
                   <Button
                     variant="ghost"
                     size="icon"
-                    aria-label={`Delete ${source.type}`}
+                    aria-label={t("app:settings.sources.deleteAria", {
+                      type: sourceTypeLabel(source.type),
+                    })}
                     disabled={deleteSource.isPending && deleteSource.variables === source.id}
                     onClick={() => deleteSource.mutate(source.id)}
                   >
@@ -443,34 +463,55 @@ function SourcesSection() {
   );
 }
 
+/* ---------- Language ---------- */
+
+function LanguageSection() {
+  const { t } = useTranslation("app");
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base">{t("settings.language.title")}</CardTitle>
+        <CardDescription>{t("settings.language.subtitle")}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <LanguageOptions />
+      </CardContent>
+    </Card>
+  );
+}
+
 /* ---------- Analyzer ---------- */
 
 function AnalyzerSection() {
+  const { t } = useTranslation("app");
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
-          <Radar className="h-4 w-4 text-primary" /> Analyzer
+          <Radar className="h-4 w-4 text-primary" /> {t("settings.analyzer.title")}
           <Badge variant="secondary" className="ml-1 font-mono text-[10px]">
-            rules
+            {t("settings.analyzer.tag")}
           </Badge>
         </CardTitle>
-        <CardDescription>The engine that scores sentiment and detects complaints.</CardDescription>
+        <CardDescription>{t("settings.analyzer.subtitle")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-3 text-sm text-muted-foreground">
-        <p>
-          By default the analyzer runs in <span className="font-medium text-foreground">rules</span>{" "}
-          mode — a lightweight, multilingual rule engine (English, Azerbaijani, Russian) that needs
-          no model downloads.
-        </p>
-        <p>
-          To use a Hugging Face model instead, set the{" "}
-          <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs text-foreground">
-            ANALYZER
-          </code>{" "}
-          environment variable on the server. This is configured server-side and cannot be changed
-          from the app.
-        </p>
+        <Trans
+          ns="app"
+          i18nKey="settings.analyzer.body1"
+          components={{ bold: <span className="font-medium text-foreground" /> }}
+        />
+        <Trans
+          ns="app"
+          i18nKey="settings.analyzer.body2"
+          components={{
+            code: (
+              <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs text-foreground" />
+            ),
+          }}
+        />
       </CardContent>
     </Card>
   );
@@ -479,35 +520,38 @@ function AnalyzerSection() {
 /* ---------- Alert thresholds ---------- */
 
 function ThresholdsSection() {
-  const rows: { label: string; value: string }[] = [
-    { label: "Spike multiplier", value: "2.0x" },
-    { label: "Alert cooldown", value: "60 min" },
-    { label: "Priority weights", value: "Severity 0.5 · Reach 0.3 · Velocity 0.2" },
-  ];
+  const { t } = useTranslation("app");
+
+  const rows = [
+    { labelKey: "settings.thresholds.spikeMultiplier", valueKey: "settings.thresholds.spikeValue" },
+    { labelKey: "settings.thresholds.alertCooldown", valueKey: "settings.thresholds.cooldownValue" },
+    {
+      labelKey: "settings.thresholds.priorityWeights",
+      valueKey: "settings.thresholds.weightsValue",
+    },
+  ] as const;
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
-          <Gauge className="h-4 w-4 text-primary" /> Alert thresholds
+          <Gauge className="h-4 w-4 text-primary" /> {t("settings.thresholds.title")}
         </CardTitle>
-        <CardDescription>
-          Server-side defaults that decide when a thread is surfaced and how it is prioritised.
-        </CardDescription>
+        <CardDescription>{t("settings.thresholds.subtitle")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-1">
         {rows.map((row) => (
           <div
-            key={row.label}
+            key={row.labelKey}
             className="flex items-center justify-between gap-4 border-b border-border py-2 last:border-b-0"
           >
-            <span className="text-sm text-muted-foreground">{row.label}</span>
-            <span className="text-numeric text-sm font-medium text-foreground">{row.value}</span>
+            <span className="text-sm text-muted-foreground">{t(row.labelKey)}</span>
+            <span className="text-numeric text-sm font-medium text-foreground">
+              {t(row.valueKey)}
+            </span>
           </div>
         ))}
-        <p className="pt-2 text-xs text-muted-foreground">
-          These are read-only and configured on the server.
-        </p>
+        <p className="pt-2 text-xs text-muted-foreground">{t("settings.thresholds.readOnly")}</p>
       </CardContent>
     </Card>
   );

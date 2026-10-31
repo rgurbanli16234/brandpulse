@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Copy, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import {
   api,
@@ -11,7 +12,16 @@ import {
   type ThreadDetail,
   type ThreadStatus,
 } from "@/lib/api";
-import { formatNumber, relativeTime, SENTIMENT_COLORS, SENTIMENT_TEXT } from "@/lib/format";
+import {
+  MENTION_LANGUAGE_KEYS,
+  PRIORITY_KEYS,
+  SENTIMENT_KEYS,
+  SOURCE_KEYS,
+  THREAD_STATUS_KEYS,
+  topicKey,
+} from "@/lib/enums";
+import { formatDecimal, formatNumber } from "@/i18n/format";
+import { relativeTime, SENTIMENT_COLORS } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { AppShell } from "@/components/AppShell";
 import { PriorityBadge } from "@/components/PriorityBadge";
@@ -41,27 +51,23 @@ const STATUS_CLASSES: Record<ThreadStatus, string> = {
   resolved: "border-risk-low/40 bg-risk-low/15 text-risk-low",
 };
 
-const STATUS_LABEL: Record<ThreadStatus, string> = {
-  open: "Open",
-  investigating: "Investigating",
-  resolved: "Resolved",
-};
+const FACTOR_ROWS = [
+  { key: "severity", labelKey: "app:thread.breakdown.factors.severity", weight: 0.5 },
+  { key: "reach", labelKey: "app:thread.breakdown.factors.reach", weight: 0.3 },
+  { key: "velocity", labelKey: "app:thread.breakdown.factors.velocity", weight: 0.2 },
+] as const;
 
-const FACTOR_ROWS: { key: "severity" | "reach" | "velocity"; label: string; weight: number }[] = [
-  { key: "severity", label: "Severity", weight: 0.5 },
-  { key: "reach", label: "Reach", weight: 0.3 },
-  { key: "velocity", label: "Velocity", weight: 0.2 },
-];
-
-const INPUT_ROWS: { key: string; label: string }[] = [
-  { key: "mention_count", label: "Mentions" },
-  { key: "raw_reach", label: "Raw reach" },
-  { key: "recent_mentions_60m", label: "Mentions (60m)" },
-  { key: "worst_negativity", label: "Worst negativity" },
-  { key: "topic_weight", label: "Topic weight" },
-];
+const INPUT_ROWS = [
+  { key: "mention_count", labelKey: "app:thread.breakdown.inputs.mentions" },
+  { key: "raw_reach", labelKey: "app:thread.breakdown.inputs.rawReach" },
+  { key: "recent_mentions_60m", labelKey: "app:thread.breakdown.inputs.mentions60m" },
+  { key: "worst_negativity", labelKey: "app:thread.breakdown.inputs.worstNegativity" },
+  { key: "topic_weight", labelKey: "app:thread.breakdown.inputs.topicWeight" },
+] as const;
 
 function StatusBadge({ status }: { status: ThreadStatus }) {
+  const { t } = useTranslation("common");
+
   return (
     <span
       className={cn(
@@ -69,14 +75,20 @@ function StatusBadge({ status }: { status: ThreadStatus }) {
         STATUS_CLASSES[status],
       )}
     >
-      {STATUS_LABEL[status]}
+      {t(THREAD_STATUS_KEYS[status])}
     </span>
   );
 }
 
 function SentimentChip({ label }: { label: SentimentLabel | null }) {
+  const { t } = useTranslation("common");
+
   if (!label) {
-    return <span className="rounded bg-muted px-1.5 py-0.5 text-[11px] text-muted-foreground">Unscored</span>;
+    return (
+      <span className="rounded bg-muted px-1.5 py-0.5 text-[11px] text-muted-foreground">
+        {t("labels.unscored")}
+      </span>
+    );
   }
   return (
     <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-2 py-0.5 text-[11px] font-medium text-foreground">
@@ -84,7 +96,7 @@ function SentimentChip({ label }: { label: SentimentLabel | null }) {
         className="h-1.5 w-1.5 rounded-full"
         style={{ backgroundColor: SENTIMENT_COLORS[label] }}
       />
-      {SENTIMENT_TEXT[label]}
+      {t(SENTIMENT_KEYS[label])}
     </span>
   );
 }
@@ -100,19 +112,7 @@ function Stat({ label, value }: { label: string; value: string }) {
 
 function formatInput(value: number | undefined): string {
   if (value === undefined) return "—";
-  return Number.isInteger(value) ? formatNumber(value) : value.toFixed(2);
-}
-
-function buildResponseDraft(thread: ThreadDetail): string {
-  const count = formatNumber(thread.mention_count);
-  const noun = thread.mention_count === 1 ? "report" : "reports";
-  return [
-    `Hi — thanks for flagging this. We've seen ${count} similar ${noun} about "${thread.topic}" and we're taking it seriously.`,
-    "",
-    "Our team is already investigating this issue. While we work on a fix, please reach out to support@brandpulse.app with your account details and we'll make it right.",
-    "",
-    "We'll post an update here as soon as we have one.",
-  ].join("\n");
+  return Number.isInteger(value) ? formatNumber(value) : formatDecimal(value);
 }
 
 function DetailSkeleton() {
@@ -136,16 +136,32 @@ function DetailSkeleton() {
 }
 
 function MentionRow({ mention }: { mention: Mention }) {
+  const { t } = useTranslation(["app", "common"]);
+
+  /** Analyser/API values are rendered through their translated labels. */
+  const sourceLabel = (value: string): string => {
+    const key = SOURCE_KEYS[value as keyof typeof SOURCE_KEYS];
+    return key ? t(`common:${key}`) : value;
+  };
+  const languageLabel = (value: string): string => {
+    const key = MENTION_LANGUAGE_KEYS[value as keyof typeof MENTION_LANGUAGE_KEYS];
+    return key ? t(`common:${key}`) : value;
+  };
+
   return (
     <div className="rounded-lg border border-border bg-background/40 p-3">
       <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-        <span className="font-medium text-foreground">{mention.author ?? "Unknown author"}</span>
+        <span className="font-medium text-foreground">
+          {mention.author ?? t("common:labels.unknownAuthor")}
+        </span>
         <span>·</span>
-        <span>{mention.source}</span>
+        <span>{sourceLabel(mention.source)}</span>
         <span>·</span>
         <span>{relativeTime(mention.created_at)}</span>
         <SentimentChip label={mention.sentiment_label} />
-        <span className="rounded bg-muted px-1.5 py-0.5 uppercase">{mention.language}</span>
+        <span className="rounded bg-muted px-1.5 py-0.5 uppercase">
+          {languageLabel(mention.language)}
+        </span>
       </div>
       <p className="mt-2 whitespace-pre-wrap text-sm text-foreground">{mention.text}</p>
       {mention.url ? (
@@ -155,7 +171,7 @@ function MentionRow({ mention }: { mention: Mention }) {
           rel="noreferrer"
           className="mt-2 inline-flex items-center gap-1 text-xs text-primary hover:underline"
         >
-          <ExternalLink className="h-3 w-3" /> View source
+          <ExternalLink className="h-3 w-3" /> {t("app:thread.viewSource")}
         </a>
       ) : null}
     </div>
@@ -168,6 +184,19 @@ function ThreadDetailPage() {
   const validId = Number.isFinite(threadId);
   const queryClient = useQueryClient();
   const [draft, setDraft] = useState("");
+  const { t } = useTranslation(["app", "common"]);
+
+  /** Analyser topics come back as API values; the UI shows the translated label. */
+  const topicLabel = (value: string | null | undefined): string => {
+    const key = topicKey(value);
+    return key ? t(`common:${key}`) : (value ?? "");
+  };
+
+  /** Priority tiers are API values too — the breakdown reports one as a raw string. */
+  const priorityLabel = (value: string): string => {
+    const key = PRIORITY_KEYS[value as keyof typeof PRIORITY_KEYS];
+    return key ? t(`common:${key}`) : value;
+  };
 
   const query = useQuery({
     queryKey: ["thread", threadId],
@@ -178,16 +207,29 @@ function ThreadDetailPage() {
   const statusMutation = useMutation({
     mutationFn: (status: ThreadStatus) => api.updateThreadStatus(threadId, status),
     onSuccess: () => {
-      toast.success("Thread status updated");
+      toast.success(t("app:thread.toasts.statusUpdated"));
       void queryClient.invalidateQueries({ queryKey: ["thread", threadId] });
       void queryClient.invalidateQueries({ queryKey: ["threads"] });
       void queryClient.invalidateQueries({ queryKey: ["summary"] });
       void queryClient.invalidateQueries({ queryKey: ["alerts"] });
     },
     onError: (error: unknown) => {
-      toast.error(error instanceof Error ? error.message : "Could not update status");
+      toast.error(error instanceof Error ? error.message : t("app:thread.toasts.statusFailed"));
     },
   });
+
+  /** Local template, rebuilt in the active language. */
+  const buildResponseDraft = (thread: ThreadDetail): string =>
+    [
+      t("app:thread.draft.paragraph1", {
+        count: thread.mention_count,
+        topic: topicLabel(thread.topic),
+      }),
+      "",
+      t("app:thread.draft.paragraph2"),
+      "",
+      t("app:thread.draft.paragraph3"),
+    ].join("\n");
 
   const detail = query.data;
   const defaultDraft = detail ? buildResponseDraft(detail) : "";
@@ -198,13 +240,13 @@ function ThreadDetailPage() {
 
   function handleCopy() {
     if (!navigator.clipboard) {
-      toast.error("Clipboard unavailable in this browser");
+      toast.error(t("app:thread.toasts.clipboardUnavailable"));
       return;
     }
     void navigator.clipboard
       .writeText(draft)
-      .then(() => toast.success("Draft copied to clipboard"))
-      .catch(() => toast.error("Could not copy to clipboard"));
+      .then(() => toast.success(t("app:thread.toasts.copied")))
+      .catch(() => toast.error(t("app:thread.toasts.copyFailed")));
   }
 
   const breakdown = detail?.score_breakdown ?? null;
@@ -216,29 +258,27 @@ function ThreadDetailPage() {
           to="/threads"
           className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
-          <ArrowLeft className="h-4 w-4" /> All incident threads
+          <ArrowLeft className="h-4 w-4" /> {t("app:thread.backToAll")}
         </Link>
 
         {!validId ? (
           <Alert variant="destructive">
-            <AlertTitle>Invalid thread</AlertTitle>
-            <AlertDescription>The incident thread id in the URL is not valid.</AlertDescription>
+            <AlertTitle>{t("app:thread.invalidTitle")}</AlertTitle>
+            <AlertDescription>{t("app:thread.invalidBody")}</AlertDescription>
           </Alert>
         ) : query.isLoading ? (
           <DetailSkeleton />
         ) : query.isError ? (
           <Alert variant="destructive">
-            <AlertTitle>Couldn't load this thread</AlertTitle>
+            <AlertTitle>{t("app:thread.loadErrorTitle")}</AlertTitle>
             <AlertDescription>
-              {query.error instanceof Error ? query.error.message : "Please try again."}
+              {query.error instanceof Error ? query.error.message : t("app:thread.fallback")}
             </AlertDescription>
           </Alert>
         ) : !detail ? (
           <Alert>
-            <AlertTitle>Thread not found</AlertTitle>
-            <AlertDescription>
-              This incident thread no longer exists or is not available.
-            </AlertDescription>
+            <AlertTitle>{t("app:thread.notFoundTitle")}</AlertTitle>
+            <AlertDescription>{t("app:thread.notFoundBody")}</AlertDescription>
           </Alert>
         ) : (
           <>
@@ -247,28 +287,40 @@ function ThreadDetailPage() {
                 <div className="flex flex-wrap items-center gap-2">
                   <PriorityBadge tier={detail.priority_tier} />
                   <StatusBadge status={detail.status} />
-                  <span className="text-xs text-muted-foreground">{detail.topic}</span>
+                  <span className="text-xs text-muted-foreground">{topicLabel(detail.topic)}</span>
                 </div>
                 <CardTitle className="text-xl">{detail.title}</CardTitle>
               </CardHeader>
               <CardContent className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <Stat label="Mentions" value={formatNumber(detail.mention_count)} />
                 <Stat
-                  label="Priority score"
-                  value={detail.priority_score != null ? detail.priority_score.toFixed(3) : "—"}
+                  label={t("app:thread.stats.mentions")}
+                  value={formatNumber(detail.mention_count)}
                 />
-                <Stat label="First seen" value={relativeTime(detail.first_seen)} />
-                <Stat label="Last seen" value={relativeTime(detail.last_seen)} />
+                <Stat
+                  label={t("app:thread.stats.priorityScore")}
+                  value={detail.priority_score != null ? formatDecimal(detail.priority_score, 3) : "—"}
+                />
+                <Stat
+                  label={t("app:thread.stats.firstSeen")}
+                  value={relativeTime(detail.first_seen)}
+                />
+                <Stat
+                  label={t("app:thread.stats.lastSeen")}
+                  value={relativeTime(detail.last_seen)}
+                />
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Why this priority</CardTitle>
+                <CardTitle className="text-base">{t("app:thread.breakdown.title")}</CardTitle>
                 <CardDescription>
                   {breakdown
-                    ? `Score ${breakdown.score.toFixed(3)} · Tier ${breakdown.tier} · formula 0.5 × severity + 0.3 × reach + 0.2 × velocity`
-                    : "No score breakdown is available for this thread yet."}
+                    ? t("app:thread.breakdown.formula", {
+                        score: formatDecimal(breakdown.score, 3),
+                        tier: priorityLabel(breakdown.tier),
+                      })
+                    : t("app:thread.breakdown.unavailable")}
                 </CardDescription>
               </CardHeader>
               {breakdown ? (
@@ -280,10 +332,15 @@ function ThreadDetailPage() {
                       <div key={row.key} className="space-y-1.5">
                         <div className="flex items-center justify-between text-xs">
                           <span className="font-medium text-foreground">
-                            {row.label} <span className="text-muted-foreground">· weight {weight}</span>
+                            {t(row.labelKey)}{" "}
+                            <span className="text-muted-foreground">
+                              {t("app:thread.breakdown.weight", {
+                                weight: formatDecimal(weight, 1),
+                              })}
+                            </span>
                           </span>
                           <span className="text-numeric text-muted-foreground">
-                            {Math.round(factor * 100)}%
+                            {formatNumber(Math.round(factor * 100))}%
                           </span>
                         </div>
                         <Progress value={Math.round(factor * 100)} />
@@ -293,7 +350,11 @@ function ThreadDetailPage() {
                   <Separator />
                   <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                     {INPUT_ROWS.map((row) => (
-                      <Stat key={row.key} label={row.label} value={formatInput(breakdown.inputs[row.key])} />
+                      <Stat
+                        key={row.key}
+                        label={t(row.labelKey)}
+                        value={formatInput(breakdown.inputs[row.key])}
+                      />
                     ))}
                   </div>
                 </CardContent>
@@ -302,8 +363,8 @@ function ThreadDetailPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Status</CardTitle>
-                <CardDescription>Update the incident thread state.</CardDescription>
+                <CardTitle className="text-base">{t("app:thread.status.title")}</CardTitle>
+                <CardDescription>{t("app:thread.status.subtitle")}</CardDescription>
               </CardHeader>
               <CardContent className="flex flex-wrap items-center gap-3">
                 <Select
@@ -315,13 +376,19 @@ function ThreadDetailPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="open">Open</SelectItem>
-                    <SelectItem value="investigating">Investigating</SelectItem>
-                    <SelectItem value="resolved">Resolved</SelectItem>
+                    <SelectItem value="open">{t(`common:${THREAD_STATUS_KEYS.open}`)}</SelectItem>
+                    <SelectItem value="investigating">
+                      {t(`common:${THREAD_STATUS_KEYS.investigating}`)}
+                    </SelectItem>
+                    <SelectItem value="resolved">
+                      {t(`common:${THREAD_STATUS_KEYS.resolved}`)}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
                 <span className="text-xs text-muted-foreground">
-                  {statusMutation.isPending ? "Updating…" : "Changes apply immediately."}
+                  {statusMutation.isPending
+                    ? t("app:thread.status.updating")
+                    : t("app:thread.status.applied")}
                 </span>
               </CardContent>
             </Card>
@@ -329,15 +396,13 @@ function ThreadDetailPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">
-                  Grouped mentions ({formatNumber(detail.mentions.length)})
+                  {t("app:thread.grouped.title", { count: detail.mentions.length })}
                 </CardTitle>
-                <CardDescription>Every complaint grouped into this thread.</CardDescription>
+                <CardDescription>{t("app:thread.grouped.subtitle")}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 {detail.mentions.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">
-                    No mentions are grouped into this thread yet.
-                  </p>
+                  <p className="text-sm text-muted-foreground">{t("app:thread.grouped.empty")}</p>
                 ) : (
                   detail.mentions.map((mention) => <MentionRow key={mention.id} mention={mention} />)
                 )}
@@ -346,10 +411,8 @@ function ThreadDetailPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Suggested response draft</CardTitle>
-                <CardDescription>
-                  A local template based on this thread — edit it before posting.
-                </CardDescription>
+                <CardTitle className="text-base">{t("app:thread.draft.title")}</CardTitle>
+                <CardDescription>{t("app:thread.draft.subtitle")}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Textarea
@@ -359,7 +422,7 @@ function ThreadDetailPage() {
                 />
                 <div className="flex justify-end">
                   <Button variant="outline" className="gap-2" onClick={handleCopy}>
-                    <Copy className="h-4 w-4" /> Copy
+                    <Copy className="h-4 w-4" /> {t("common:actions.copy")}
                   </Button>
                 </div>
               </CardContent>

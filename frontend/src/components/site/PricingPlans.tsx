@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { Fragment, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
@@ -11,10 +12,11 @@ import { cn } from "@/lib/utils";
 type Billing = "monthly" | "yearly";
 
 function Price({ plan, billing }: { plan: Plan; billing: Billing }) {
+  const { t } = useTranslation(["pricing", "common"]);
   const reduce = useReducedMotion();
 
   if (plan.priceMonthly === null) {
-    return <span className="text-4xl font-bold tracking-tight">Custom</span>;
+    return <span className="text-4xl font-bold tracking-tight">{t("pricing:plans.custom")}</span>;
   }
 
   const amount = billing === "monthly" ? plan.priceMonthly : (plan.priceYearly ?? plan.priceMonthly);
@@ -36,7 +38,9 @@ function Price({ plan, billing }: { plan: Plan; billing: Billing }) {
           </motion.span>
         </AnimatePresence>
       </span>
-      <span className="pb-1 text-sm font-medium text-muted-foreground">/mo</span>
+      <span className="pb-1 text-sm font-medium text-muted-foreground">
+        {t("pricing:plans.perMonth")}
+      </span>
     </span>
   );
 }
@@ -48,6 +52,7 @@ export function PricingPlans({
   showComparison?: boolean;
   showFaq?: boolean;
 }) {
+  const { t } = useTranslation(["pricing", "common"]);
   const [billing, setBilling] = useState<Billing>("monthly");
 
   return (
@@ -56,7 +61,7 @@ export function PricingPlans({
       <div className="flex flex-col items-center gap-4">
         <div
           role="group"
-          aria-label="Billing period"
+          aria-label={t("pricing:plans.billingAria")}
           className="inline-flex items-center rounded-full border border-border bg-card p-1"
         >
           {(["monthly", "yearly"] as Billing[]).map((option) => (
@@ -66,18 +71,18 @@ export function PricingPlans({
               aria-pressed={billing === option}
               onClick={() => setBilling(option)}
               className={cn(
-                "rounded-full px-5 py-2 text-sm font-semibold capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "rounded-full px-5 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 billing === option
                   ? "bg-primary text-primary-foreground"
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              {option}
+              {t(`pricing:plans.${option}`)}
             </button>
           ))}
         </div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-          {billing === "yearly" ? "2 months free" : "Switch to yearly and get 2 months free"}
+        <p className="text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+          {billing === "yearly" ? t("pricing:plans.saveHintActive") : t("pricing:plans.saveHint")}
         </p>
       </div>
 
@@ -94,25 +99,27 @@ export function PricingPlans({
             {plan.highlighted && (
               <span className="absolute -top-3 left-7 inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary-foreground">
                 <Sparkles className="h-3 w-3" />
-                Most popular
+                {t("pricing:plans.mostPopular")}
               </span>
             )}
 
-            <h3 className="text-lg font-bold">{plan.name}</h3>
-            <p className="mt-1 min-h-[2.5rem] text-sm text-muted-foreground">{plan.tagline}</p>
+            <h3 className="text-lg font-bold">{t(`pricing:plans.items.${plan.id}.name`)}</h3>
+            <p className="mt-1 min-h-[2.5rem] text-sm text-muted-foreground">
+              {t(`pricing:plans.items.${plan.id}.tagline`)}
+            </p>
 
-            <div className="mt-6 flex items-baseline justify-between">
+            <div className="mt-6 flex items-baseline justify-between gap-2">
               <Price plan={plan} billing={billing} />
               {plan.id === "enterprise" && (
                 <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                  Talk to us
+                  {t("pricing:plans.talkToUs")}
                 </span>
               )}
             </div>
 
             <ul className="mt-6 flex-1 space-y-3">
               {plan.features.map((feature) => (
-                <li key={feature.label} className="flex items-start gap-2.5 text-sm">
+                <li key={feature.key} className="flex items-start gap-2.5 text-sm">
                   <Check
                     className={cn(
                       "mt-0.5 h-4 w-4 shrink-0",
@@ -120,10 +127,10 @@ export function PricingPlans({
                     )}
                   />
                   <span className={cn(feature.state === "soon" && "text-muted-foreground")}>
-                    {feature.label}
+                    {t(`pricing:plans.features.${feature.key}`)}
                     {feature.state === "soon" && (
-                      <span className="ml-2 rounded-full bg-secondary-tint px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-foreground/60">
-                        Soon
+                      <span className="ml-2 whitespace-nowrap rounded-full bg-secondary-tint px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-foreground/60">
+                        {t("common:labels.soon")}
                       </span>
                     )}
                   </span>
@@ -135,13 +142,13 @@ export function PricingPlans({
               asChild
               variant={plan.highlighted ? "default" : "outline"}
               className={cn(
-                "mt-8 h-12 w-full rounded-full font-semibold",
+                "mt-8 h-auto min-h-12 w-full whitespace-normal rounded-full px-4 py-3 font-semibold",
                 plan.highlighted && "bg-primary text-primary-foreground hover:bg-primary/90",
               )}
             >
               <Link to="/login" search={{ tab: "signup", plan: plan.id }}>
-                {plan.ctaLabel}
-                <ArrowRight className="ml-2 h-4 w-4" />
+                {t(`pricing:plans.items.${plan.id}.cta`)}
+                <ArrowRight className="ml-2 h-4 w-4 shrink-0" />
               </Link>
             </Button>
           </div>
@@ -149,23 +156,23 @@ export function PricingPlans({
       </div>
 
       <p className="mt-8 text-center text-xs text-muted-foreground">
-        Illustrative pricing for the prototype. No payment is taken.
+        {t("pricing:plans.prototypeNote")}
       </p>
 
       {/* Comparison table */}
       {showComparison && (
         <div className="mt-20">
-          <h3 className="text-center text-2xl font-bold">Compare the plans</h3>
+          <h3 className="text-center text-2xl font-bold">{t("pricing:comparison.title")}</h3>
           <div className="mt-8 overflow-x-auto rounded-2xl border border-border bg-card">
             <table className="w-full min-w-[52rem] border-collapse text-sm">
               <thead className="sticky top-0 z-10 bg-card">
                 <tr className="border-b border-border">
                   <th scope="col" className="px-5 py-4 text-left font-semibold">
-                    Feature
+                    {t("pricing:comparison.featureColumn")}
                   </th>
                   {PLANS.map((plan) => (
                     <th key={plan.id} scope="col" className="px-5 py-4 text-left font-semibold">
-                      {plan.name}
+                      {t(`pricing:plans.items.${plan.id}.name`)}
                     </th>
                   ))}
                 </tr>
@@ -179,22 +186,22 @@ export function PricingPlans({
                         colSpan={5}
                         className="px-5 py-2 text-left text-[11px] font-bold uppercase tracking-widest text-muted-foreground"
                       >
-                        {group.group}
+                        {t(`pricing:comparison.groups.${group.group}`)}
                       </th>
                     </tr>
                     {group.rows.map((row) => (
                       <tr key={`${group.group}-${row.feature}`} className="border-t border-border/60">
                         <th scope="row" className="px-5 py-3 text-left font-medium text-foreground">
-                          {row.feature}
+                          {t(`pricing:comparison.rows.${row.feature}`)}
                           {row.soon && (
-                            <span className="ml-2 rounded-full bg-secondary-tint px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-foreground/60">
-                              Soon
+                            <span className="ml-2 whitespace-nowrap rounded-full bg-secondary-tint px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-foreground/60">
+                              {t("common:labels.soon")}
                             </span>
                           )}
                         </th>
                         {row.values.map((value, index) => (
                           <td key={index} className="px-5 py-3 text-muted-foreground">
-                            {value}
+                            {t(`pricing:comparison.values.${value}`)}
                           </td>
                         ))}
                       </tr>
@@ -210,15 +217,15 @@ export function PricingPlans({
       {/* FAQ */}
       {showFaq && (
         <div className="mx-auto mt-20 max-w-3xl">
-          <h3 className="text-center text-2xl font-bold">Questions people actually ask</h3>
+          <h3 className="text-center text-2xl font-bold">{t("pricing:faq.title")}</h3>
           <Accordion type="single" collapsible className="mt-8">
-            {PRICING_FAQ.map((item, index) => (
-              <AccordionItem key={item.question} value={`faq-${index}`}>
+            {PRICING_FAQ.map((key) => (
+              <AccordionItem key={key} value={`faq-${key}`}>
                 <AccordionTrigger className="text-left text-base font-semibold">
-                  {item.question}
+                  {t(`pricing:faq.items.${key}.question`)}
                 </AccordionTrigger>
                 <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
-                  {item.answer}
+                  {t(`pricing:faq.items.${key}.answer`)}
                 </AccordionContent>
               </AccordionItem>
             ))}

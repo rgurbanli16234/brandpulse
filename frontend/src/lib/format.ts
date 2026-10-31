@@ -1,4 +1,10 @@
-/** Small presentation helpers shared across pages. */
+/**
+ * Small presentation helpers shared across pages.
+ *
+ * Only colours live here now: every label and every formatted figure comes from
+ * the translation files (`@/lib/enums`) and from locale-aware `Intl` formatting
+ * (`@/i18n/format`), so nothing is hard-coded in English any more.
+ */
 
 import type { PriorityTier, SentimentLabel } from "@/lib/api";
 
@@ -16,13 +22,6 @@ export const TIER_COLORS: Record<PriorityTier, string> = {
   Critical: "var(--risk-critical)",
 };
 
-export const SENTIMENT_TEXT: Record<SentimentLabel, string> = {
-  strongly_negative: "Strongly negative",
-  negative: "Negative",
-  neutral: "Neutral",
-  positive: "Positive",
-};
-
 export const SENTIMENT_COLORS: Record<SentimentLabel, string> = {
   positive: "var(--risk-low)",
   neutral: "var(--muted-foreground)",
@@ -30,27 +29,11 @@ export const SENTIMENT_COLORS: Record<SentimentLabel, string> = {
   strongly_negative: "var(--risk-critical)",
 };
 
-export function formatNumber(value: number): string {
-  return new Intl.NumberFormat("en-US").format(value);
-}
+export { formatDate, formatDateTime, formatNumber, formatShortDate } from "@/i18n/format";
 
-export function formatDateTime(iso: string): string {
-  return new Date(iso).toLocaleString("en-GB", {
-    day: "2-digit",
-    month: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
+import { formatRelativeTime } from "@/i18n/format";
 
+/** Compact relative time for list rows: "5m ago" / "5 мин. назад" / "5 dəq. əvvəl". */
 export function relativeTime(iso: string): string {
-  const diffMs = Date.now() - new Date(iso).getTime();
-  const minutes = Math.round(diffMs / 60000);
-  if (minutes < 1) return "just now";
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.round(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.round(hours / 24);
-  if (days < 30) return `${days}d ago`;
-  return formatDateTime(iso);
+  return formatRelativeTime(iso, undefined, "narrow");
 }

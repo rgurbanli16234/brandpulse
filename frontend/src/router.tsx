@@ -15,7 +15,7 @@ export const getRouter = () => {
       onError: (error, query) => {
         if (error instanceof ApiError && (error.status === 401 || error.status === 0)) return;
         if (query.state.data !== undefined) return;
-        toast.error(describeError(error, "Request failed"), { id: "query-error" });
+        toast.error(describeError(error), { id: "query-error" });
       },
     }),
     defaultOptions: {

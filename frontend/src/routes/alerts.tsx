@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { BellRing, Check, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import { AppShell } from "@/components/AppShell";
 import { PriorityBadge } from "@/components/PriorityBadge";
@@ -29,6 +30,7 @@ function errorMessage(error: unknown, fallback: string): string {
 }
 
 function AlertsPage() {
+  const { t } = useTranslation("app");
   const { session } = useAuth();
   const [filter, setFilter] = useState<Filter>("unread");
   const queryClient = useQueryClient();
@@ -47,10 +49,10 @@ function AlertsPage() {
         queryClient.invalidateQueries({ queryKey: ["alerts"] }),
         queryClient.invalidateQueries({ queryKey: ["summary"] }),
       ]);
-      toast.success("Alert acknowledged");
+      toast.success(t("alerts.toasts.acknowledged"));
     },
     onError: (error) => {
-      toast.error(errorMessage(error, "Could not acknowledge the alert"));
+      toast.error(errorMessage(error, t("alerts.errors.ackFailed")));
     },
   });
 
@@ -58,16 +60,16 @@ function AlertsPage() {
     <AppShell>
       <div className="mx-auto w-full max-w-4xl space-y-6">
         <header className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Alerts</h1>
-          <p className="text-sm text-muted-foreground">
-            Notifications raised for high and critical incident threads.
-          </p>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+            {t("alerts.title")}
+          </h1>
+          <p className="text-sm text-muted-foreground">{t("alerts.subtitle")}</p>
         </header>
 
         <Tabs value={filter} onValueChange={(value) => setFilter(value as Filter)}>
           <TabsList>
-            <TabsTrigger value="unread">Unread</TabsTrigger>
-            <TabsTrigger value="all">All</TabsTrigger>
+            <TabsTrigger value="unread">{t("alerts.unread")}</TabsTrigger>
+            <TabsTrigger value="all">{t("alerts.all")}</TabsTrigger>
           </TabsList>
         </Tabs>
 
@@ -79,18 +81,14 @@ function AlertsPage() {
           </div>
         ) : alerts.isError ? (
           <Alert variant="destructive">
-            <AlertTitle>Couldn't load alerts</AlertTitle>
-            <AlertDescription>
-              {errorMessage(alerts.error, "Something went wrong while fetching alerts.")}
-            </AlertDescription>
+            <AlertTitle>{t("alerts.errors.loadTitle")}</AlertTitle>
+            <AlertDescription>{errorMessage(alerts.error, t("alerts.errors.loadBody"))}</AlertDescription>
           </Alert>
         ) : items.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center gap-2 py-12 text-center">
               <BellRing className="h-6 w-6 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">
-                No alerts. High and critical threads will appear here.
-              </p>
+              <p className="text-sm text-muted-foreground">{t("alerts.empty")}</p>
             </CardContent>
           </Card>
         ) : (
@@ -119,6 +117,8 @@ function AlertCard({
   acknowledging: boolean;
   onAcknowledge: () => void;
 }) {
+  const { t } = useTranslation("app");
+
   return (
     <Card className={cn(alert.acknowledged && "border-border/60 bg-card/60")}>
       <CardContent className="flex flex-col gap-3 p-5">
@@ -126,7 +126,7 @@ function AlertCard({
           <PriorityBadge tier={alert.tier} />
           {alert.acknowledged ? (
             <Badge variant="secondary" className="gap-1 text-muted-foreground">
-              <Check className="h-3 w-3" /> Acknowledged
+              <Check className="h-3 w-3" /> {t("alerts.acknowledged")}
             </Badge>
           ) : null}
           <span className="text-xs text-muted-foreground">{alert.channel}</span>
@@ -143,7 +143,7 @@ function AlertCard({
             params={{ id: String(alert.thread_id) }}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
           >
-            {alert.thread_title ?? "Untitled thread"}
+            {alert.thread_title ?? t("alerts.untitledThread")}
             <ExternalLink className="h-3.5 w-3.5" />
           </Link>
           {alert.acknowledged ? null : (
@@ -153,7 +153,7 @@ function AlertCard({
               onClick={onAcknowledge}
               disabled={acknowledging}
             >
-              <Check className="h-3.5 w-3.5" /> Acknowledge
+              <Check className="h-3.5 w-3.5" /> {t("alerts.acknowledge")}
             </Button>
           )}
         </div>
