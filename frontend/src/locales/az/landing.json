@@ -1,0 +1,99 @@
+{
+  "hero": {
+    "badge": "Kiçik bizneslər üçün şikayət radari",
+    "headline": "Brendinizin tanınırlığını ölçün.",
+    "body": "BrandPulse sizdə artıq olan qeydləri oxuyur — CSV ixracı, kopyalanmış mesajlar və RSS lentləri —<br/> əsl şikayətləri gündəlik söhbətlərdən ayırır və bu gün cavab verməli olduğunuzu göstərir.",
+    "primaryCta": "Pulsuz qeydiyyat",
+    "secondaryCta": "Qiymətlərə bax",
+    "note": "Azərbaycanda və digər ölkələrdə kiçik və orta bizneslər üçün hazırlanıb."
+  },
+  "mockup": {
+    "projects": "Layihələr",
+    "sampleProject": "Nümunə layihə",
+    "demoBadge": "Demo",
+    "mentions": "Qeydlər",
+    "summary": "Xülasə",
+    "analysis": "Analiz",
+    "sources": "Mənbələr",
+    "searchPlaceholder": "Qeydlərdə, müəlliflərdə və domenlərdə axtarın...",
+    "demoUser": "Demo istifadəçi",
+    "kpi": {
+      "mentions": "QEYDLƏR",
+      "reach": "ƏHATƏ",
+      "interactions": "QARŞILIQLI ƏLAQƏ",
+      "positive": "MÜSBƏT",
+      "negative": "MƏNFİ"
+    },
+    "topTopics": "Ən çox danışılan mövzular",
+    "sampleMentions": {
+      "lateDelivery": "Gecikmiş çatdırılma",
+      "coldOrder": "Sifariş soyuq gəldi",
+      "refund": "Geri ödəniş alınmadı",
+      "friendlyStaff": "Mehriban işçilər",
+      "booking": "Rezervasiyada qarışıqlıq"
+    }
+  },
+  "howItWorks": {
+    "title": "Necə işləyir",
+    "subtitle": "Üç sadə addımda vacib siqnalı səs-küydən ayırırıq.",
+    "steps": {
+      "bringIn": {
+        "title": "Qeydlərinizi gətirin",
+        "description": "CSV ixracını yükləyin, mesajları əl ilə yerləşdirin və ya RSS lentinə abunə olun. Sosial şəbəkə hesabınıza giriş heç vaxt tələb olunmur."
+      },
+      "reads": {
+        "title": "BrandPulse onları oxuyur",
+        "description": "Hər qeyd əhval-ruhiyyə, dil (EN/AZ/RU) və mövzu alır. Şikayətlər adi söhbətlərdən ayrılır."
+      },
+      "act": {
+        "title": "Vacib olana görə hərəkət edin",
+        "description": "Oxşar şikayətlər hadisə qruplarında birləşdirilir və bal verilir — beləcə ilk növbədə ən səs-küylü problemə cavab verirsiniz."
+      }
+    },
+    "sources": {
+      "csv": "CSV yükləmə",
+      "manual": "Əl ilə yerləşdirmə",
+      "rss": "RSS lentləri"
+    }
+  },
+  "features": {
+    "title": "Funksiyalar",
+    "subtitle": "BrandPulse-in bu gün etdiyi hər şey — iri korporasiya yükü olmadan.",
+    "clustering": {
+      "title": "Hadisələrin qruplaşdırılması",
+      "body": "Oxşar şikayətlər bir hadisə qrupunda toplanır: soyuq yeməklə bağlı iyirmi ayrı mesaj iyirmi deyil, bir problem kimi görünür."
+    },
+    "priority": {
+      "title": "Prioritet balı",
+      "body": "Hər hadisə qrupu nə qədər mənfi olduğuna, nə qədər geniş yayıla biləcəyinə və nə qədər sürətlə böyüdüyünə görə qiymətləndirilir, sonra Aşağıdan Kritikə qədər nişanlanır."
+    },
+    "multilingual": {
+      "title": "Çoxdilli",
+      "body": "Azərbaycan dili, Русский, English — şikayət qaydaları hər dil üçün ayrıca hazırlanıb, sonradan tərcümə olunmur."
+    },
+    "privacy": {
+      "title": "Əvvəlcə məxfilik",
+      "body": "Sosial şəbəkə monitorinqi və parol paylaşımı yoxdur. Siz yükləyirsiniz, yerləşdirirsiniz və ya lentə abunə olursunuz — mətn sizin şəxsi quraşdırmanızın içində qalır."
+    }
+  },
+  "useCases": {
+    "title": "İstifadə ssenariləri",
+    "subtitle": "Şikayətlər nə satdığınızdan asılı olaraq dəyişir, nümunələr də ona görə fərqlidir. Biznesinizə ən yaxın olanı seçin.",
+    "seeExamples": "Nümunələrə bax"
+  },
+  "pricing": {
+    "title": "Qiymətlər",
+    "subtitle": "Pulsuz başlayın. Bir nəfər təkbaşına çatdıra bilməyəndə tarifi artırın.",
+    "compareAll": "Bütün tarifləri müqayisə edin"
+  },
+  "finalCta": {
+    "title": "Həqiqətən vacib olanı eşitməyə hazırsınız?",
+    "body": "Pulsuz Demo tarifi ilə başlayın, bir neçə real mesajı yerləşdirin və BrandPulse-in nə tapdığını görün. Heç bir ödəniş alınmır.",
+    "button": "Pulsuz başla",
+    "points": {
+      "freePlan": "Pulsuz Demo tarifi",
+      "noCard": "Kredit kartı tələb olunmur",
+      "setup": "2 dəqiqədə quraşdırma"
+    }
+  }
+}

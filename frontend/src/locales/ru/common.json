@@ -1,0 +1,187 @@
+{
+  "meta": {
+    "landing": {
+      "title": "BrandPulse — мониторинг тональности бренда и жалоб",
+      "description": "BrandPulse отделяет срочные жалобы от обычных разговоров, объединяет похожие проблемы в группы инцидентов и показывает, что требует внимания прямо сейчас."
+    },
+    "pricing": {
+      "title": "Цены — BrandPulse",
+      "description": "Показательные тарифы BrandPulse для малого и среднего бизнеса: бесплатное демо, Pro, Business и Enterprise. Доступность функций указана честно."
+    },
+    "blog": {
+      "title": "Блог — BrandPulse",
+      "description": "Короткие практические заметки о работе с жалобами для малого бизнеса: как найти скрытые жалобы, что делать с вирусной жалобой и как отвечать на гневные отзывы."
+    },
+    "blogPost": {
+      "title": "{{title}} — блог BrandPulse",
+      "description": "{{summary}}"
+    },
+    "blogMissing": {
+      "title": "Статья не найдена — BrandPulse",
+      "description": "Эту статью в блоге BrandPulse найти не удалось."
+    },
+    "audience": {
+      "title": "{{label}} — BrandPulse",
+      "description": "{{intro}}"
+    },
+    "audienceMissing": {
+      "title": "Не найдено — BrandPulse",
+      "description": "Эту страницу со сценарием использования BrandPulse найти не удалось."
+    },
+    "login": {
+      "title": "Вход — BrandPulse",
+      "description": "Войдите в BrandPulse или создайте бесплатный аккаунт, чтобы начать следить за упоминаниями и жалобами."
+    },
+    "onboarding": {
+      "title": "Настройка — BrandPulse",
+      "description": "Настройте рабочее пространство BrandPulse за несколько коротких шагов."
+    },
+    "dashboard": {
+      "title": "Панель управления — BrandPulse",
+      "description": "Ваша панель управления BrandPulse: упоминания, жалобы, тональность и открытые инциденты."
+    },
+    "mentions": {
+      "title": "Упоминания — BrandPulse",
+      "description": "Все упоминания, собранные BrandPulse: с тональностью, темой и приоритетом."
+    },
+    "threads": {
+      "title": "Группы инцидентов — BrandPulse",
+      "description": "Похожие жалобы объединены в группы инцидентов, чтобы вы видели полную картину."
+    },
+    "threadDetail": {
+      "title": "Группа инцидентов — BrandPulse",
+      "description": "Одна группа инцидентов со всеми входящими в неё упоминаниями."
+    },
+    "alerts": {
+      "title": "Оповещения — BrandPulse",
+      "description": "Оповещения о высоких и критических инцидентах."
+    },
+    "playground": {
+      "title": "Песочница анализа — BrandPulse",
+      "description": "Введите любой текст и сразу увидите результат анализа."
+    },
+    "settings": {
+      "title": "Настройки — BrandPulse",
+      "description": "Ключевые слова, источники и настройки аккаунта."
+    }
+  },
+  "actions": {
+    "retry": "Повторить",
+    "goHome": "На главную",
+    "back": "Назад",
+    "close": "Закрыть",
+    "cancel": "Отмена",
+    "save": "Сохранить",
+    "refresh": "Обновить",
+    "signOut": "Выйти",
+    "dismiss": "Скрыть",
+    "add": "Добавить",
+    "copy": "Копировать",
+    "clearFilters": "Сбросить фильтры",
+    "syncNow": "Синхронизировать",
+    "delete": "Удалить",
+    "search": "Поиск"
+  },
+  "labels": {
+    "sampleData": "Демо-данные",
+    "soon": "Скоро",
+    "included": "Включено",
+    "notIncluded": "Не включено",
+    "notSet": "Не указано",
+    "unscored": "Без оценки",
+    "unknownAuthor": "Автор неизвестен",
+    "enabled": "Включено",
+    "disabled": "Отключено"
+  },
+  "counts": {
+    "mentions_one": "{{count}} упоминание",
+    "mentions_few": "{{count}} упоминания",
+    "mentions_many": "{{count}} упоминаний",
+    "mentions_other": "{{count}} упоминания",
+    "complaints_one": "{{count}} жалоба",
+    "complaints_few": "{{count}} жалобы",
+    "complaints_many": "{{count}} жалоб",
+    "complaints_other": "{{count}} жалобы",
+    "alerts_one": "{{count}} оповещение",
+    "alerts_few": "{{count}} оповещения",
+    "alerts_many": "{{count}} оповещений",
+    "alerts_other": "{{count}} оповещения",
+    "threads_one": "{{count}} группа",
+    "threads_few": "{{count}} группы",
+    "threads_many": "{{count}} групп",
+    "threads_other": "{{count}} группы",
+    "feeds_one": "{{count}} лента",
+    "feeds_few": "{{count}} ленты",
+    "feeds_many": "{{count}} лент",
+    "feeds_other": "{{count}} ленты",
+    "reports_one": "{{count}} отчёт",
+    "reports_few": "{{count}} отчёта",
+    "reports_many": "{{count}} отчётов",
+    "reports_other": "{{count}} отчёта"
+  },
+  "language": {
+    "label": "Язык",
+    "switchLabel": "Сменить язык",
+    "current": "Язык: {{language}}",
+    "names": {
+      "en": "Английский",
+      "az": "Азербайджанский",
+      "ru": "Русский"
+    }
+  },
+  "states": {
+    "loading": "Загрузка…",
+    "errorTitle": "Что-то пошло не так",
+    "errorBody": "Попробуйте ещё раз. Если не поможет — обновите страницу.",
+    "emptyTitle": "Здесь пока пусто",
+    "emptyBody": "Как только появятся данные, они будут здесь."
+  },
+  "enums": {
+    "sentiment": {
+      "strongly_negative": "Резко негативная",
+      "negative": "Негативная",
+      "neutral": "Нейтральная",
+      "positive": "Позитивная"
+    },
+    "priority": {
+      "Low": "Низкий",
+      "Medium": "Средний",
+      "High": "Высокий",
+      "Critical": "Критический"
+    },
+    "topic": {
+      "billing_payment": "Оплата и счета",
+      "product_quality": "Качество товара",
+      "customer_service": "Обслуживание клиентов",
+      "delivery_shipping": "Доставка",
+      "website_app_bug": "Ошибка на сайте или в приложении",
+      "price": "Цена",
+      "staff_behavior": "Поведение сотрудников",
+      "other": "Другое"
+    },
+    "threadStatus": {
+      "open": "Открыт",
+      "investigating": "В работе",
+      "resolved": "Решён"
+    },
+    "source": {
+      "csv": "Загрузка CSV",
+      "manual": "Добавлено вручную",
+      "reddit": "Reddit",
+      "rss": "RSS-лента",
+      "demo": "Демо-данные"
+    },
+    "keywordType": {
+      "brand": "Бренд",
+      "product": "Продукт",
+      "executive": "Руководитель",
+      "typo": "Опечатка",
+      "competitor": "Конкурент"
+    },
+    "mentionLanguage": {
+      "EN": "Английский",
+      "AZ": "Азербайджанский",
+      "RU": "Русский"
+    }
+  }
+}

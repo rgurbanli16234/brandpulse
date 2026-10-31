@@ -1,0 +1,206 @@
+{
+  "page": {
+    "backHome": "Back home",
+    "notFoundTitle": "We could not find that use case",
+    "notFoundBody": "Pick an industry from the Product menu, or head back to the home page.",
+    "signUpFree": "Sign up free",
+    "seeHowItWorks": "See how it works",
+    "complaintsTitle": "What your customers complain about",
+    "complaintsSubtitle": "Realistic examples in the three languages BrandPulse reads, each with the sentiment and topic it would be tagged with.",
+    "helpTitle": "How BrandPulse helps",
+    "alertTitle": "The alert you would receive",
+    "alertEyebrow": "Incident alert",
+    "prioritySuffix": "{{priority}} priority",
+    "draftLabel": "Suggested reply draft",
+    "draftNote": "A draft to review and edit — never sent automatically.",
+    "ctaTitle": "Start with your own mentions",
+    "ctaBody": "Upload a CSV or paste a few reviews and see how BrandPulse scores them. Built for small and medium businesses in Azerbaijan and beyond."
+  },
+  "cafes": {
+    "menuLabel": "For Cafes & Restaurants",
+    "short": "Cafes & Restaurants",
+    "headline": "Know which table walked out unhappy",
+    "intro": "A cafe lives on repeat visits, so a slow order or a cold flat white costs more than one sale. Most of that feedback arrives in reviews and messages you only see days later. BrandPulse pulls it together and tells you what actually needs a reply today.",
+    "topics": {
+      "service": "Service",
+      "productQuality": "Product quality",
+      "staffConduct": "Staff conduct"
+    },
+    "help": {
+      "detect": {
+        "title": "Detect the complaints",
+        "text": "Angry reviews and messages are scored for sentiment and flagged as complaints, while a simple “the latte was great” is left alone."
+      },
+      "group": {
+        "title": "Group them into incident threads",
+        "text": "Ten mentions about the same slow weekend collapse into one incident instead of ten notifications."
+      },
+      "alert": {
+        "title": "Alert with a priority score",
+        "text": "A repeat complaint from a regular customer rises above a one-off grumble, so your shift lead sees it first."
+      }
+    },
+    "alert": {
+      "title": "6 mentions about slow service at the Nizami branch",
+      "detail": "Six negative mentions in the last 24 hours mention waiting times over 20 minutes. Five are in Azerbaijani, one in Russian.",
+      "reply": "Hello! Sorry about the wait — we have passed this on to our team. We would like to serve you faster next time."
+    }
+  },
+  "online-shops": {
+    "menuLabel": "For Online Shops",
+    "short": "Online Shops",
+    "headline": "Catch the order problems before they turn into refunds",
+    "intro": "For an online shop, a damaged parcel or a stalled return is a lost customer and a public review at the same time. BrandPulse collects what shoppers say and groups repeated issues so you can fix the process, not just the one complaint you happened to see.",
+    "topics": {
+      "returns": "Returns",
+      "support": "Support",
+      "delivery": "Delivery",
+      "productQuality": "Product quality",
+      "refunds": "Refunds"
+    },
+    "help": {
+      "detect": {
+        "title": "Detect the complaints",
+        "text": "Reviews, comments and messages are read in English, Azerbaijani and Russian, and the unhappy ones are flagged automatically."
+      },
+      "group": {
+        "title": "Group them into incident threads",
+        "text": "A batch of “wrong size” reports becomes a single sizing incident, so you can see it is a pattern rather than bad luck."
+      },
+      "alert": {
+        "title": "Alert with a priority score",
+        "text": "A refund thread that keeps growing outranks a single slow-delivery note and lands at the top of your inbox."
+      }
+    },
+    "alert": {
+      "title": "Refund delays mentioned 11 times this week",
+      "detail": "Eleven mentions describe refunds taking more than ten days. Three use the words “never replied”. Mixed EN, AZ and RU.",
+      "reply": "Thank you for flagging this — refunds should not take this long. We are checking your order now and will confirm the status today."
+    }
+  },
+  "delivery": {
+    "menuLabel": "For Delivery & Logistics",
+    "short": "Delivery & Logistics",
+    "headline": "See the routes that generate the complaints",
+    "intro": "Delivery problems are loud: parcels left in the rain, orders marked delivered that never arrive. They are also repetitive, which is exactly what BrandPulse is good at spotting — the same courier, the same zone, the same wording, grouped into one thread.",
+    "topics": {
+      "lostParcel": "Lost parcel",
+      "courier": "Courier",
+      "lateDelivery": "Late delivery"
+    },
+    "help": {
+      "detect": {
+        "title": "Detect the complaints",
+        "text": "Delivery language has its own vocabulary — “not received”, “left outside”, “gəlmədi” — and the analyser is tuned for it."
+      },
+      "group": {
+        "title": "Group them into incident threads",
+        "text": "Every “left outside” report in one district is merged, so you can see whether it is one courier or a whole shift."
+      },
+      "alert": {
+        "title": "Alert with a priority score",
+        "text": "Lost parcels score higher than late ones, so the cases that need compensation get attention before they escalate."
+      }
+    },
+    "alert": {
+      "title": "“Left outside” reports up in one district",
+      "detail": "Five mentions in two days describe parcels left at the door without a call. All five are from the same delivery zone.",
+      "reply": "We are sorry your parcel was left unattended. We have flagged this delivery zone and will call before reattempting delivery."
+    }
+  },
+  "clinics": {
+    "menuLabel": "For Clinics & Beauty Salons",
+    "short": "Clinics & Beauty Salons",
+    "headline": "Turn quiet dissatisfaction into a booked follow-up",
+    "intro": "A late appointment or an unclear bill rarely ends up in a formal complaint — it ends up in a review three weeks later, or nowhere at all. BrandPulse surfaces those signals while there is still time to reach out and win the client back.",
+    "topics": {
+      "reception": "Reception",
+      "billing": "Billing",
+      "waitTime": "Wait time",
+      "pricing": "Pricing",
+      "booking": "Booking"
+    },
+    "help": {
+      "detect": {
+        "title": "Detect the complaints",
+        "text": "Billing and waiting-time complaints are picked out from routine feedback, even in short informal messages."
+      },
+      "group": {
+        "title": "Group them into incident threads",
+        "text": "Repeated complaints about the same reception hours become one thread you can act on with the team."
+      },
+      "alert": {
+        "title": "Alert with a priority score",
+        "text": "Money-related and strongly worded complaints are ranked first so they are answered the same day."
+      }
+    },
+    "alert": {
+      "title": "Billing complaint needs a same-day reply",
+      "detail": "A client says they were charged for a service they did not receive. Marked strongly negative and grouped with two similar notes.",
+      "reply": "Thank you for telling us. We are reviewing the invoice with the front desk today and will call you with a correction."
+    }
+  },
+  "hotels": {
+    "menuLabel": "For Hotels & Tourism",
+    "short": "Hotels & Tourism",
+    "headline": "Answer the review before it defines your season",
+    "intro": "For a hotel, one bad review can outweigh twenty good ones. BrandPulse reads the review sites and messages your guests actually use, in their own language, and points out the recurring themes — rooms, breakfast, transfers — that quietly shape your rating.",
+    "topics": {
+      "roomCondition": "Room condition",
+      "expectationMismatch": "Expectation mismatch",
+      "checkIn": "Check-in",
+      "breakfast": "Breakfast",
+      "transfer": "Transfer"
+    },
+    "help": {
+      "detect": {
+        "title": "Detect the complaints",
+        "text": "Reviews and messages in EN, AZ and RU are scored, so a Russian review does not sit unanswered at the bottom of a list."
+      },
+      "group": {
+        "title": "Group them into incident threads",
+        "text": "Everything about the same weekend or the same room type is merged, showing you the story behind the score."
+      },
+      "alert": {
+        "title": "Alert with a priority score",
+        "text": "Safety, cleanliness and transport failures reach the top so the duty manager sees them before check-in."
+      }
+    },
+    "alert": {
+      "title": "Cleanliness mentioned in 4 reviews this month",
+      "detail": "Four reviews across two languages mention housekeeping. Rating impact is concentrated on one floor.",
+      "reply": "Thank you for the honest feedback. We have asked housekeeping to review this floor today and would be glad to welcome you again."
+    }
+  },
+  "agencies": {
+    "menuLabel": "For Small Agencies",
+    "short": "Small Agencies",
+    "headline": "Protect your clients' reputation while you sleep",
+    "intro": "Agencies get blamed for complaints about their clients, and often hear about them from the client first. BrandPulse gives you the same picture in advance, across several projects, so you can send the heads-up instead of receiving it.",
+    "topics": {
+      "responsiveness": "Responsiveness",
+      "reporting": "Reporting",
+      "creativity": "Creativity",
+      "deadlines": "Deadlines"
+    },
+    "help": {
+      "detect": {
+        "title": "Detect the complaints",
+        "text": "Each client project has its own stream, so feedback about one brand never blurs into another."
+      },
+      "group": {
+        "title": "Group them into incident threads",
+        "text": "Comments about the same campaign are grouped, which makes the weekly client update far quicker to write."
+      },
+      "alert": {
+        "title": "Alert with a priority score",
+        "text": "Anything with strong language or a growing thread is pushed to you first, before your client finds it."
+      }
+    },
+    "alert": {
+      "title": "Growing thread about response times",
+      "detail": "Five mentions across three days criticise slow replies. Two are from accounts with a large following.",
+      "reply": "Thanks for the nudge — we have restructured how requests are triaged and will share the new response plan this week."
+    }
+  }
+}

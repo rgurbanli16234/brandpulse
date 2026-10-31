@@ -1,0 +1,327 @@
+{
+  "shell": {
+    "tagline": "Sentiment Monitor",
+    "navigation": "Navigation",
+    "planSuffix": "{{plan}} Plan",
+    "searchPlaceholder": "Search mentions, incidents, authors...",
+    "role": "Admin",
+    "nav": {
+      "dashboard": "Dashboard",
+      "mentions": "Mentions",
+      "threads": "Incident Threads",
+      "alerts": "Alerts",
+      "playground": "Analyze Playground",
+      "settings": "Settings"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "A live overview of what people are saying about your brand.",
+    "kpi": {
+      "totalMentions": "Total mentions",
+      "mentions24h": "Mentions (24h)",
+      "complaints": "Complaints",
+      "openThreads": "Open threads",
+      "highPriority": "High priority",
+      "criticalPriority": "Critical priority",
+      "unacknowledgedAlerts": "Unacknowledged alerts",
+      "avgSentiment": "Avg sentiment"
+    },
+    "errors": {
+      "summaryTitle": "Couldn't load your numbers",
+      "summaryBody": "The summary is unavailable right now.",
+      "trendTitle": "Couldn't load the trend",
+      "trendBody": "The sentiment trend is unavailable right now.",
+      "topicsTitle": "Couldn't load topics",
+      "topicsBody": "The topic breakdown is unavailable right now.",
+      "threadsTitle": "Couldn't load threads",
+      "threadsBody": "Your incident threads are unavailable right now."
+    },
+    "spikes": {
+      "title": "Unusual activity in the last 24 hours",
+      "item": "{{topic}} — {{ratio}}x normal volume (last 24h: {{count}})",
+      "none": "No unusual activity right now."
+    },
+    "trend": {
+      "title": "Sentiment over the last 14 days",
+      "subtitle": "How positive and negative mentions stack up each day.",
+      "empty": "No sentiment data yet. Add some mentions to see the trend."
+    },
+    "topics": {
+      "volumeTitle": "Mentions by topic",
+      "volumeSubtitle": "Which parts of the business people talk about most.",
+      "detailsTitle": "Topic details",
+      "detailsSubtitle": "Volume, complaints and average sentiment per topic.",
+      "empty": "No topics yet. Add some mentions to see the breakdown."
+    },
+    "threads": {
+      "title": "Latest high-priority threads",
+      "subtitle": "The conversations that need attention first.",
+      "empty": "No high-priority threads right now — nice and calm."
+    },
+    "addMentions": "Add mentions"
+  },
+  "mentions": {
+    "title": "Mentions",
+    "subtitle": "Add new mentions and explore everything we've collected about your brand.",
+    "add": {
+      "title": "Add mentions",
+      "subtitle": "Paste a single mention or upload a CSV export.",
+      "tabs": {
+        "paste": "Paste a mention",
+        "csv": "Upload CSV"
+      },
+      "textLabel": "Mention text",
+      "textPlaceholder": "What did the customer say?",
+      "authorLabel": "Author (optional)",
+      "authorPlaceholder": "@username",
+      "followersLabel": "Author followers (optional)",
+      "submit": "Add mention",
+      "submitting": "Adding…",
+      "csvLabel": "CSV file",
+      "csvHint":
+        "The file needs a <code>text</code> column. Optional columns: author, url, created_at.",
+      "upload": "Upload CSV",
+      "uploading": "Uploading…",
+      "importResult": "Imported {{imported}} · skipped {{skipped}}"
+    },
+    "filters": {
+      "sentiment": "Sentiment",
+      "topic": "Topic",
+      "priority": "Priority",
+      "complaintsOnly": "Complaints only",
+      "search": "Search",
+      "searchPlaceholder": "Search text…",
+      "allSentiments": "All sentiments",
+      "allTopics": "All topics",
+      "allPriorities": "All priorities"
+    },
+    "feed": {
+      "title": "Feed",
+      "subtitle": "Live feed of collected mentions",
+      "shown_one": "{{count}} mention shown",
+      "shown_other": "{{count}} mentions shown"
+    },
+    "table": {
+      "mention": "Mention",
+      "author": "Author",
+      "source": "Source",
+      "when": "When",
+      "sentiment": "Sentiment",
+      "flags": "Flags",
+      "priority": "Priority",
+      "openSource": "Open source"
+    },
+    "complaintBadge": "Complaint",
+    "empty": "No mentions match these filters.",
+    "errors": {
+      "loadTitle": "Couldn't load mentions",
+      "loadBody": "We couldn't load mentions. Try adjusting the filters or refreshing."
+    },
+    "toasts": {
+      "added": "Mention added",
+      "addedBody": "We analyzed it and added it to your feed.",
+      "duplicate": "Duplicate mention",
+      "duplicateBody": "This text was already submitted.",
+      "addFailed": "Couldn't add the mention",
+      "addFailedBody": "Please try again.",
+      "csvImported": "CSV imported",
+      "csvImportedBody": "{{imported}} imported · {{skipped}} skipped.",
+      "csvFailed": "Couldn't import the CSV",
+      "csvFailedBody": "Please check the file and try again."
+    }
+  },
+  "threads": {
+    "title": "Incident Threads",
+    "subtitle": "Near-duplicate complaints grouped into one incident.",
+    "statusPlaceholder": "Status",
+    "priorityPlaceholder": "Priority",
+    "allStatuses": "All statuses",
+    "allTiers": "All tiers",
+    "count_one": "{{count}} thread · newest first",
+    "count_other": "{{count}} threads · newest first",
+    "empty": "No incident threads yet — upload or paste mentions to start grouping complaints.",
+    "errors": {
+      "loadTitle": "Couldn't load incident threads",
+      "fallback": "Please try again."
+    },
+    "firstSeen": "First seen {{time}}",
+    "lastSeen": "Last seen {{time}}"
+  },
+  "thread": {
+    "backToAll": "All incident threads",
+    "invalidTitle": "Invalid thread",
+    "invalidBody": "The incident thread id in the URL is not valid.",
+    "loadErrorTitle": "Couldn't load this thread",
+    "fallback": "Please try again.",
+    "notFoundTitle": "Thread not found",
+    "notFoundBody": "This incident thread no longer exists or is not available.",
+    "stats": {
+      "mentions": "Mentions",
+      "priorityScore": "Priority score",
+      "firstSeen": "First seen",
+      "lastSeen": "Last seen"
+    },
+    "breakdown": {
+      "title": "Why this priority",
+      "formula": "Score {{score}} · Tier {{tier}} · formula 0.5 × severity + 0.3 × reach + 0.2 × velocity",
+      "unavailable": "No score breakdown is available for this thread yet.",
+      "weight": "· weight {{weight}}",
+      "factors": {
+        "severity": "Severity",
+        "reach": "Reach",
+        "velocity": "Velocity"
+      },
+      "inputs": {
+        "mentions": "Mentions",
+        "rawReach": "Raw reach",
+        "mentions60m": "Mentions (60m)",
+        "worstNegativity": "Worst negativity",
+        "topicWeight": "Topic weight"
+      }
+    },
+    "status": {
+      "title": "Status",
+      "subtitle": "Update the incident thread state.",
+      "updating": "Updating…",
+      "applied": "Changes apply immediately."
+    },
+    "grouped": {
+      "title": "Grouped mentions ({{count}})",
+      "subtitle": "Every complaint grouped into this thread.",
+      "empty": "No mentions are grouped into this thread yet."
+    },
+    "draft": {
+      "title": "Suggested response draft",
+      "subtitle": "A local template based on this thread — edit it before posting.",
+      "paragraph1_one": "Hi — thanks for flagging this. We've seen one similar complaint about \"{{topic}}\" and we're taking it seriously.",
+      "paragraph1_other": "Hi — thanks for flagging this. We've seen {{count}} similar complaints about \"{{topic}}\" and we're taking it seriously.",
+      "paragraph2": "Our team is already investigating this issue. While we work on a fix, please reach out to support@brandpulse.app with your account details and we'll make it right.",
+      "paragraph3": "We'll post an update here as soon as we have one."
+    },
+    "viewSource": "View source",
+    "toasts": {
+      "statusUpdated": "Thread status updated",
+      "statusFailed": "Could not update status",
+      "clipboardUnavailable": "Clipboard unavailable in this browser",
+      "copied": "Draft copied to clipboard",
+      "copyFailed": "Could not copy to clipboard"
+    }
+  },
+  "alerts": {
+    "title": "Alerts",
+    "subtitle": "Notifications raised for high and critical incident threads.",
+    "unread": "Unread",
+    "all": "All",
+    "acknowledged": "Acknowledged",
+    "acknowledge": "Acknowledge",
+    "untitledThread": "Untitled thread",
+    "empty": "No alerts. High and critical threads will appear here.",
+    "errors": {
+      "loadTitle": "Couldn't load alerts",
+      "loadBody": "Something went wrong while fetching alerts.",
+      "ackFailed": "Could not acknowledge the alert"
+    },
+    "toasts": {
+      "acknowledged": "Alert acknowledged"
+    }
+  },
+  "playground": {
+    "title": "Analyze Playground",
+    "subtitle": "Paste any comment or message to see how BrandPulse reads it — sentiment, whether it is an actionable complaint, and which topic it belongs to.",
+    "card": {
+      "title": "Text to analyze",
+      "subtitle": "English, Azerbaijani and Russian are supported.",
+      "placeholder": "e.g. They charged me twice and won't refund it.",
+      "analyze": "Analyze"
+    },
+    "result": {
+      "title": "Result",
+      "sentiment": "Sentiment",
+      "score": "score {{score}}",
+      "complaintQuestion": "Complaint?",
+      "actionable": "Actionable complaint",
+      "notComplaint": "Not a complaint",
+      "topic": "Topic",
+      "language": "Language"
+    },
+    "error": "Analysis failed."
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Configure what BrandPulse monitors and how it delivers alerts.",
+    "business": {
+      "title": "Business",
+      "subtitle": "Alert delivery uses these values — notifications are sent to the alert email and posted to the webhook URL when one is configured.",
+      "name": "Business name",
+      "plan": "Plan",
+      "alertEmail": "Alert email",
+      "webhook": "Webhook URL",
+      "notSet": "Not set"
+    },
+    "keywords": {
+      "title": "Keywords",
+      "subtitle": "Keywords define what the business monitors — every incoming mention is matched against these terms to decide whether it is relevant to your brand.",
+      "term": "Term",
+      "placeholder": "e.g. BrandPulse",
+      "type": "Type",
+      "add": "Add",
+      "empty": "No keywords yet. Add your first term above.",
+      "loadError": "Couldn't load keywords",
+      "loadErrorBody": "Something went wrong while fetching keywords.",
+      "deleteAria": "Delete {{term}}",
+      "enterTerm": "Enter a keyword term",
+      "added": "Keyword added",
+      "removed": "Keyword removed",
+      "addFailed": "Could not add the keyword",
+      "removeFailed": "Could not remove the keyword"
+    },
+    "sources": {
+      "title": "Sources",
+      "subtitle": "Sources are where BrandPulse collects mentions from. Enable or disable them without deleting their configuration.",
+      "type": "Type",
+      "feedUrls": "Feed URLs",
+      "addSource": "Add source",
+      "empty": "No sources configured yet. Add one above to start collecting mentions.",
+      "loadError": "Couldn't load sources",
+      "loadErrorBody": "Something went wrong while fetching sources.",
+      "toggleAria": "Toggle {{type}}",
+      "deleteAria": "Delete {{type}}",
+      "noFeeds": "No feeds configured",
+      "feedSummary_one": "{{count}} feed · {{state}}",
+      "feedSummary_other": "{{count}} feeds · {{state}}",
+      "pulled_one": "Pulled {{count}} new mention",
+      "pulled_other": "Pulled {{count}} new mentions",
+      "noNew": "No new mentions found",
+      "addFeed": "Add at least one RSS feed URL",
+      "added": "Source added",
+      "removed": "Source removed",
+      "syncFailed": "Could not sync the source",
+      "addFailed": "Could not add the source",
+      "updateFailed": "Could not update the source",
+      "removeFailed": "Could not remove the source"
+    },
+    "language": {
+      "title": "Language",
+      "subtitle": "Choose the interface language. Your choice is saved on this device and applied immediately."
+    },
+    "analyzer": {
+      "title": "Analyzer",
+      "tag": "rules",
+      "subtitle": "The engine that scores sentiment and detects complaints.",
+      "body1": "By default the analyzer runs in <bold>rules</bold> mode — a lightweight, multilingual rule engine (English, Azerbaijani, Russian) that needs no model downloads.",
+      "body2": "To use a Hugging Face model instead, set the <code>ANALYZER</code> environment variable on the server. This is configured server-side and cannot be changed from the app."
+    },
+    "thresholds": {
+      "title": "Alert thresholds",
+      "subtitle": "Server-side defaults that decide when a thread is surfaced and how it is prioritised.",
+      "spikeMultiplier": "Spike multiplier",
+      "spikeValue": "2.0x",
+      "alertCooldown": "Alert cooldown",
+      "cooldownValue": "60 min",
+      "priorityWeights": "Priority weights",
+      "weightsValue": "Severity 0.5 · Reach 0.3 · Velocity 0.2",
+      "readOnly": "These are read-only and configured on the server."
+    }
+  }
+}

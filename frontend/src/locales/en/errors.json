@@ -1,0 +1,20 @@
+{
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page you're looking for doesn't exist or has been moved."
+  },
+  "crash": {
+    "title": "This page didn't load",
+    "body": "Something went wrong on our end. You can try refreshing or head back home."
+  },
+  "api": {
+    "unreachable": "Cannot reach the API at {{url}}. Make sure the backend is running.",
+    "requestFailed": "Request failed",
+    "unauthorized": "Your session has expired. Please sign in again.",
+    "forbidden": "You do not have access to this.",
+    "notFound": "We could not find what you asked for.",
+    "conflict": "That already exists.",
+    "validation": "Please check the details you entered.",
+    "server": "The server had a problem. Please try again shortly."
+  }
+}

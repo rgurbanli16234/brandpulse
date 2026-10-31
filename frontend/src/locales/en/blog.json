@@ -1,0 +1,62 @@
+{
+  "index": {
+    "eyebrow": "Blog",
+    "title": "Notes on listening to customers",
+    "subtitle": "Short reads for people who handle customer feedback themselves. Three placeholder articles that show how the blog is structured."
+  },
+  "list": {
+    "readArticle": "Read article"
+  },
+  "post": {
+    "backToBlog": "All articles",
+    "readTime_one": "{{count}} min read",
+    "readTime_other": "{{count}} min read",
+    "ctaTitle": "Want this working on your own mentions?",
+    "ctaBody": "The prototype is free to use with demo data — no payment is taken.",
+    "ctaButton": "Sign up free",
+    "keepReading": "Keep reading",
+    "notFoundTitle": "We could not find that article",
+    "notFoundBody": "The link may be out of date. The blog index has everything we have published.",
+    "backToIndex": "Back to the blog"
+  },
+  "items": {
+    "complaints-you-never-see": {
+      "title": "The complaints your business never gets to see",
+      "summary": "Most unhappy customers never file a formal complaint — the signal is scattered across reviews and messages.",
+      "readTimeMinutes": 4,
+      "isoDate": "2026-02-12",
+      "paragraphs": [
+        "A customer who is unhappy will rarely tell you directly. They will tell a friend, leave a two-line review, or write a comment under your latest post. Each of those is easy to miss on its own, and that is exactly the problem: individually they look like noise, together they are a pattern.",
+        "Small businesses feel this more than large ones. There is no analyst reading every channel, and the person who does check the reviews is usually the same person serving customers, ordering stock and closing the till. So the feedback arrives late, or not at all, and the same issue keeps costing you customers.",
+        "The fix is not to read more. It is to read the right things. Collect the mentions you already have — reviews, messages, notes from your team — in one place, mark which ones describe an actual problem, and look for repeats. Three people mentioning slow delivery in one week is a different signal from one person mentioning it once.",
+        "BrandPulse was built around that idea. It separates complaints from ordinary chatter, groups related mentions into a single incident, and puts a priority on the ones that are growing or strongly worded. You still decide what to do; you just stop deciding blindly."
+      ]
+    },
+    "first-hour-of-a-viral-complaint": {
+      "title": "What to do in the first hour of a viral complaint",
+      "summary": "A short, calm checklist for the moment a single complaint starts spreading faster than you can answer it.",
+      "readTimeMinutes": 5,
+      "isoDate": "2026-02-26",
+      "paragraphs": [
+        "A complaint goes viral when people recognise themselves in it. That is why the first step is not to argue with the person who posted it — it is to work out how many other customers are quietly having the same experience.",
+        "Start by reading the complaint properly, in its original language. Machine translation often flattens exactly the detail that matters: was it the price, the wait, the product, or the way they were treated? Those need different answers.",
+        "Next, check whether it is isolated. Search your mentions for the same words and the same product. If the complaint is alone, a direct, specific reply is usually enough. If it is the fifth version of the same story this week, the reply is only the visible part of the fix — the process is the real problem.",
+        "Then reply once, in public, and move the details to a private channel. Acknowledge the specific thing that went wrong, say what you are doing about it, and give a realistic timeline. Avoid templates; people can spot them instantly, and a copied apology reads as a second insult.",
+        "Finally, write down what happened and why. The complaints that go viral are usually the ones that were answered late, not the ones that were hard to solve. A note in your incident thread today is what stops the same hour repeating next month."
+      ]
+    },
+    "answering-an-angry-review": {
+      "title": "How to answer an angry review without making it worse",
+      "summary": "Angry reviews are public, permanent and read by future customers. Here is how to respond to the audience, not the anger.",
+      "readTimeMinutes": 4,
+      "isoDate": "2026-03-09",
+      "paragraphs": [
+        "When you reply to a review, you are not really writing to the person who left it. They have already made up their mind. You are writing to the dozens of people who will read the exchange later and decide whether you are the kind of business that listens.",
+        "That changes the tone. Defensiveness, sarcasm and long explanations all read badly in public, even when the facts are on your side. Short, respectful and specific works far better.",
+        "A reliable structure is three sentences. Name the problem in the customer's words. Say plainly what you have done or will do about it. Then invite the conversation off the public page. It shows readers that the complaint was taken seriously without turning your profile into an argument.",
+        "Two things are worth avoiding. Do not blame a named member of staff in public — that damages your team and looks unprofessional. And do not promise something you cannot deliver, such as a full refund policy you have not approved, because the promise outlives the anger.",
+        "If the same complaint keeps appearing under different reviews, the reply is not the fix. Reply, then close the loop internally, and let the next month's reviews show that something actually changed."
+      ]
+    }
+  }
+}

@@ -1,0 +1,326 @@
+{
+  "shell": {
+    "tagline": "Əhval-ruhiyyə monitoru",
+    "navigation": "Naviqasiya",
+    "planSuffix": "{{plan}} tarifi",
+    "searchPlaceholder": "Qeydlərdə, hadisələrdə, müəlliflərdə axtarın...",
+    "role": "Administrator",
+    "nav": {
+      "dashboard": "İdarə paneli",
+      "mentions": "Qeydlər",
+      "threads": "Hadisə qrupları",
+      "alerts": "Xəbərdarlıqlar",
+      "playground": "Analiz meydançası",
+      "settings": "Tənzimləmələr"
+    }
+  },
+  "dashboard": {
+    "title": "İdarə paneli",
+    "subtitle": "Brendiniz haqqında deyilənlərin canlı icmalı.",
+    "kpi": {
+      "totalMentions": "Ümumi qeydlər",
+      "mentions24h": "Qeydlər (24 saat)",
+      "complaints": "Şikayətlər",
+      "openThreads": "Açıq hadisə qrupları",
+      "highPriority": "Yüksək prioritet",
+      "criticalPriority": "Kritik prioritet",
+      "unacknowledgedAlerts": "Təsdiqlənməmiş xəbərdarlıqlar",
+      "avgSentiment": "Orta əhval-ruhiyyə"
+    },
+    "errors": {
+      "summaryTitle": "Rəqəmlərinizi yükləyə bilmədik",
+      "summaryBody": "Xülasə hazırda əlçatan deyil.",
+      "trendTitle": "Tendensiyanı yükləyə bilmədik",
+      "trendBody": "Əhval-ruhiyyə tendensiyası hazırda əlçatan deyil.",
+      "topicsTitle": "Mövzuları yükləyə bilmədik",
+      "topicsBody": "Mövzu bölgüsü hazırda əlçatan deyil.",
+      "threadsTitle": "Hadisə qruplarını yükləyə bilmədik",
+      "threadsBody": "Hadisə qruplarınız hazırda əlçatan deyil."
+    },
+    "spikes": {
+      "title": "Son 24 saatda qeyri-adi aktivlik",
+      "item": "{{topic}} — normal həcmdən {{ratio}} dəfə çox (son 24 saat: {{count}})",
+      "none": "Hazırda qeyri-adi aktivlik yoxdur."
+    },
+    "trend": {
+      "title": "Son 14 gün ərzində əhval-ruhiyyə",
+      "subtitle": "Hər gün müsbət və mənfi qeydlərin necə yığıldığı.",
+      "empty": "Hələ əhval-ruhiyyə məlumatı yoxdur. Tendensiyanı görmək üçün qeyd əlavə edin."
+    },
+    "topics": {
+      "volumeTitle": "Mövzulara görə qeydlər",
+      "volumeSubtitle": "İnsanların biznesin hansı sahələrindən ən çox danışdığı.",
+      "detailsTitle": "Mövzu təfərrüatları",
+      "detailsSubtitle": "Hər mövzu üzrə həcm, şikayətlər və orta əhval-ruhiyyə.",
+      "empty": "Hələ mövzu yoxdur. Bölgünü görmək üçün qeyd əlavə edin."
+    },
+    "threads": {
+      "title": "Ən son yüksək prioritetli qruplar",
+      "subtitle": "İlk növbədə diqqət tələb edən söhbətlər.",
+      "empty": "Hazırda yüksək prioritetli hadisə qrupu yoxdur — sakit və rahatdır."
+    },
+    "addMentions": "Qeyd əlavə et"
+  },
+  "mentions": {
+    "title": "Qeydlər",
+    "subtitle": "Yeni qeydlər əlavə edin və brendiniz haqqında topladığımız hər şeyi araşdırın.",
+    "add": {
+      "title": "Qeyd əlavə et",
+      "subtitle": "Bir qeyd yerləşdirin və ya CSV ixracı yükləyin.",
+      "tabs": {
+        "paste": "Qeyd yerləşdir",
+        "csv": "CSV yüklə"
+      },
+      "textLabel": "Qeydin mətni",
+      "textPlaceholder": "Müştəri nə dedi?",
+      "authorLabel": "Müəllif (istəyə bağlı)",
+      "authorPlaceholder": "@username",
+      "followersLabel": "Müəllifin izləyici sayı (istəyə bağlı)",
+      "submit": "Qeyd əlavə et",
+      "submitting": "Əlavə olunur…",
+      "csvLabel": "CSV faylı",
+      "csvHint": "Faylda <code>text</code> sütunu olmalıdır. İstəyə bağlı sütunlar: author, url, created_at.",
+      "upload": "CSV yüklə",
+      "uploading": "Yüklənir…",
+      "importResult": "{{imported}} idxal edildi · {{skipped}} ötürüldü"
+    },
+    "filters": {
+      "sentiment": "Əhval-ruhiyyə",
+      "topic": "Mövzu",
+      "priority": "Prioritet",
+      "complaintsOnly": "Yalnız şikayətlər",
+      "search": "Axtarış",
+      "searchPlaceholder": "Mətndə axtar…",
+      "allSentiments": "Bütün əhval-ruhiyyələr",
+      "allTopics": "Bütün mövzular",
+      "allPriorities": "Bütün prioritetlər"
+    },
+    "feed": {
+      "title": "Axın",
+      "subtitle": "Toplanmış qeydlərin canlı axını",
+      "shown_one": "{{count}} qeyd göstərilir",
+      "shown_other": "{{count}} qeyd göstərilir"
+    },
+    "table": {
+      "mention": "Qeyd",
+      "author": "Müəllif",
+      "source": "Mənbə",
+      "when": "Nə vaxt",
+      "sentiment": "Əhval-ruhiyyə",
+      "flags": "İşarələr",
+      "priority": "Prioritet",
+      "openSource": "Mənbəni aç"
+    },
+    "complaintBadge": "Şikayət",
+    "empty": "Bu filtrlərə uyğun qeyd yoxdur.",
+    "errors": {
+      "loadTitle": "Qeydləri yükləyə bilmədik",
+      "loadBody": "Qeydləri yükləyə bilmədik. Filtrləri dəyişməyi və ya səhifəni yeniləməyi yoxlayın."
+    },
+    "toasts": {
+      "added": "Qeyd əlavə edildi",
+      "addedBody": "Onu analiz etdik və axınınıza əlavə etdik.",
+      "duplicate": "Təkrarlanan qeyd",
+      "duplicateBody": "Bu mətn artıq göndərilib.",
+      "addFailed": "Qeydi əlavə etmək mümkün olmadı",
+      "addFailedBody": "Yenidən cəhd edin.",
+      "csvImported": "CSV idxal edildi",
+      "csvImportedBody": "{{imported}} idxal edildi · {{skipped}} ötürüldü.",
+      "csvFailed": "CSV-ni idxal etmək mümkün olmadı",
+      "csvFailedBody": "Faylı yoxlayıb yenidən cəhd edin."
+    }
+  },
+  "threads": {
+    "title": "Hadisə qrupları",
+    "subtitle": "Yaxın dublikat olan şikayətlər bir hadisədə birləşdirilir.",
+    "statusPlaceholder": "Status",
+    "priorityPlaceholder": "Prioritet",
+    "allStatuses": "Bütün statuslar",
+    "allTiers": "Bütün səviyyələr",
+    "count_one": "{{count}} hadisə qrupu · ən yenilər əvvəldə",
+    "count_other": "{{count}} hadisə qrupu · ən yenilər əvvəldə",
+    "empty": "Hələ hadisə qrupu yoxdur — şikayətləri qruplaşdırmağa başlamaq üçün qeyd yükləyin və ya yerləşdirin.",
+    "errors": {
+      "loadTitle": "Hadisə qruplarını yükləyə bilmədik",
+      "fallback": "Yenidən cəhd edin."
+    },
+    "firstSeen": "İlk dəfə {{time}}",
+    "lastSeen": "Son dəfə {{time}}"
+  },
+  "thread": {
+    "backToAll": "Bütün hadisə qrupları",
+    "invalidTitle": "Yanlış hadisə qrupu",
+    "invalidBody": "URL-dəki hadisə qrupu identifikatoru yanlışdır.",
+    "loadErrorTitle": "Bu hadisə qrupunu yükləyə bilmədik",
+    "fallback": "Yenidən cəhd edin.",
+    "notFoundTitle": "Hadisə qrupu tapılmadı",
+    "notFoundBody": "Bu hadisə qrupu artıq mövcud deyil və ya əlçatan deyil.",
+    "stats": {
+      "mentions": "Qeydlər",
+      "priorityScore": "Prioritet balı",
+      "firstSeen": "İlk dəfə",
+      "lastSeen": "Son dəfə"
+    },
+    "breakdown": {
+      "title": "Bu prioritet niyə belədir",
+      "formula": "Bal {{score}} · Səviyyə {{tier}} · düstur 0.5 × ciddilik + 0.3 × əhatə + 0.2 × sürət",
+      "unavailable": "Bu hadisə qrupu üçün hələ bal izahı yoxdur.",
+      "weight": "· çəki {{weight}}",
+      "factors": {
+        "severity": "Ciddilik",
+        "reach": "Əhatə",
+        "velocity": "Sürət"
+      },
+      "inputs": {
+        "mentions": "Qeydlər",
+        "rawReach": "Xam əhatə",
+        "mentions60m": "Qeydlər (60 dəq)",
+        "worstNegativity": "Ən pis neqativlik",
+        "topicWeight": "Mövzu çəkisi"
+      }
+    },
+    "status": {
+      "title": "Status",
+      "subtitle": "Hadisə qrupunun vəziyyətini yeniləyin.",
+      "updating": "Yenilənir…",
+      "applied": "Dəyişikliklər dərhal qüvvəyə minir."
+    },
+    "grouped": {
+      "title": "Qruplaşdırılmış qeydlər ({{count}})",
+      "subtitle": "Bu hadisə qrupuna daxil edilmiş bütün şikayətlər.",
+      "empty": "Bu hadisə qrupuna hələ heç bir qeyd daxil edilməyib."
+    },
+    "draft": {
+      "title": "Təklif olunan cavab layihəsi",
+      "subtitle": "Bu hadisə qrupu əsasında yerli şablon — paylaşmazdan əvvəl redaktə edin.",
+      "paragraph1_one": "Salam — bunu qeyd etdiyiniz üçün təşəkkür edirik. \"{{topic}}\" ilə bağlı bir oxşar şikayət gördük və məsələni ciddi qəbul edirik.",
+      "paragraph1_other": "Salam — bunu qeyd etdiyiniz üçün təşəkkür edirik. \"{{topic}}\" ilə bağlı {{count}} oxşar şikayət gördük və məsələni ciddi qəbul edirik.",
+      "paragraph2": "Komandamız artıq bu məsələni araşdırır. Həll üzərində işləyərkən hesab məlumatlarınızı support@brandpulse.app ünvanına yazın, hər şeyi düzəldək.",
+      "paragraph3": "Yenilik olduqda burada paylaşacağıq."
+    },
+    "viewSource": "Mənbəni göstər",
+    "toasts": {
+      "statusUpdated": "Hadisə qrupunun statusu yeniləndi",
+      "statusFailed": "Statusu yeniləmək mümkün olmadı",
+      "clipboardUnavailable": "Bu brauzerdə mübadilə buferi əlçatan deyil",
+      "copied": "Layihə mübadilə buferinə kopyalandı",
+      "copyFailed": "Mübadilə buferinə kopyalamaq mümkün olmadı"
+    }
+  },
+  "alerts": {
+    "title": "Xəbərdarlıqlar",
+    "subtitle": "Yüksək və kritik hadisə qrupları üçün yaradılan bildirişlər.",
+    "unread": "Oxunmamış",
+    "all": "Hamısı",
+    "acknowledged": "Təsdiqlənib",
+    "acknowledge": "Təsdiqlə",
+    "untitledThread": "Adsız hadisə qrupu",
+    "empty": "Xəbərdarlıq yoxdur. Yüksək və kritik hadisə qrupları burada görünəcək.",
+    "errors": {
+      "loadTitle": "Xəbərdarlıqları yükləyə bilmədik",
+      "loadBody": "Xəbərdarlıqları gətirərkən nəsə səhv getdi.",
+      "ackFailed": "Xəbərdarlığı təsdiqləmək mümkün olmadı"
+    },
+    "toasts": {
+      "acknowledged": "Xəbərdarlıq təsdiqləndi"
+    }
+  },
+  "playground": {
+    "title": "Analiz meydançası",
+    "subtitle": "Hər hansı şərh və ya mesajı yerləşdirin və BrandPulse-in onu necə oxuduğunu görün — əhval-ruhiyyə, hərəkət tələb edən şikayət olub-olmadığı və hansı mövzuya aid olduğu.",
+    "card": {
+      "title": "Analiz ediləcək mətn",
+      "subtitle": "İngilis, Azərbaycan və Rus dilləri dəstəklənir.",
+      "placeholder": "məs. Məndən iki dəfə pul çıxdı və geri qaytarmırlar.",
+      "analyze": "Analiz et"
+    },
+    "result": {
+      "title": "Nəticə",
+      "sentiment": "Əhval-ruhiyyə",
+      "score": "bal {{score}}",
+      "complaintQuestion": "Şikayətdir?",
+      "actionable": "Hərəkət tələb edən şikayət",
+      "notComplaint": "Şikayət deyil",
+      "topic": "Mövzu",
+      "language": "Dil"
+    },
+    "error": "Analiz alınmadı."
+  },
+  "settings": {
+    "title": "Tənzimləmələr",
+    "subtitle": "BrandPulse-in nəyi izlədiyini və xəbərdarlıqları necə göndərdiyini konfiqurasiya edin.",
+    "business": {
+      "title": "Biznes",
+      "subtitle": "Xəbərdarlıqların göndərilməsi bu dəyərlərdən istifadə edir — bildirişlər xəbərdarlıq e-poçtuna göndərilir və webhook URL-i konfiqurasiya edilibsə ora ötürülür.",
+      "name": "Biznesin adı",
+      "plan": "Tarif",
+      "alertEmail": "Xəbərdarlıq e-poçtu",
+      "webhook": "Webhook URL",
+      "notSet": "Təyin edilməyib"
+    },
+    "keywords": {
+      "title": "Açar sözlər",
+      "subtitle": "Açar sözlər biznesin nəyi izlədiyini müəyyən edir — hər gələn qeyd brendinizə aid olub-olmadığını müəyyən etmək üçün bu terminlərlə müqayisə edilir.",
+      "term": "Termin",
+      "placeholder": "məs. BrandPulse",
+      "type": "Növ",
+      "add": "Əlavə et",
+      "empty": "Hələ açar söz yoxdur. Yuxarıda ilk termininizi əlavə edin.",
+      "loadError": "Açar sözləri yükləyə bilmədik",
+      "loadErrorBody": "Açar sözləri gətirərkən nəsə səhv getdi.",
+      "deleteAria": "{{term}} silinsin",
+      "enterTerm": "Açar söz terminini daxil edin",
+      "added": "Açar söz əlavə edildi",
+      "removed": "Açar söz silindi",
+      "addFailed": "Açar sözü əlavə etmək mümkün olmadı",
+      "removeFailed": "Açar sözü silmək mümkün olmadı"
+    },
+    "sources": {
+      "title": "Mənbələr",
+      "subtitle": "Mənbələr BrandPulse-in qeydləri topladığı yerlərdir. Konfiqurasiyanı silmədən onları aktivləşdirə və ya deaktiv edə bilərsiniz.",
+      "type": "Növ",
+      "feedUrls": "Lent URL-ləri",
+      "addSource": "Mənbə əlavə et",
+      "empty": "Hələ mənbə konfiqurasiya edilməyib. Qeydləri toplamağa başlamaq üçün yuxarıda birini əlavə edin.",
+      "loadError": "Mənbələri yükləyə bilmədik",
+      "loadErrorBody": "Mənbələri gətirərkən nəsə səhv getdi.",
+      "toggleAria": "{{type}} aktiv/deaktiv et",
+      "deleteAria": "{{type}} silinsin",
+      "noFeeds": "Lent konfiqurasiya edilməyib",
+      "feedSummary_one": "{{count}} lent · {{state}}",
+      "feedSummary_other": "{{count}} lent · {{state}}",
+      "pulled_one": "{{count}} yeni qeyd gətirildi",
+      "pulled_other": "{{count}} yeni qeyd gətirildi",
+      "noNew": "Yeni qeyd tapılmadı",
+      "addFeed": "Ən azı bir RSS lent URL-i əlavə edin",
+      "added": "Mənbə əlavə edildi",
+      "removed": "Mənbə silindi",
+      "syncFailed": "Mənbəni sinxronlaşdırmaq mümkün olmadı",
+      "addFailed": "Mənbəni əlavə etmək mümkün olmadı",
+      "updateFailed": "Mənbəni yeniləmək mümkün olmadı",
+      "removeFailed": "Mənbəni silmək mümkün olmadı"
+    },
+    "language": {
+      "title": "Dil",
+      "subtitle": "İnterfeysin dilini seçin. Seçiminiz bu cihazda yadda saxlanılır və dərhal tətbiq olunur."
+    },
+    "analyzer": {
+      "title": "Analizator",
+      "tag": "rules",
+      "subtitle": "Əhval-ruhiyyəni balayan və şikayətləri aşkarlayan mühərrik.",
+      "body1": "Standart olaraq analizator <bold>rules</bold> rejimində işləyir — heç bir model yükləməsi tələb etməyən yüngül, çoxdilli qayda mühərriki (İngilis, Azərbaycan, Rus).",
+      "body2": "Bunun əvəzinə Hugging Face modelindən istifadə etmək üçün serverdə <code>ANALYZER</code> mühit dəyişənini təyin edin. Bu server tərəfdə konfiqurasiya edilir və tətbiqdən dəyişdirilə bilməz."
+    },
+    "thresholds": {
+      "title": "Xəbərdarlıq hədləri",
+      "subtitle": "Hadisə qrupunun nə vaxt göstəriləcəyini və necə prioritetləşdiriləcəyini müəyyən edən server tərəfli standart dəyərlər.",
+      "spikeMultiplier": "Artım əmsalı",
+      "spikeValue": "2.0x",
+      "alertCooldown": "Xəbərdarlıq fasiləsi",
+      "cooldownValue": "60 dəq",
+      "priorityWeights": "Prioritet çəkiləri",
+      "weightsValue": "Ciddilik 0.5 · Əhatə 0.3 · Sürət 0.2",
+      "readOnly": "Bunlar yalnız oxunur və serverdə konfiqurasiya edilir."
+    }
+  }
+}

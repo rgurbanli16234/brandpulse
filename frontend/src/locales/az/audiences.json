@@ -1,0 +1,206 @@
+{
+  "page": {
+    "backHome": "Ana səhifəyə qayıt",
+    "notFoundTitle": "Bu istifadə ssenarisini tapa bilmədik",
+    "notFoundBody": "Məhsul menyusundan sektorunuzu seçin və ya ana səhifəyə qayıdın.",
+    "signUpFree": "Pulsuz qeydiyyat",
+    "seeHowItWorks": "Necə işlədiyinə baxın",
+    "complaintsTitle": "Müştəriləriniz nədən şikayət edir",
+    "complaintsSubtitle": "BrandPulse-in oxuduğu üç dildə real nümunələr — hər biri aid olduğu əhval-ruhiyyə və mövzu ilə birlikdə.",
+    "helpTitle": "BrandPulse necə kömək edir",
+    "alertTitle": "Alacağınız xəbərdarlıq",
+    "alertEyebrow": "Hadisə xəbərdarlığı",
+    "prioritySuffix": "{{priority}} prioritet",
+    "draftLabel": "Təklif olunan cavab layihəsi",
+    "draftNote": "Nəzərdən keçirib redaktə edəcəyiniz layihə — heç vaxt avtomatik göndərilmir.",
+    "ctaTitle": "Öz qeydlərinizlə başlayın",
+    "ctaBody": "CSV yükləyin və ya bir neçə rəyi yapışdırın və BrandPulse-in onlara necə bal verdiyini görün. Azərbaycanda və ondan kənarda kiçik və orta bizneslər üçün."
+  },
+  "cafes": {
+    "menuLabel": "Kafelər və restoranlar üçün",
+    "short": "Kafelər və restoranlar",
+    "headline": "Hansı masanın narazı çıxdığını bilin",
+    "intro": "Kafe təkrar ziyarətlər hesabına yaşayır, ona görə gecikən sifariş və ya soyuq flat white bir satışdan çox itki deməkdir. Bu rəylərin çoxu yalnız günlər sonra gördüyünüz rəylərdə və mesajlarda gəlir. BrandPulse onları bir araya toplayır və bu gün əslində nəyə cavab vermək lazım olduğunu göstərir.",
+    "topics": {
+      "service": "Xidmət",
+      "productQuality": "Məhsulun keyfiyyəti",
+      "staffConduct": "İşçilərin davranışı"
+    },
+    "help": {
+      "detect": {
+        "title": "Şikayətləri aşkar edin",
+        "text": "Əsəbi rəylər və mesajlar əhval-ruhiyyəyə görə qiymətləndirilir və şikayət kimi işarələnir; sadəcə “latte əla idi” yazısına isə toxunulmur."
+      },
+      "group": {
+        "title": "Onları hadisə qruplarına birləşdirin",
+        "text": "Eyni yavaş həftə sonu barədə on qeyd on bildiriş yerinə vahid hadisəyə çevrilir."
+      },
+      "alert": {
+        "title": "Prioritet balla xəbərdarlıq edin",
+        "text": "Daimi müştərinin təkrar şikayəti birdəfəlik narazılıqdan yuxarı qalxır, ona görə növbə rəhbəriniz onu birinci görür."
+      }
+    },
+    "alert": {
+      "title": "Nizami filialında yavaş xidmət barədə 6 qeyd",
+      "detail": "Son 24 saatda altı mənfi qeyd 20 dəqiqədən çox gözləmə müddətindən bəhs edir. Beşi Azərbaycan dilində, biri rus dilindədir.",
+      "reply": "Salam! Gözləməyə görə üzr istəyirik — bu barədə komandamıza məlumat verdik. Növbəti dəfə sizə daha sürətli xidmət göstərmək istərdik."
+    }
+  },
+  "online-shops": {
+    "menuLabel": "Onlayn mağazalar üçün",
+    "short": "Onlayn mağazalar",
+    "headline": "Sifariş problemlərini geri qaytarmaya çevrilməzdən əvvəl tutun",
+    "intro": "Onlayn mağaza üçün zədələnmiş bağlama və ya dayanmış geri qaytarma eyni zamanda həm itirilmiş müştəri, həm də açıq rəy deməkdir. BrandPulse müştərilərin dediklərini toplayır və təkrarlanan problemləri qruplaşdırır ki, təsadüfən gördüyünüz bir şikayəti deyil, prosesin özünü düzəldə biləsiniz.",
+    "topics": {
+      "returns": "Geri qaytarma",
+      "support": "Dəstək",
+      "delivery": "Çatdırılma",
+      "productQuality": "Məhsulun keyfiyyəti",
+      "refunds": "Pulun qaytarılması"
+    },
+    "help": {
+      "detect": {
+        "title": "Şikayətləri aşkar edin",
+        "text": "Rəylər, şərhlər və mesajlar ingilis, Azərbaycan və rus dillərində oxunur, narazı olanlar avtomatik işarələnir."
+      },
+      "group": {
+        "title": "Onları hadisə qruplarına birləşdirin",
+        "text": "“Yanlış ölçü” barədə bir qrup müraciət vahid ölçü hadisəsinə çevrilir, beləcə bunun bəxtsizlik deyil, qanunauyğunluq olduğunu görürsünüz."
+      },
+      "alert": {
+        "title": "Prioritet balla xəbərdarlıq edin",
+        "text": "Böyüməkdə olan geri qaytarma qrupu tək bir gecikmə qeydindən üstün olur və gələnlər qutunuzun ən başında görünür."
+      }
+    },
+    "alert": {
+      "title": "Bu həftə geri qaytarma gecikməsi 11 dəfə qeyd olunub",
+      "detail": "On bir qeyd geri qaytarmaların on gündən çox çəkdiyini təsvir edir. Üçü “heç vaxt cavab vermədilər” ifadəsini işlədir. EN, AZ və RU qarışıqdır.",
+      "reply": "Bunu diqqətinizə çatdırdığınız üçün təşəkkür edirik — geri qaytarma bu qədər uzun çəkməməlidir. Sifarişinizi indi yoxlayırıq və statusu bu gün təsdiqləyəcəyik."
+    }
+  },
+  "delivery": {
+    "menuLabel": "Çatdırılma və logistika üçün",
+    "short": "Çatdırılma və logistika",
+    "headline": "Şikayət yaradan marşrutları görün",
+    "intro": "Çatdırılma problemləri səs-küylüdür: yağışda qalan bağlamalar, çatdırıldı işarələnən, amma heç vaxt çatmayan sifarişlər. Onlar həm də təkrarlanır — BrandPulse məhz bunu yaxşı görür: eyni kuryer, eyni zona, eyni ifadə, vahid hadisədə birləşir.",
+    "topics": {
+      "lostParcel": "İtirilmiş bağlama",
+      "courier": "Kuryer",
+      "lateDelivery": "Gecikmiş çatdırılma"
+    },
+    "help": {
+      "detect": {
+        "title": "Şikayətləri aşkar edin",
+        "text": "Çatdırılma dilinin öz lüğəti var — “çatmadı”, “qapıda qoyuldu”, “gəlmədi” — və analizator buna uyğunlaşdırılıb."
+      },
+      "group": {
+        "title": "Onları hadisə qruplarına birləşdirin",
+        "text": "Bir rayonda “qapıda qoyuldu” barədə bütün məlumatlar birləşdirilir, beləcə bunun bir kuryer, yoxsa bütöv növbə olduğunu görürsünüz."
+      },
+      "alert": {
+        "title": "Prioritet balla xəbərdarlıq edin",
+        "text": "İtirilmiş bağlamalar gecikənlərdən daha yüksək bal alır, kompensasiya tələb edən hallar böyüməzdən əvvəl diqqət mərkəzinə düşür."
+      }
+    },
+    "alert": {
+      "title": "Bir rayonda “qapıda qoyuldu” məlumatları artıb",
+      "detail": "İki gün ərzində beş qeyd bağlamaların zəng edilmədən qapıda qoyulduğunu bildirir. Beşi də eyni çatdırılma zonasındandır.",
+      "reply": "Bağlamanızın nəzarətsiz qoyulduğuna görə üzr istəyirik. Bu çatdırılma zonasını qeyd etdik və təkrar çatdırılmadan əvvəl zəng edəcəyik."
+    }
+  },
+  "clinics": {
+    "menuLabel": "Klinikalar və gözəllik salonları üçün",
+    "short": "Klinikalar və gözəllik salonları",
+    "headline": "Sakit narazılığı növbəti görüşə çevirin",
+    "intro": "Gecikən görüş və ya aydın olmayan hesab nadir hallarda rəsmi şikayətə çevrilir — üç həftə sonra bir rəydə, ya da heç yerdə görünür. BrandPulse bu siqnalları hələ müştəri ilə əlaqə saxlayıb onu geri qazanmaq mümkün olarkən üzə çıxarır.",
+    "topics": {
+      "reception": "Qəbul",
+      "billing": "Hesablaşma",
+      "waitTime": "Gözləmə müddəti",
+      "pricing": "Qiymət",
+      "booking": "Randevu"
+    },
+    "help": {
+      "detect": {
+        "title": "Şikayətləri aşkar edin",
+        "text": "Hesablaşma və gözləmə müddəti ilə bağlı şikayətlər qısa, qeyri-rəsmi mesajlarda belə adi rəylərdən seçilir."
+      },
+      "group": {
+        "title": "Onları hadisə qruplarına birləşdirin",
+        "text": "Eyni qəbul saatları ilə bağlı təkrarlanan şikayətlər komanda ilə işləyə biləcəyiniz vahid qrupa çevrilir."
+      },
+      "alert": {
+        "title": "Prioritet balla xəbərdarlıq edin",
+        "text": "Pulla bağlı və kəskin ifadəli şikayətlər birinci sıraya keçir ki, həmin gün cavablandırılsın."
+      }
+    },
+    "alert": {
+      "title": "Hesablaşma şikayəti həmin gün cavab tələb edir",
+      "detail": "Müştəri almadığı xidmət üçün pul tutulduğunu bildirir. Çox mənfi kimi işarələnib və iki oxşar qeydlə qruplaşdırılıb.",
+      "reply": "Bunu bizə dediyiniz üçün təşəkkür edirik. Hesabı bu gün qəbul masası ilə birlikdə yoxlayırıq və düzəlişlə bağlı sizə zəng edəcəyik."
+    }
+  },
+  "hotels": {
+    "menuLabel": "Otellər və turizm üçün",
+    "short": "Otellər və turizm",
+    "headline": "Rəy mövsümünüzü təyin etməzdən əvvəl cavab verin",
+    "intro": "Otel üçün bir pis rəy iyirmi yaxşı rəydən ağır ola bilər. BrandPulse qonaqlarınızın həqiqətən istifadə etdiyi rəy saytlarını və mesajları onların öz dilində oxuyur və reytinqinizi səssizcə formalaşdıran təkrar mövzuları — otaqlar, səhər yeməyi, transfer — göstərir.",
+    "topics": {
+      "roomCondition": "Otağın vəziyyəti",
+      "expectationMismatch": "Gözlənti uyğunsuzluğu",
+      "checkIn": "Qeydiyyat",
+      "breakfast": "Səhər yeməyi",
+      "transfer": "Transfer"
+    },
+    "help": {
+      "detect": {
+        "title": "Şikayətləri aşkar edin",
+        "text": "EN, AZ və RU dillərində rəylər və mesajlar qiymətləndirilir, beləcə rus dilindəki rəy siyahının dibində cavabsız qalmır."
+      },
+      "group": {
+        "title": "Onları hadisə qruplarına birləşdirin",
+        "text": "Eyni həftə sonu və ya eyni otaq tipi ilə bağlı hər şey birləşdirilir və balın arxasındakı hekayəni görürsünüz."
+      },
+      "alert": {
+        "title": "Prioritet balla xəbərdarlıq edin",
+        "text": "Təhlükəsizlik, təmizlik və nəqliyyat problemləri ən üstə çıxır ki, növbətçi menecer onları qeydiyyatdan əvvəl görsün."
+      }
+    },
+    "alert": {
+      "title": "Bu ay 4 rəydə təmizlik qeyd olunub",
+      "detail": "İki dildə dörd rəy ev təsərrüfatı xidmətindən bəhs edir. Reytinqə təsir bir mərtəbədə cəmlənib.",
+      "reply": "Səmimi rəyiniz üçün təşəkkür edirik. Bu gün həmin mərtəbənin nəzərdən keçirilməsini xidmət komandasına tapşırdıq və sizi yenidən qonaq görməkdən məmnun olarıq."
+    }
+  },
+  "agencies": {
+    "menuLabel": "Kiçik agentliklər üçün",
+    "short": "Kiçik agentliklər",
+    "headline": "Müştərilərinizin reputasiyasını siz yatarkən qoruyun",
+    "intro": "Agentliklər müştəriləri barədə şikayətlərə görə günahlandırılır və çox vaxt bu barədə ilk olaraq müştərinin özündən eşidirlər. BrandPulse sizə həmin mənzərəni bir neçə layihə üzrə əvvəlcədən verir ki, xəbəri alan yox, verən tərəf olasınız.",
+    "topics": {
+      "responsiveness": "Cavabdehlik",
+      "reporting": "Hesabatlar",
+      "creativity": "Yaradıcılıq",
+      "deadlines": "Son tarixlər"
+    },
+    "help": {
+      "detect": {
+        "title": "Şikayətləri aşkar edin",
+        "text": "Hər müştəri layihəsinin öz axını var, beləcə bir brend barədə rəy digərinə qarışmır."
+      },
+      "group": {
+        "title": "Onları hadisə qruplarına birləşdirin",
+        "text": "Eyni kampaniya barədə şərhlər qruplaşdırılır və həftəlik müştəri yeniləməsini yazmaq xeyli asanlaşır."
+      },
+      "alert": {
+        "title": "Prioritet balla xəbərdarlıq edin",
+        "text": "Kəskin ifadəli və ya böyüyən qrup olan hər şey müştəriniz tapmazdan əvvəl sizə ötürülür."
+      }
+    },
+    "alert": {
+      "title": "Cavab müddətləri barədə böyüyən qrup",
+      "detail": "Üç gün ərzində beş qeyd gec cavablardan şikayət edir. İkisi böyük izləyici kütləsi olan hesablardandır.",
+      "reply": "Xatırlatma üçün təşəkkürlər — müraciətlərin necə bölüşdürüldüyünü yenidən qurduq və yeni cavab planını bu həftə paylaşacağıq."
+    }
+  }
+}

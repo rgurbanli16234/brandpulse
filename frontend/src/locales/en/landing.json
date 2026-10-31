@@ -1,0 +1,99 @@
+{
+  "hero": {
+    "badge": "Complaint radar for small businesses",
+    "headline": "Measure Your Brand Awareness.",
+    "body": "BrandPulse reads the mentions you already have — CSV exports, copied messages and RSS feeds,<br/> separates real complaints from everyday chatter, and shows what needs a reply today.",
+    "primaryCta": "Sign up free",
+    "secondaryCta": "See pricing",
+    "note": "Built for small and medium businesses in Azerbaijan and beyond."
+  },
+  "mockup": {
+    "projects": "Projects",
+    "sampleProject": "Sample project",
+    "demoBadge": "Demo",
+    "mentions": "Mentions",
+    "summary": "Summary",
+    "analysis": "Analysis",
+    "sources": "Sources",
+    "searchPlaceholder": "Search through mentions, authors & domains...",
+    "demoUser": "Demo user",
+    "kpi": {
+      "mentions": "MENTIONS",
+      "reach": "REACH",
+      "interactions": "INTERACTIONS",
+      "positive": "POSITIVE",
+      "negative": "NEGATIVE"
+    },
+    "topTopics": "Top topics",
+    "sampleMentions": {
+      "lateDelivery": "Late delivery",
+      "coldOrder": "Order arrived cold",
+      "refund": "Refund not received",
+      "friendlyStaff": "Friendly staff",
+      "booking": "Booking confusion"
+    }
+  },
+  "howItWorks": {
+    "title": "How it works",
+    "subtitle": "Separating signal from noise in three simple steps.",
+    "steps": {
+      "bringIn": {
+        "title": "Bring your mentions in",
+        "description": "Upload a CSV export, paste messages by hand, or subscribe to an RSS feed. No social media logins, ever."
+      },
+      "reads": {
+        "title": "BrandPulse reads them",
+        "description": "Each mention gets a sentiment, a language (EN/AZ/RU) and a topic. Complaints are separated from ordinary chatter."
+      },
+      "act": {
+        "title": "Act on what matters",
+        "description": "Related complaints are grouped into incident threads and scored, so you can answer the loudest problem first."
+      }
+    },
+    "sources": {
+      "csv": "CSV upload",
+      "manual": "Manual paste",
+      "rss": "RSS feeds"
+    }
+  },
+  "features": {
+    "title": "Features",
+    "subtitle": "Everything BrandPulse does today, without the enterprise baggage.",
+    "clustering": {
+      "title": "Incident clustering",
+      "body": "Related complaints are grouped into a single thread, so twenty separate messages about one cold meal read as one problem — not twenty."
+    },
+    "priority": {
+      "title": "Priority scoring",
+      "body": "Every thread is scored on how negative it is, how far it could travel and how fast it is growing — then labelled Low to Critical."
+    },
+    "multilingual": {
+      "title": "Multilingual",
+      "body": "Azərbaycan dili, Русский, English — complaint rules tuned per language, not translated after the fact."
+    },
+    "privacy": {
+      "title": "Privacy first",
+      "body": "There is no social network monitoring and no password sharing. You upload, paste or subscribe to a feed — the text stays inside your own instance."
+    }
+  },
+  "useCases": {
+    "title": "Use cases",
+    "subtitle": "The complaints look different depending on what you sell, so the examples do too. Pick the one closest to your business.",
+    "seeExamples": "See examples"
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Start free. Upgrade when one person can no longer keep up on their own.",
+    "compareAll": "Compare all plans"
+  },
+  "finalCta": {
+    "title": "Ready to hear what really matters?",
+    "body": "Start with the free Demo plan, paste in a handful of real messages and see what BrandPulse picks out. No payment is taken.",
+    "button": "Start free",
+    "points": {
+      "freePlan": "Free Demo plan",
+      "noCard": "No credit card",
+      "setup": "Setup in 2 minutes"
+    }
+  }
+}

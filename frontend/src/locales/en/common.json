@@ -1,0 +1,175 @@
+{
+  "meta": {
+    "landing": {
+      "title": "BrandPulse — Brand Sentiment & Complaint Monitoring",
+      "description": "BrandPulse separates urgent complaints from everyday chatter, groups related problems into incident threads, and tells you what needs attention now."
+    },
+    "pricing": {
+      "title": "Pricing — BrandPulse",
+      "description": "Illustrative BrandPulse plans for small and medium businesses: a free demo, Pro, Business and Enterprise. Feature availability is labelled honestly."
+    },
+    "blog": {
+      "title": "Blog — BrandPulse",
+      "description": "Short, practical notes on complaint monitoring for small businesses: finding hidden complaints, handling a viral complaint and answering angry reviews."
+    },
+    "blogPost": {
+      "title": "{{title}} — BrandPulse Blog",
+      "description": "{{summary}}"
+    },
+    "blogMissing": {
+      "title": "Article not found — BrandPulse",
+      "description": "This BrandPulse blog article could not be found."
+    },
+    "audience": {
+      "title": "{{label}} — BrandPulse",
+      "description": "{{intro}}"
+    },
+    "audienceMissing": {
+      "title": "Not found — BrandPulse",
+      "description": "This BrandPulse use case page could not be found."
+    },
+    "login": {
+      "title": "Sign in — BrandPulse",
+      "description": "Sign in to BrandPulse or create a free account to start monitoring mentions and complaints."
+    },
+    "onboarding": {
+      "title": "Set up — BrandPulse",
+      "description": "Set up your BrandPulse workspace in a few short steps."
+    },
+    "dashboard": {
+      "title": "Dashboard — BrandPulse",
+      "description": "Your BrandPulse dashboard: mentions, complaints, sentiment and open incidents."
+    },
+    "mentions": {
+      "title": "Mentions — BrandPulse",
+      "description": "Every mention BrandPulse has collected, with sentiment, topic and priority."
+    },
+    "threads": {
+      "title": "Incident Threads — BrandPulse",
+      "description": "Related complaints grouped into incident threads so you can see the full story."
+    },
+    "threadDetail": {
+      "title": "Incident Thread — BrandPulse",
+      "description": "One incident thread with every mention it contains."
+    },
+    "alerts": {
+      "title": "Alerts — BrandPulse",
+      "description": "Alerts raised for high and critical incidents."
+    },
+    "playground": {
+      "title": "Analyze Playground — BrandPulse",
+      "description": "Test how BrandPulse reads a piece of text before it reaches your inbox."
+    },
+    "settings": {
+      "title": "Settings — BrandPulse",
+      "description": "Keywords, sources and account settings for your BrandPulse workspace."
+    }
+  },
+  "actions": {
+    "retry": "Try again",
+    "goHome": "Go home",
+    "back": "Back",
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "refresh": "Refresh",
+    "signOut": "Sign out",
+    "dismiss": "Dismiss",
+    "add": "Add",
+    "copy": "Copy",
+    "clearFilters": "Clear filters",
+    "syncNow": "Sync now",
+    "delete": "Delete",
+    "search": "Search"
+  },
+  "labels": {
+    "sampleData": "Sample data",
+    "soon": "Soon",
+    "included": "Included",
+    "notIncluded": "Not included",
+    "notSet": "Not set",
+    "unscored": "Unscored",
+    "unknownAuthor": "Unknown author",
+    "enabled": "Enabled",
+    "disabled": "Disabled"
+  },
+  "counts": {
+    "mentions_one": "{{count}} mention",
+    "mentions_other": "{{count}} mentions",
+    "complaints_one": "{{count}} complaint",
+    "complaints_other": "{{count}} complaints",
+    "alerts_one": "{{count}} alert",
+    "alerts_other": "{{count}} alerts",
+    "threads_one": "{{count}} thread",
+    "threads_other": "{{count}} threads",
+    "feeds_one": "{{count}} feed",
+    "feeds_other": "{{count}} feeds",
+    "reports_one": "{{count}} report",
+    "reports_other": "{{count}} reports"
+  },
+  "language": {
+    "label": "Language",
+    "switchLabel": "Change language",
+    "current": "Language: {{language}}",
+    "names": {
+      "en": "English",
+      "az": "Azerbaijani",
+      "ru": "Russian"
+    }
+  },
+  "states": {
+    "loading": "Loading…",
+    "errorTitle": "Something went wrong",
+    "errorBody": "Please try again. If it keeps failing, refresh the page.",
+    "emptyTitle": "Nothing here yet",
+    "emptyBody": "Once new data arrives it will show up here."
+  },
+  "enums": {
+    "sentiment": {
+      "strongly_negative": "Strongly negative",
+      "negative": "Negative",
+      "neutral": "Neutral",
+      "positive": "Positive"
+    },
+    "priority": {
+      "Low": "Low",
+      "Medium": "Medium",
+      "High": "High",
+      "Critical": "Critical"
+    },
+    "topic": {
+      "billing_payment": "Billing / Payment",
+      "product_quality": "Product Quality",
+      "customer_service": "Customer Service",
+      "delivery_shipping": "Delivery / Shipping",
+      "website_app_bug": "Website / App Bug",
+      "price": "Price",
+      "staff_behavior": "Staff Behavior",
+      "other": "Other"
+    },
+    "threadStatus": {
+      "open": "Open",
+      "investigating": "Investigating",
+      "resolved": "Resolved"
+    },
+    "source": {
+      "csv": "CSV upload",
+      "manual": "Manual entry",
+      "reddit": "Reddit",
+      "rss": "RSS feed",
+      "demo": "Demo data"
+    },
+    "keywordType": {
+      "brand": "Brand",
+      "product": "Product",
+      "executive": "Executive",
+      "typo": "Typo",
+      "competitor": "Competitor"
+    },
+    "mentionLanguage": {
+      "EN": "English",
+      "AZ": "Azerbaijani",
+      "RU": "Russian"
+    }
+  }
+}

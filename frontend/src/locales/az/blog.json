@@ -1,0 +1,62 @@
+{
+  "index": {
+    "eyebrow": "Bloq",
+    "title": "Müştəriləri dinləmək haqqında qeydlər",
+    "subtitle": "Müştəri rəyləri ilə özü məşğul olan insanlar üçün qısa yazılar. Bloqun necə qurulduğunu göstərən üç nümunə məqalə."
+  },
+  "list": {
+    "readArticle": "Məqaləni oxu"
+  },
+  "post": {
+    "backToBlog": "Bütün məqalələr",
+    "readTime_one": "{{count}} dəqiqə oxu",
+    "readTime_other": "{{count}} dəqiqə oxu",
+    "ctaTitle": "Bunu öz qeydləriniz üzərində işləməsini istəyirsiniz?",
+    "ctaBody": "Prototip demo məlumatlarla pulsuz istifadə olunur — heç bir ödəniş alınmır.",
+    "ctaButton": "Pulsuz qeydiyyat",
+    "keepReading": "Oxumağa davam edin",
+    "notFoundTitle": "Bu məqaləni tapa bilmədik",
+    "notFoundBody": "Keçid köhnəlmiş ola bilər. Yayımladığımız hər şey bloq siyahısındadır.",
+    "backToIndex": "Bloqa qayıt"
+  },
+  "items": {
+    "complaints-you-never-see": {
+      "title": "Biznesinizin heç vaxt görmədiyi şikayətlər",
+      "summary": "Narazı müştərilərin çoxu heç vaxt rəsmi şikayət yazmır — siqnal rəylərə və mesajlara səpələnir.",
+      "readTimeMinutes": 4,
+      "isoDate": "2026-02-12",
+      "paragraphs": [
+        "Narazı müştəri bunu nadir hallarda birbaşa sizə deyir. Dostuna deyir, iki sətirlik rəy yazır və ya son paylaşımınızın altına şərh qoyur. Bunların hər biri ayrılıqda asanlıqla nəzərdən qaçır — problem də elə buradadır: tək-tək götürdükdə səs-küy kimi görünür, birlikdə isə bir qanunauyğunluq olur.",
+        "Kiçik bizneslər bunu irilərdən daha çox hiss edir. Hər kanalı oxuyan analitik yoxdur və rəyləri yoxlayan şəxs adətən müştərilərə xidmət edən, mal sifariş edən və kassanı bağlayan həmin adamdır. Nəticədə rəy gec gəlir, ya da heç gəlmir və eyni problem sizə müştəri itirməyə davam edir.",
+        "Həll daha çox oxumaq deyil. Düzgün olanı oxumaqdır. Artıq əlinizdə olan qeydləri — rəyləri, mesajları, komandanızın qeydlərini — bir yerdə toplayın, hansının əsl problemi təsvir etdiyini qeyd edin və təkrarlara baxın. Bir həftə ərzində üç nəfərin gecikmiş çatdırılmadan danışması, bir nəfərin bir dəfə bunu qeyd etməsindən tamam fərqli bir siqnaldır.",
+        "BrandPulse bu fikir üzərində qurulub. Şikayətləri adi söhbətlərdən ayırır, oxşar qeydləri bir hadisə qrupunda birləşdirir və böyüyən və ya sərt ifadə olunmuş olanlara prioritet verir. Qərarı yenə siz verirsiniz — sadəcə kor-koranə qərar verməyi dayandırırsınız."
+      ]
+    },
+    "first-hour-of-a-viral-complaint": {
+      "title": "Viral olan şikayətin ilk saatında nə etməli",
+      "summary": "Bir şikayətin cavab verə biləcəyinizdən daha sürətlə yayıldığı an üçün qısa və soyuqqanlı yoxlama siyahısı.",
+      "readTimeMinutes": 5,
+      "isoDate": "2026-02-26",
+      "paragraphs": [
+        "Şikayət o zaman viral olur ki, insanlar özlərini onda görürlər. Ona görə ilk addım onu yazan şəxslə mübahisə etmək deyil — daha neçə müştərinin səssizcə eyni şeyi yaşadığını anlamaqdır.",
+        "Əvvəlcə şikayəti diqqətlə, orijinal dilində oxuyun. Maşın tərcüməsi çox vaxt vacib olan dəqiqliyi silir: söhbət qiymətdən, gözləmə müddətindən, məhsuldan, yoxsa onlara necə davranıldığından gedir? Bunların hər biri fərqli cavab tələb edir.",
+        "Sonra bunun təcrid olunmuş hal olub-olmadığını yoxlayın. Qeydlərinizdə eyni sözləri və eyni məhsulu axtarın. Şikayət təkdirsə, adətən birbaşa və konkret cavab kifayət edir. Bu, həmin hekayənin bu həftəki beşinci variantıdırsa, cavab həllin yalnız görünən hissəsidir — əsl problem prosesin özündədir.",
+        "Sonra bir dəfə, hamının gördüyü yerdə cavab verin və detalları şəxsi kanala keçirin. Tam olaraq nəyin səhv getdiyini qəbul edin, bununla bağlı nə etdiyinizi deyin və real vaxt çərçivəsi göstərin. Şablonlardan çəkinin: insanlar onları dərhal seçir və kopyalanmış üzrxahlıq ikinci təhqir kimi oxunur.",
+        "Sonda nə baş verdiyini və niyə baş verdiyini yazın. Adətən viral olan şikayətlər həlli çətin olanlar deyil, gec cavab verilənlərdir. Bu gün hadisə qrupuna yazdığınız bir qeyd, gələn ay eyni saatın təkrarlanmasının qarşısını alır."
+      ]
+    },
+    "answering-an-angry-review": {
+      "title": "Əsəbi rəyə vəziyyəti pisləşdirmədən necə cavab vermək olar",
+      "summary": "Əsəbi rəylər hamının gördüyü yerdədir, silinmir və gələcək müştərilər tərəfindən oxunur. Cavabı qəzəbə deyil, oxuculara verin.",
+      "readTimeMinutes": 4,
+      "isoDate": "2026-03-09",
+      "paragraphs": [
+        "Bir rəyə cavab yazanda əslində onu yazan şəxsə yazmırsınız. O, artıq qərarını verib. Siz sonradan bu söhbəti oxuyub biznesinizin dinləyən biznes olub-olmadığına qərar verəcək onlarla insana yazırsınız.",
+        "Bu, tonu dəyişir. Müdafiə mövqeyi, istehza və uzun izahlar hamının gördüyü yerdə pis oxunur — hətta faktlar sizin tərəfinizdə olsa belə. Qısa, hörmətli və konkret cavab daha yaxşı işləyir.",
+        "Etibarlı quruluş üç cümlədən ibarətdir. Problemi müştərinin öz sözləri ilə adlandırın. Bununla bağlı nə etdiyinizi və ya edəcəyinizi aydın deyin. Sonra söhbəti hamının gördüyü səhifədən şəxsi kanala dəvət edin. Bu, oxuculara şikayətin ciddi qəbul edildiyini göstərir, amma profilinizi mübahisə meydanına çevirmir.",
+        "İki şeydən çəkinməyə dəyər. Adı çəkilən işçini hamının qarşısında günahlandırmayın — bu komandanıza ziyan vurur və peşəkar görünmür. Və yerinə yetirə bilməyəcəyiniz heç nə vəd etməyin; məsələn, təsdiqləmədiyiniz tam geri ödəniş qaydasını — çünki vəd qəzəbdən uzun yaşayır.",
+        "Eyni şikayət müxtəlif rəylərin altında təkrar-təkrar görünürsə, cavab həll deyil. Cavab verin, sonra məsələni daxildə bağlayın və gələn ayın rəyləri nəyinsə həqiqətən dəyişdiyini göstərsin."
+      ]
+    }
+  }
+}

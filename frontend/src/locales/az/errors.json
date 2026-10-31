@@ -1,0 +1,20 @@
+{
+  "notFound": {
+    "title": "Səhifə tapılmadı",
+    "body": "Axtardığınız səhifə yoxdur və ya köçürülüb."
+  },
+  "crash": {
+    "title": "Bu səhifə yüklənmədi",
+    "body": "Bizim tərəfdə nəsə səhv getdi. Səhifəni yeniləyə və ya ana səhifəyə qayıda bilərsiniz."
+  },
+  "api": {
+    "unreachable": "{{url}} ünvanındakı API-yə çatmaq mümkün olmadı. Serverin işlədiyinə əmin olun.",
+    "requestFailed": "Sorğu alınmadı",
+    "unauthorized": "Sessiyanızın vaxtı bitdi. Xahiş edirik yenidən daxil olun.",
+    "forbidden": "Buna girişiniz yoxdur.",
+    "notFound": "Axtardığınızı tapa bilmədik.",
+    "conflict": "Bu artıq mövcuddur.",
+    "validation": "Daxil etdiyiniz məlumatları yoxlayın.",
+    "server": "Serverdə problem yarandı. Xahiş edirik bir az sonra yenidən yoxlayın."
+  }
+}

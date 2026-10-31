@@ -1,0 +1,148 @@
+{
+  "page": {
+    "eyebrow": "Qiymətlər",
+    "title": "Sadə tariflər, açıq şəkildə göstərilmiş",
+    "subtitle": "Pulsuz demo tarifi ilə başlayın və BrandPulse-in sizin qeydlərinizlə necə işlədiyini görün. Aşağıdakı hər funksiyanın bu gün mövcud, yoxsa tezliklə olacağı aydın göstərilib — heç nə süslənmir."
+  },
+  "plans": {
+    "billingAria": "Ödəniş dövrü",
+    "monthly": "Aylıq",
+    "yearly": "İllik",
+    "saveHint": "İllik ödənişə keçin və 2 ay pulsuz alın",
+    "saveHintActive": "2 ay pulsuz",
+    "custom": "Fərdi",
+    "perMonth": "/ay",
+    "mostPopular": "Ən çox seçilən",
+    "talkToUs": "Bizimlə əlaqə saxlayın",
+    "prototypeNote": "Bu prototip üçün nümunə qiymətlərdir. Heç bir ödəniş alınmır.",
+    "items": {
+      "demo": {
+        "name": "Demo",
+        "tagline": "BrandPulse-i nümunə məlumatlar üzərində sınamaq üçün lazım olan hər şey.",
+        "cta": "Pulsuz başla"
+      },
+      "pro": {
+        "name": "Pro",
+        "tagline": "Hər gün monitorinq aparan bir biznes üçün.",
+        "cta": "14 günlük sınağa başla"
+      },
+      "business": {
+        "name": "Business",
+        "tagline": "Bir neçə brend və ya filialı idarə edən şirkətlər üçün.",
+        "cta": "14 günlük sınağa başla"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "tagline": "Öz inteqrasiya və məxfilik qaydaları olan təşkilatlar üçün.",
+        "cta": "Bizimlə əlaqə saxlayın"
+      }
+    },
+    "features": {
+      "demoData": "Daxili demo məlumatlar",
+      "playground": "Analiz meydançası",
+      "manualImport": "Əl ilə yerləşdirmə və CSV idxalı",
+      "oneProject": "1 layihə",
+      "dashboard": "İdarə paneli, qeydlər və hadisə qrupları",
+      "history7": "7 günlük tarixçə",
+      "inAppAlerts": "Tətbiq daxili xəbərdarlıqlar",
+      "everythingDemo": "Demo tarifindəki hər şey",
+      "rssSources": "RSS mənbələri",
+      "emailAlerts": "E-poçt xəbərdarlıqları",
+      "history30": "30 günlük tarixçə",
+      "keywords5": "5-ə qədər izlənən açar söz",
+      "threeLanguages": "İngilis, Azərbaycan və Rus dilləri",
+      "replyDrafts": "Təklif olunan cavab layihələri",
+      "everythingPro": "Pro tarifindəki hər şey",
+      "multiProject": "Bir neçə layihə",
+      "webhookAlerts": "Webhook xəbərdarlıqları (Telegram / Slack üçün hazır)",
+      "unlimitedKeywords": "Limitsiz açar söz",
+      "priorityBreakdown": "Prioritet balının izahı",
+      "neuralMode": "İstəyə bağlı neyron əhval-ruhiyyə rejimi",
+      "history12": "12 aylıq tarixçə",
+      "teamMembers": "Komanda üzvləri",
+      "everythingBusiness": "Business tarifindəki hər şey",
+      "customIntegrations": "Fərdi inteqrasiyalar",
+      "sso": "Vahid giriş (SSO)",
+      "dedicatedSupport": "Xüsusi dəstək",
+      "modelTuning": "Modelin fərdi sazlanması",
+      "onPremise": "Şirkət daxilində quraşdırma",
+      "sla": "Xidmət səviyyəsi müqaviləsi"
+    }
+  },
+  "comparison": {
+    "title": "Tarifləri müqayisə edin",
+    "featureColumn": "Funksiya",
+    "groups": {
+      "monitoring": "Monitorinq",
+      "analysis": "Analiz",
+      "alerts": "Xəbərdarlıqlar və cavablar",
+      "history": "Tarixçə və giriş",
+      "enterprise": "Enterprise əlavələri"
+    },
+    "rows": {
+      "projects": "Layihələr",
+      "manualImport": "CSV idxalı və əl ilə yerləşdirmə",
+      "rssSources": "RSS mənbələri",
+      "keywords": "İzlənən açar sözlər",
+      "languages": "Dillər",
+      "detection": "Əhval-ruhiyyə və şikayət aşkarlanması",
+      "clustering": "Hadisələrin qruplaşdırılması",
+      "priorityScore": "Prioritet balı",
+      "priorityBreakdown": "Prioritet balının izahı",
+      "neuralMode": "Neyron əhval-ruhiyyə rejimi (istəyə bağlı)",
+      "inAppAlerts": "Tətbiq daxili xəbərdarlıqlar",
+      "emailAlerts": "E-poçt xəbərdarlıqları",
+      "webhookAlerts": "Webhook xəbərdarlıqları (Telegram / Slack üçün hazır)",
+      "replyDrafts": "Təklif olunan cavab layihələri",
+      "history": "Tarixçə",
+      "teamMembers": "Komanda üzvləri",
+      "sso": "Vahid giriş (SSO)",
+      "customIntegrations": "Fərdi inteqrasiyalar",
+      "modelTuning": "Modelin fərdi sazlanması",
+      "onPremise": "Şirkət daxilində quraşdırma",
+      "support": "Xüsusi dəstək və SLA"
+    },
+    "values": {
+      "yes": "Var",
+      "one": "1",
+      "none": "—",
+      "multiple": "Bir neçə",
+      "unlimited": "Limitsiz",
+      "upTo5": "5-ə qədər",
+      "languages": "EN / AZ / RU",
+      "custom": "Fərdi",
+      "days7": "7 gün",
+      "days30": "30 gün",
+      "months12": "12 ay"
+    }
+  },
+  "faq": {
+    "title": "İnsanların həqiqətən verdiyi suallar",
+    "items": {
+      "trial": {
+        "question": "Sınaq müddəti var?",
+        "answer": "Prototipdən öz demo məlumatlarınızla pulsuz istifadə edə bilərsiniz — tətbiqin heç bir yerində ödəniş addımı yoxdur. Yuxarıdakı ödənişli tariflər nümunəvidir və istehsalat versiyasının nəyi əhatə edəcəyini göstərir."
+      },
+      "changePlans": {
+        "question": "Sonradan tarifi dəyişə bilərəm?",
+        "answer": "İstehsalat versiyasında bəli — Demo, Pro və Business arasında istənilən vaxt keçid edərdiniz və dəyişiklik növbəti ödəniş dövründə qüvvəyə minərdi. Bu prototipdə heç bir ödəniş tutulmur, ona görə dəyişdiriləcək bir şey yoxdur."
+      },
+      "languages": {
+        "question": "Hansı dillər dəstəklənir?",
+        "answer": "Əhval-ruhiyyə, şikayət aşkarlanması və mövzu etiketləri üçün bu gün İngilis, Azərbaycan və Rus dilləri dəstəklənir. İnterfeysin özü də hər üç dildə mövcuddur; Azərbaycan dilində dəstək Business və Enterprise tariflərində təklif olunacaq."
+      },
+      "mentions": {
+        "question": "Qeydlər haradan gəlir?",
+        "answer": "BrandPulse-ə verdiyiniz yerdən: CSV yükləmələri, analiz meydançasına yerləşdirdiyiniz mətnlər və RSS lentləri. BrandPulse sosial şəbəkələri qazımır və onlara daxil olmur, ona görə bu versiyada X, Instagram və ya Facebook monitorinqi yoxdur."
+      },
+      "data": {
+        "question": "Məlumatlarımla nə olur?",
+        "answer": "Hər şey sizin öz quraşdırmanızda işləyir və qeydlər həmin quraşdırmanın verilənlər bazasında saxlanılır. Siz açıq şəkildə istəyə bağlı LLM açarı quraşdırmadığınız müddətcə heç nə üçüncü tərəf analitika və ya süni intellekt xidmətinə göndərilmir."
+      },
+      "support": {
+        "question": "Azərbaycan dilində dəstək verirsiniz?",
+        "answer": "Bəli — Azərbaycan dilində dəstək ödənişli tariflər üçün, İngilis dili ilə yanaşı planlaşdırılır. Prototipdə əsas istinad mənbəyi repozitoriyadakı sənədlərdir."
+      }
+    }
+  }
+}

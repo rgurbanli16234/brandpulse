@@ -1,0 +1,148 @@
+{
+  "page": {
+    "eyebrow": "Pricing",
+    "title": "Simple plans, clearly labelled",
+    "subtitle": "Start with the free demo plan and see how BrandPulse handles your own mentions. Every feature below is marked as available today or coming soon — nothing is dressed up."
+  },
+  "plans": {
+    "billingAria": "Billing period",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "saveHint": "Switch to yearly and get 2 months free",
+    "saveHintActive": "2 months free",
+    "custom": "Custom",
+    "perMonth": "/mo",
+    "mostPopular": "Most popular",
+    "talkToUs": "Talk to us",
+    "prototypeNote": "Illustrative pricing for the prototype. No payment is taken.",
+    "items": {
+      "demo": {
+        "name": "Demo",
+        "tagline": "Everything you need to try BrandPulse on sample data.",
+        "cta": "Start free"
+      },
+      "pro": {
+        "name": "Pro",
+        "tagline": "For a single business that monitors every day.",
+        "cta": "Start 14-day trial"
+      },
+      "business": {
+        "name": "Business",
+        "tagline": "For companies running several brands or locations.",
+        "cta": "Start 14-day trial"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "tagline": "For organisations with their own integration and privacy rules.",
+        "cta": "Talk to us"
+      }
+    },
+    "features": {
+      "demoData": "Built-in demo data",
+      "playground": "Analyze playground",
+      "manualImport": "Manual paste and CSV import",
+      "oneProject": "1 project",
+      "dashboard": "Dashboard, mentions and threads",
+      "history7": "7-day history",
+      "inAppAlerts": "In-app alerts",
+      "everythingDemo": "Everything in Demo",
+      "rssSources": "RSS sources",
+      "emailAlerts": "Email alerts",
+      "history30": "30-day history",
+      "keywords5": "Up to 5 tracked keywords",
+      "threeLanguages": "English, Azerbaijani and Russian",
+      "replyDrafts": "Suggested reply drafts",
+      "everythingPro": "Everything in Pro",
+      "multiProject": "Multiple projects",
+      "webhookAlerts": "Webhook alerts (Telegram / Slack-ready)",
+      "unlimitedKeywords": "Unlimited keywords",
+      "priorityBreakdown": "Priority score breakdown",
+      "neuralMode": "Optional neural sentiment mode",
+      "history12": "12-month history",
+      "teamMembers": "Team members",
+      "everythingBusiness": "Everything in Business",
+      "customIntegrations": "Custom integrations",
+      "sso": "Single sign-on (SSO)",
+      "dedicatedSupport": "Dedicated support",
+      "modelTuning": "Custom model tuning",
+      "onPremise": "On-premise deployment",
+      "sla": "Service level agreement"
+    }
+  },
+  "comparison": {
+    "title": "Compare the plans",
+    "featureColumn": "Feature",
+    "groups": {
+      "monitoring": "Monitoring",
+      "analysis": "Analysis",
+      "alerts": "Alerts and replies",
+      "history": "History and access",
+      "enterprise": "Enterprise add-ons"
+    },
+    "rows": {
+      "projects": "Projects",
+      "manualImport": "CSV import and manual paste",
+      "rssSources": "RSS sources",
+      "keywords": "Tracked keywords",
+      "languages": "Languages",
+      "detection": "Sentiment and complaint detection",
+      "clustering": "Incident clustering",
+      "priorityScore": "Priority score",
+      "priorityBreakdown": "Priority score breakdown",
+      "neuralMode": "Neural sentiment mode (optional)",
+      "inAppAlerts": "In-app alerts",
+      "emailAlerts": "Email alerts",
+      "webhookAlerts": "Webhook alerts (Telegram / Slack-ready)",
+      "replyDrafts": "Suggested reply drafts",
+      "history": "History",
+      "teamMembers": "Team members",
+      "sso": "Single sign-on (SSO)",
+      "customIntegrations": "Custom integrations",
+      "modelTuning": "Custom model tuning",
+      "onPremise": "On-premise deployment",
+      "support": "Dedicated support and SLA"
+    },
+    "values": {
+      "yes": "Yes",
+      "one": "1",
+      "none": "—",
+      "multiple": "Multiple",
+      "unlimited": "Unlimited",
+      "upTo5": "Up to 5",
+      "languages": "EN / AZ / RU",
+      "custom": "Custom",
+      "days7": "7 days",
+      "days30": "30 days",
+      "months12": "12 months"
+    }
+  },
+  "faq": {
+    "title": "Questions people actually ask",
+    "items": {
+      "trial": {
+        "question": "Is there a trial?",
+        "answer": "The prototype is free to use with your own demo data — there is no payment step anywhere in the app. The paid plans above are illustrative and show what a production version would include."
+      },
+      "changePlans": {
+        "question": "Can I change plans later?",
+        "answer": "In a production version, yes — you would move between Demo, Pro and Business at any time and the change would apply at the next billing period. In this prototype nothing is billed, so there is nothing to change."
+      },
+      "languages": {
+        "question": "Which languages are supported?",
+        "answer": "English, Azerbaijani and Russian are supported today for sentiment, complaint detection and topic labels. The interface itself is available in all three languages, and Azerbaijani-speaking support would be available on the Business and Enterprise plans."
+      },
+      "mentions": {
+        "question": "Where do the mentions come from?",
+        "answer": "From what you give BrandPulse: CSV uploads, text you paste into the playground, and RSS feeds. BrandPulse does not scrape or log into social networks, so there is no X, Instagram or Facebook monitoring in this version."
+      },
+      "data": {
+        "question": "What happens to my data?",
+        "answer": "Everything runs in your own deployment and mentions are stored in that deployment's database. Nothing is sent to a third-party analytics or AI service unless you explicitly configure an optional LLM key."
+      },
+      "support": {
+        "question": "Do you offer support in Azerbaijani?",
+        "answer": "Yes — Azerbaijani-language support is planned for the paid tiers, alongside English. In the prototype, the documentation in the repository is the main reference."
+      }
+    }
+  }
+}

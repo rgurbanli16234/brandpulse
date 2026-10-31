@@ -1,0 +1,30 @@
+{
+  "product": "Məhsul",
+  "productMenuLabel": "Məhsul menyusu",
+  "features": "İmkanlar",
+  "howItWorks": "Necə işləyir",
+  "useCases": "İstifadə halları",
+  "pricing": "Qiymətlər",
+  "pricingPage": "Qiymətlər səhifəsi",
+  "blog": "Bloq",
+  "login": "Daxil ol",
+  "startTrial": "Sınağa başla",
+  "openMenu": "Menyunu aç",
+  "navigation": "Naviqasiya",
+  "menuDescriptions": {
+    "features": "BrandPulse nə edir — bir baxışda",
+    "cafes": "Rəylər, gözləmə vaxtı və xidmət barədə geribildirim",
+    "online-shops": "Sifarişlər, qaytarmalar və çatdırılma şikayətləri",
+    "delivery": "Gecikən bağlamalar, itən sifarişlər və kuryer qeydləri",
+    "clinics": "Randevular, gözləmə vaxtı və ödəniş sualları",
+    "hotels": "Otaqlar, səhər yeməyi, transfer və rəylər",
+    "agencies": "Hər layihə üzrə müştəri geribildirimi"
+  },
+  "footer": {
+    "tagline": "Azərbaycanda və ondan kənarda kiçik və orta bizneslər üçün hazırlanıb. BrandPulse təcili şikayətləri gündəlik söhbətlərdən ayırır ki, bir nəfər bütün kanalları izləyə bilsin.",
+    "productHeading": "Məhsul",
+    "useCasesHeading": "İstifadə halları",
+    "copyright": "© {{year}} BrandPulse. Nümayiş məqsədilə hazırlanmış prototip.",
+    "sourcesNote": "Qeydlər CSV, əl ilə yapışdırma və RSS lentlərindən gəlir. Sosial şəbəkə izləməsi yoxdur."
+  }
+}

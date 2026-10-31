@@ -1,0 +1,30 @@
+{
+  "product": "Product",
+  "productMenuLabel": "Product menu",
+  "features": "Features",
+  "howItWorks": "How it works",
+  "useCases": "Use cases",
+  "pricing": "Pricing",
+  "pricingPage": "Pricing page",
+  "blog": "Blog",
+  "login": "Login",
+  "startTrial": "Start trial",
+  "openMenu": "Open menu",
+  "navigation": "Navigation",
+  "menuDescriptions": {
+    "features": "Everything BrandPulse does, at a glance",
+    "cafes": "Reviews, wait times and service feedback",
+    "online-shops": "Orders, returns and delivery complaints",
+    "delivery": "Late parcels, lost items and courier notes",
+    "clinics": "Bookings, wait times and billing questions",
+    "hotels": "Rooms, breakfast, transfers and reviews",
+    "agencies": "Client feedback across every project"
+  },
+  "footer": {
+    "tagline": "Built for small and medium businesses in Azerbaijan and beyond. BrandPulse separates urgent complaints from everyday chatter so one person can keep up with every channel.",
+    "productHeading": "Product",
+    "useCasesHeading": "Use cases",
+    "copyright": "© {{year}} BrandPulse. A prototype for demonstration purposes.",
+    "sourcesNote": "Mentions come from CSV, manual paste and RSS feeds. No social network monitoring."
+  }
+}

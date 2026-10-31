@@ -1,0 +1,175 @@
+{
+  "meta": {
+    "landing": {
+      "title": "BrandPulse — Brend əhval-ruhiyyəsi və şikayət monitorinqi",
+      "description": "BrandPulse təcili şikayətləri gündəlik söhbətlərdən ayırır, oxşar problemləri hadisə qruplarına birləşdirir və indi nəyə diqqət yetirmək lazım olduğunu göstərir."
+    },
+    "pricing": {
+      "title": "Qiymətlər — BrandPulse",
+      "description": "Kiçik və orta bizneslər üçün BrandPulse tarifləri: pulsuz demo, Pro, Business və Enterprise. Hər funksiyanın hazır və ya \"tezliklə\" olduğu açıq şəkildə göstərilib."
+    },
+    "blog": {
+      "title": "Bloq — BrandPulse",
+      "description": "Kiçik bizneslər üçün şikayət monitorinqi haqqında qısa və praktik yazılar: gizli qalan şikayətlər, viral olan şikayət və əsəbi rəylərə cavab."
+    },
+    "blogPost": {
+      "title": "{{title}} — BrandPulse bloqu",
+      "description": "{{summary}}"
+    },
+    "blogMissing": {
+      "title": "Məqalə tapılmadı — BrandPulse",
+      "description": "Bu BrandPulse bloq məqaləsi tapılmadı."
+    },
+    "audience": {
+      "title": "{{label}} — BrandPulse",
+      "description": "{{intro}}"
+    },
+    "audienceMissing": {
+      "title": "Tapılmadı — BrandPulse",
+      "description": "BrandPulse-in bu istifadə ssenarisi səhifəsi tapılmadı."
+    },
+    "login": {
+      "title": "Daxil ol — BrandPulse",
+      "description": "BrandPulse hesabınıza daxil olun və ya qeydiyyatdan keçərək qeydləri və şikayətləri izləməyə başlayın."
+    },
+    "onboarding": {
+      "title": "Quraşdırma — BrandPulse",
+      "description": "BrandPulse iş məkanınızı bir neçə qısa addımda qurun."
+    },
+    "dashboard": {
+      "title": "İdarə paneli — BrandPulse",
+      "description": "BrandPulse idarə paneliniz: qeydlər, şikayətlər, əhval-ruhiyyə və açıq hadisələr."
+    },
+    "mentions": {
+      "title": "Qeydlər — BrandPulse",
+      "description": "BrandPulse-in topladığı bütün qeydlər: əhval-ruhiyyə, mövzu və prioritet ilə birlikdə."
+    },
+    "threads": {
+      "title": "Hadisə qrupları — BrandPulse",
+      "description": "Oxşar şikayətlər hadisə qruplarına birləşdirilir ki, tam mənzərəni görəsiniz."
+    },
+    "threadDetail": {
+      "title": "Hadisə qrupu — BrandPulse",
+      "description": "İçindəki bütün qeydlərlə birlikdə bir hadisə qrupu."
+    },
+    "alerts": {
+      "title": "Xəbərdarlıqlar — BrandPulse",
+      "description": "Yüksək və kritik hadisələr üçün yaradılan xəbərdarlıqlar."
+    },
+    "playground": {
+      "title": "Analiz meydançası — BrandPulse",
+      "description": "Hər hansı mətni BrandPulse-in necə oxuduğunu yoxlayın."
+    },
+    "settings": {
+      "title": "Tənzimləmələr — BrandPulse",
+      "description": "BrandPulse iş məkanınız üçün açar sözlər, mənbələr və hesab tənzimləmələri."
+    }
+  },
+  "actions": {
+    "retry": "Yenidən cəhd edin",
+    "goHome": "Ana səhifəyə qayıt",
+    "back": "Geri",
+    "close": "Bağla",
+    "cancel": "Ləğv et",
+    "save": "Yadda saxla",
+    "refresh": "Yenilə",
+    "signOut": "Çıxış",
+    "dismiss": "Bağla",
+    "add": "Əlavə et",
+    "copy": "Kopyala",
+    "clearFilters": "Filtrləri təmizlə",
+    "syncNow": "İndi sinxronlaşdır",
+    "delete": "Sil",
+    "search": "Axtar"
+  },
+  "labels": {
+    "sampleData": "Nümunə məlumat",
+    "soon": "Tezliklə",
+    "included": "Daxildir",
+    "notIncluded": "Daxil deyil",
+    "notSet": "Təyin edilməyib",
+    "unscored": "Qiymətləndirilməyib",
+    "unknownAuthor": "Naməlum müəllif",
+    "enabled": "Aktivdir",
+    "disabled": "Deaktivdir"
+  },
+  "counts": {
+    "mentions_one": "{{count}} qeyd",
+    "mentions_other": "{{count}} qeyd",
+    "complaints_one": "{{count}} şikayət",
+    "complaints_other": "{{count}} şikayət",
+    "alerts_one": "{{count}} xəbərdarlıq",
+    "alerts_other": "{{count}} xəbərdarlıq",
+    "threads_one": "{{count}} hadisə qrupu",
+    "threads_other": "{{count}} hadisə qrupu",
+    "feeds_one": "{{count}} lent",
+    "feeds_other": "{{count}} lent",
+    "reports_one": "{{count}} müraciət",
+    "reports_other": "{{count}} müraciət"
+  },
+  "language": {
+    "label": "Dil",
+    "switchLabel": "Dili dəyişdirin",
+    "current": "Dil: {{language}}",
+    "names": {
+      "en": "İngilis dili",
+      "az": "Azərbaycan dili",
+      "ru": "Rus dili"
+    }
+  },
+  "states": {
+    "loading": "Yüklənir…",
+    "errorTitle": "Nəsə səhv getdi",
+    "errorBody": "Yenidən cəhd edin. Yenə alınmasa, səhifəni yeniləyin.",
+    "emptyTitle": "Hələ heç nə yoxdur",
+    "emptyBody": "Yeni məlumat gələn kimi burada görünəcək."
+  },
+  "enums": {
+    "sentiment": {
+      "strongly_negative": "Kəskin mənfi",
+      "negative": "Mənfi",
+      "neutral": "Neytral",
+      "positive": "Müsbət"
+    },
+    "priority": {
+      "Low": "Aşağı",
+      "Medium": "Orta",
+      "High": "Yüksək",
+      "Critical": "Kritik"
+    },
+    "topic": {
+      "billing_payment": "Ödəniş / Hesablaşma",
+      "product_quality": "Məhsul keyfiyyəti",
+      "customer_service": "Müştəri xidməti",
+      "delivery_shipping": "Çatdırılma / Göndəriş",
+      "website_app_bug": "Sayt / Tətbiq xətası",
+      "price": "Qiymət",
+      "staff_behavior": "İşçi davranışı",
+      "other": "Digər"
+    },
+    "threadStatus": {
+      "open": "Açıq",
+      "investigating": "Araşdırılır",
+      "resolved": "Həll olunub"
+    },
+    "source": {
+      "csv": "CSV yükləmə",
+      "manual": "Əl ilə daxiletmə",
+      "reddit": "Reddit",
+      "rss": "RSS lenti",
+      "demo": "Demo məlumat"
+    },
+    "keywordType": {
+      "brand": "Brend",
+      "product": "Məhsul",
+      "executive": "Rəhbər",
+      "typo": "Yazı səhvi",
+      "competitor": "Rəqib"
+    },
+    "mentionLanguage": {
+      "EN": "İngilis dili",
+      "AZ": "Azərbaycan dili",
+      "RU": "Rus dili"
+    }
+  }
+}
