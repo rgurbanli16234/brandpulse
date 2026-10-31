@@ -26,20 +26,32 @@ _scheduler: BackgroundScheduler | None = None
 
 
 def run_scheduled_sync() -> dict[str, int]:
-    """One tick: sync sources and run the pipeline for every business."""
+    """One tick: sync sources and run the pipeline for every business.
+
+    Each business is isolated so one failing source or tenant cannot abort the
+    whole tick or surface as an unhandled scheduler error.
+    """
     businesses = mentions = 0
     with SessionLocal() as db:
         for business in db.scalars(select(Business)).all():
             businesses += 1
-            mentions += sync_business_sources(db, business.id)
-            run_pipeline(db, business.id)
+            try:
+                mentions += sync_business_sources(db, business.id)
+                run_pipeline(db, business.id)
+            except Exception:
+                db.rollback()
+                logger.exception("Scheduled sync failed for business %s.", business.id)
     if mentions:
         logger.info("Scheduled sync: %s new mention(s) across %s business(es).", mentions, businesses)
     return {"businesses": businesses, "mentions": mentions}
 
 
 def start_scheduler() -> BackgroundScheduler | None:
-    """Start the background scheduler (no-op when disabled or already running)."""
+    """Start the background scheduler (no-op when disabled or already running).
+
+    A scheduler failure must never stop the API from serving, so any error is
+    logged and swallowed.
+    """
     global _scheduler
     settings = get_settings()
     if not settings.enable_scheduler:
@@ -48,17 +60,23 @@ def start_scheduler() -> BackgroundScheduler | None:
     if _scheduler is not None:
         return _scheduler
 
-    _scheduler = BackgroundScheduler(daemon=True)
-    _scheduler.add_job(
-        run_scheduled_sync,
-        "interval",
-        minutes=settings.pipeline_interval_minutes,
-        id=JOB_ID,
-        replace_existing=True,
-        max_instances=1,
-        coalesce=True,
-    )
-    _scheduler.start()
+    try:
+        scheduler = BackgroundScheduler(daemon=True)
+        scheduler.add_job(
+            run_scheduled_sync,
+            "interval",
+            minutes=settings.pipeline_interval_minutes,
+            id=JOB_ID,
+            replace_existing=True,
+            max_instances=1,
+            coalesce=True,
+        )
+        scheduler.start()
+    except Exception:
+        logger.exception("Could not start the scheduler; continuing without it.")
+        return None
+
+    _scheduler = scheduler
     logger.info("Scheduler started (every %s min).", settings.pipeline_interval_minutes)
     return _scheduler
 

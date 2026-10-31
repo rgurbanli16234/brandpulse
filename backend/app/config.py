@@ -9,6 +9,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 DEV_JWT_SECRET = "dev-secret-change-me"
 # Minimum length accepted for a production JWT signing key.
 MIN_PRODUCTION_JWT_SECRET_LENGTH = 32
+# Dev-only convenience pattern; ignored in production unless the operator sets a
+# different CORS_ORIGIN_REGEX explicitly.
+DEV_CORS_ORIGIN_REGEX = r"http://(localhost|127\.0\.0\.1)(:\d+)?"
 
 
 class Settings(BaseSettings):
@@ -34,8 +37,9 @@ class Settings(BaseSettings):
         "http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000"
     )
     # Dev convenience: accept any localhost / 127.0.0.1 origin on any port.
-    # Set CORS_ORIGIN_REGEX= (empty) in production to rely on the explicit list only.
-    cors_origin_regex: str = r"http://(localhost|127\.0\.0\.1)(:\d+)?"
+    # Ignored in production (see effective_cors_origin_regex) so a deploy never
+    # accepts localhost origins; set CORS_ORIGIN_REGEX explicitly to override.
+    cors_origin_regex: str = DEV_CORS_ORIGIN_REGEX
 
     # Analyzer: "rules" (default, zero downloads) or "hf" (optional model).
     analyzer: str = "rules"
@@ -91,6 +95,21 @@ class Settings(BaseSettings):
     @property
     def cors_origin_list(self) -> list[str]:
         return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
+
+    @property
+    def effective_cors_origin_regex(self) -> str | None:
+        """The CORS origin regex to apply, or None to disable regex matching.
+
+        Production never inherits the built-in dev pattern, so a deploy cannot
+        accidentally accept localhost origins. An operator can still opt in by
+        setting CORS_ORIGIN_REGEX to a *different* value.
+        """
+        value = (self.cors_origin_regex or "").strip()
+        if not value:
+            return None
+        if self.is_production and value == DEV_CORS_ORIGIN_REGEX:
+            return None
+        return value
 
 
 @lru_cache

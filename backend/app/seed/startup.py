@@ -9,8 +9,10 @@ full pipeline so the dashboard, threads and alerts all have something to show.
 from __future__ import annotations
 
 import logging
+import threading
 
 from sqlalchemy import func, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from ..models import Business, Keyword, User
@@ -19,6 +21,10 @@ from ..services.pipeline import add_mention, run_pipeline
 from .generator import generate_mentions
 
 logger = logging.getLogger(__name__)
+
+# Serialises the check-then-insert so a concurrent seed cannot create a second
+# demo business (the auto-seed thread and a startup race are the realistic cases).
+_SEED_LOCK = threading.Lock()
 
 # Public demo credentials shown in DEPLOY.md; change them for anything real.
 DEMO_BUSINESS = "Demo Coffee Co."
@@ -32,7 +38,21 @@ DEMO_KEYWORDS: tuple[tuple[str, str], ...] = (
 
 
 def seed_demo_if_empty(db: Session) -> bool:
-    """Seed demo data when no business exists yet. Returns True when it seeded."""
+    """Seed demo data when no business exists yet. Returns True when it seeded.
+
+    Safe to call from several threads: the check-then-insert runs under a lock and
+    a unique-constraint violation is treated as "already seeded".
+    """
+    with _SEED_LOCK:
+        try:
+            return _seed_demo_unlocked(db)
+        except IntegrityError:
+            db.rollback()
+            logger.info("Demo data was seeded concurrently; skipping.")
+            return False
+
+
+def _seed_demo_unlocked(db: Session) -> bool:
     if db.scalar(select(func.count()).select_from(Business)):
         return False
 

@@ -6,7 +6,20 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
+// Local dev runs two processes: Vite on :8080 and the FastAPI backend on :8001.
+// The frontend calls the API with a same-origin base ("/api/v1"), so in dev every
+// request would otherwise hit Vite and 404. Proxy /api to the backend here; set
+// VITE_API_PROXY_TARGET to point at a different backend host/port.
+const API_PROXY_TARGET = process.env["VITE_API_PROXY_TARGET"] ?? "http://127.0.0.1:8001";
+
 export default defineConfig({
+  vite: {
+    server: {
+      proxy: {
+        "/api": { target: API_PROXY_TARGET, changeOrigin: true },
+      },
+    },
+  },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this

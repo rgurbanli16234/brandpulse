@@ -15,7 +15,7 @@ import {
   type ReactNode,
 } from "react";
 
-import { api, setAuthToken, type Business, type TokenResponse, type User } from "@/lib/api";
+import { api, setAuthToken, UNAUTHORIZED_EVENT, type Business, type TokenResponse, type User } from "@/lib/api";
 
 const STORAGE_KEY = "brandpulse.session";
 
@@ -63,6 +63,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     }
     setReady(true);
+  }, []);
+
+  // The API rejected our token (expired/invalid) — drop the dead session so the
+  // route guards send the user back to /login instead of looping on 401s.
+  useEffect(() => {
+    const onUnauthorized = () => {
+      persist(null);
+      setSession(null);
+    };
+    window.addEventListener(UNAUTHORIZED_EVENT, onUnauthorized);
+    return () => window.removeEventListener(UNAUTHORIZED_EVENT, onUnauthorized);
   }, []);
 
   const apply = useCallback((result: TokenResponse) => {

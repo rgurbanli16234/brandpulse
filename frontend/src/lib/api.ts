@@ -25,6 +25,24 @@ export class ApiError extends Error {
   }
 }
 
+/** Fired when the server rejects the token we sent, so the session store can sign out. */
+export const UNAUTHORIZED_EVENT = "brandpulse:unauthorized";
+
+/**
+ * Turn any thrown value into a message we can show the user. API failures carry the
+ * real reason (network / 401 / 409 / 422 / 500); anything else falls back.
+ */
+export function describeError(error: unknown, fallback: string): string {
+  if (error instanceof ApiError) return error.message || fallback;
+  if (error instanceof Error) return error.message || fallback;
+  return fallback;
+}
+
+function notifyUnauthorized(): void {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new Event(UNAUTHORIZED_EVENT));
+}
+
 let authToken: string | null = null;
 
 export function setAuthToken(token: string | null): void {
@@ -84,6 +102,9 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
     } catch {
       /* keep the status text */
     }
+    // Only a *token-authenticated* 401 means the session is dead; a failed login
+    // (no token was attached) must not sign the user out.
+    if (response.status === 401 && authToken) notifyUnauthorized();
     throw new ApiError(response.status, detail || "Request failed");
   }
 

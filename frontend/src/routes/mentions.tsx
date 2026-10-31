@@ -24,7 +24,7 @@ import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { ApiError, api, type CsvUploadResult, type SentimentLabel } from "@/lib/api";
+import { ApiError, api, describeError, type CsvUploadResult, type SentimentLabel } from "@/lib/api";
 import { SENTIMENT_COLORS, SENTIMENT_TEXT, formatNumber, relativeTime } from "@/lib/format";
 
 export const Route = createFileRoute("/mentions")({
@@ -379,7 +379,7 @@ function MentionsPage() {
             ) : mentions.isError ? (
               <ErrorNote
                 title="Couldn't load mentions"
-                description="We couldn't reach the server. Try adjusting the filters or refreshing the page."
+                description={describeError(mentions.error, "We couldn't load mentions. Try adjusting the filters or refreshing.")}
               />
             ) : mentions.data && mentions.data.length > 0 ? (
               <Table>

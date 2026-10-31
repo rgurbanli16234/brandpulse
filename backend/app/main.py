@@ -3,14 +3,16 @@
 from __future__ import annotations
 
 import logging
+import os
 import threading
-from contextlib import asynccontextmanager
 from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from sqlalchemy import text
 
 from .api import alerts as alerts_api
 from .api import analytics as analytics_api
@@ -22,13 +24,14 @@ from .api import mentions as mentions_api
 from .api import sources as sources_api
 from .api import threads as threads_api
 from .config import get_settings
-from .db import SessionLocal, init_db
+from .db import SessionLocal, engine, init_db
 from .services.scheduler import shutdown_scheduler, start_scheduler
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 API_PREFIX = "/api/v1"
+APP_VERSION = "0.1.0"
 
 
 def _seed_demo_data() -> None:
@@ -49,8 +52,21 @@ def _safe_seed_demo_data() -> None:
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
+    settings = get_settings()
     init_db()
-    if get_settings().auto_seed:
+    logger.info(
+        "BrandPulse v%s starting — environment=%s analyzer=%s port=%s "
+        "database=%s frontend_dir=%s auto_seed=%s scheduler=%s",
+        APP_VERSION,
+        settings.environment,
+        settings.analyzer,
+        os.environ.get("PORT", "(uvicorn default)"),
+        settings.database_url,
+        settings.frontend_dir or "(api only)",
+        settings.auto_seed,
+        settings.enable_scheduler,
+    )
+    if settings.auto_seed:
         # Background thread: a slow first-run analysis (rule or HF model) must not
         # delay the port opening or the platform's health check.
         threading.Thread(target=_safe_seed_demo_data, name="demo-seed", daemon=True).start()
@@ -90,7 +106,7 @@ def create_app() -> FastAPI:
     settings = get_settings()
     app = FastAPI(
         title=f"{settings.app_name} API",
-        version="0.1.0",
+        version=APP_VERSION,
         description="Real-time brand sentiment & complaint monitoring for small and medium businesses.",
         lifespan=lifespan,
     )
@@ -98,7 +114,7 @@ def create_app() -> FastAPI:
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origin_list,
-        allow_origin_regex=settings.cors_origin_regex or None,
+        allow_origin_regex=settings.effective_cors_origin_regex,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -115,8 +131,24 @@ def create_app() -> FastAPI:
     app.include_router(sources_api.router, prefix=API_PREFIX)
 
     @app.get("/health", tags=["meta"])
-    def health() -> dict[str, str]:
-        return {"status": "ok", "app": settings.app_name}
+    def health(response: Response) -> dict[str, str]:
+        """Liveness + readiness: reports 503 when the database is unreachable."""
+        payload = {
+            "status": "ok",
+            "app": settings.app_name,
+            "environment": settings.environment,
+            "analyzer": settings.analyzer,
+            "database": "ok",
+        }
+        try:
+            with engine.connect() as connection:
+                connection.execute(text("SELECT 1"))
+        except Exception:
+            logger.exception("Health check: the database is not reachable.")
+            payload["status"] = "error"
+            payload["database"] = "unreachable"
+            response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+        return payload
 
     if settings.frontend_dir:
         _mount_frontend(app, settings.frontend_dir)

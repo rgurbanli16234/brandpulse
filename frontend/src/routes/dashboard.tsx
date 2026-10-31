@@ -32,7 +32,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { api } from "@/lib/api";
+import { api, describeError } from "@/lib/api";
 import { formatNumber, relativeTime, SENTIMENT_COLORS } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -146,7 +146,7 @@ function DashboardPage() {
         ) : summary.isError ? (
           <ErrorNote
             title="Couldn't load your numbers"
-            description="We couldn't reach the server. Try refreshing the page."
+            description={describeError(summary.error, "The summary is unavailable right now.")}
           />
         ) : summary.data ? (
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -231,7 +231,7 @@ function DashboardPage() {
             ) : trend.isError ? (
               <ErrorNote
                 title="Couldn't load the trend"
-                description="The sentiment trend is unavailable right now. Try again shortly."
+                description={describeError(trend.error, "The sentiment trend is unavailable right now.")}
               />
             ) : trend.data && trend.data.points.length > 0 ? (
               <div className="h-64 w-full">
@@ -310,7 +310,7 @@ function DashboardPage() {
               ) : topics.isError ? (
                 <ErrorNote
                   title="Couldn't load topics"
-                  description="The topic breakdown is unavailable right now. Try again shortly."
+                  description={describeError(topics.error, "The topic breakdown is unavailable right now.")}
                 />
               ) : topics.data && topics.data.topics.length > 0 ? (
                 <div className="h-72 w-full">
@@ -369,7 +369,7 @@ function DashboardPage() {
               ) : topics.isError ? (
                 <ErrorNote
                   title="Couldn't load topics"
-                  description="The topic breakdown is unavailable right now. Try again shortly."
+                  description={describeError(topics.error, "The topic breakdown is unavailable right now.")}
                 />
               ) : topics.data && topics.data.topics.length > 0 ? (
                 <ul className="divide-y divide-border">
@@ -410,7 +410,7 @@ function DashboardPage() {
             ) : threads.isError ? (
               <ErrorNote
                 title="Couldn't load threads"
-                description="We couldn't fetch your incident threads right now. Try again shortly."
+                description={describeError(threads.error, "Your incident threads are unavailable right now.")}
               />
             ) : highPriorityThreads.length > 0 ? (
               <ul className="divide-y divide-border">

@@ -19,7 +19,7 @@ _TMP_DIR = Path(tempfile.mkdtemp(prefix="brandpulse-tests-"))
 os.environ["DATABASE_URL"] = f"sqlite:///{(_TMP_DIR / 'test.db').as_posix()}"
 os.environ["ENABLE_SCHEDULER"] = "false"
 os.environ["ANALYZER"] = "rules"
-os.environ["JWT_SECRET"] = "test-secret"
+os.environ["JWT_SECRET"] = "test-secret-only-for-the-test-suite-0123456789"
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
