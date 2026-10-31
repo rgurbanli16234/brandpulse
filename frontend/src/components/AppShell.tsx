@@ -10,6 +10,8 @@ import {
   LogOut,
   MessageSquareText,
   Settings as SettingsIcon,
+  Search,
+  User
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -36,14 +38,14 @@ const NAV = [
 
 function Logo() {
   return (
-    <Link to="/dashboard" className="flex items-center gap-2.5">
-      <span className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
+    <Link to="/dashboard" className="flex items-center gap-2.5 group">
+      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-transform group-hover:scale-110">
         <Activity className="h-4 w-4" />
       </span>
       <span className="leading-none">
-        <span className="block text-[15px] font-bold tracking-tight text-foreground">BrandPulse</span>
-        <span className="block text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-          Sentiment Monitoring
+        <span className="block text-sm font-bold tracking-tight text-sidebar-foreground">BrandPulse</span>
+        <span className="block text-[9px] uppercase tracking-[0.2em] text-sidebar-foreground/40 font-bold mt-0.5">
+          Sentiment Monitor
         </span>
       </span>
     </Link>
@@ -77,12 +79,15 @@ export function AppShell({ children }: { children: ReactNode }) {
   const unread = summary.data?.unacknowledged_alerts ?? 0;
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-sidebar-border bg-sidebar md:flex">
-        <div className="px-5 py-5">
+    <div className="flex min-h-screen bg-background selection:bg-primary selection:text-primary-foreground">
+      {/* Desktop Sidebar */}
+      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar md:flex">
+        <div className="px-6 py-8">
           <Logo />
         </div>
+        
         <nav className="flex-1 space-y-1 px-3">
+          <div className="text-[10px] font-bold text-sidebar-foreground/30 px-3 py-2 uppercase tracking-[0.2em]">Navigation</div>
           {NAV.map((item) => {
             const active = pathname === item.to || pathname.startsWith(`${item.to}/`);
             return (
@@ -90,16 +95,16 @@ export function AppShell({ children }: { children: ReactNode }) {
                 key={item.to}
                 to={item.to}
                 className={cn(
-                  "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                  "flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-semibold transition-all group",
                   active
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                    : "text-sidebar-foreground/75 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground",
+                    ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-sm"
+                    : "text-sidebar-foreground/60 hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground",
                 )}
               >
-                <item.icon className={cn("h-4 w-4", active && "text-primary")} />
+                <item.icon className={cn("h-4 w-4 transition-colors", active ? "text-primary" : "text-sidebar-foreground/30 group-hover:text-sidebar-foreground/60")} />
                 <span className="truncate">{item.label}</span>
                 {item.to === "/alerts" && unread > 0 ? (
-                  <span className="text-numeric ml-auto rounded bg-risk-critical/15 px-1.5 text-[10px] font-semibold text-risk-critical">
+                  <span className="text-numeric ml-auto rounded-full bg-primary px-2 py-0.5 text-[9px] font-bold text-primary-foreground">
                     {unread}
                   </span>
                 ) : null}
@@ -107,44 +112,64 @@ export function AppShell({ children }: { children: ReactNode }) {
             );
           })}
         </nav>
-        <div className="border-t border-sidebar-border px-5 py-4">
-          <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Business</p>
-          <p className="mt-1 truncate text-xs text-sidebar-foreground/80">{session.business.name}</p>
+
+        <div className="mt-auto border-t border-sidebar-border/50 px-6 py-6">
+          <div className="flex items-center gap-3 rounded-2xl bg-sidebar-accent/30 p-3">
+            <div className="h-10 w-10 rounded-xl bg-primary/20 flex items-center justify-center text-primary font-bold">
+              {session.business.name[0]}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-xs font-bold text-sidebar-foreground">{session.business.name}</p>
+              <p className="truncate text-[10px] text-sidebar-foreground/40 font-semibold uppercase tracking-wider mt-0.5">{session.business.plan} Plan</p>
+            </div>
+          </div>
         </div>
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-background/85 px-4 backdrop-blur md:px-6">
+        {/* Header */}
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border bg-background/80 px-6 backdrop-blur-md">
           <div className="md:hidden">
             <Logo />
           </div>
-          <div className="ml-auto flex items-center gap-2">
-            <Button variant="outline" size="sm" className="gap-2" asChild>
-              <Link to="/mentions">
-                <MessageSquareText className="h-4 w-4" /> Add mentions
+
+          <div className="hidden flex-1 max-w-md relative md:block">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground/30" />
+            <div className="w-full bg-secondary-tint rounded-xl h-9 pl-10 flex items-center text-xs text-foreground/40 border border-transparent hover:border-border transition-colors cursor-text">
+              Search mentions, incidents, authors...
+            </div>
+          </div>
+
+          <div className="ml-auto flex items-center gap-3">
+            <Button variant="ghost" size="icon" className="rounded-xl bg-secondary-tint text-foreground/60 hover:text-primary relative" asChild>
+              <Link to="/alerts">
+                <BellRing className="h-4 w-4" />
+                {unread > 0 && (
+                  <span className="absolute top-2.5 right-2.5 h-2 w-2 rounded-full bg-primary border-2 border-background" />
+                )}
               </Link>
             </Button>
-            <Link
-              to="/alerts"
-              className="relative flex h-9 w-9 items-center justify-center rounded-md border border-input text-muted-foreground transition-colors hover:text-foreground"
-              aria-label="Alerts"
-            >
-              <BellRing className="h-4 w-4" />
-              {unread > 0 ? (
-                <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-risk-critical" />
-              ) : null}
-            </Link>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="flex h-9 items-center gap-2 rounded-md border border-input px-2.5 text-xs font-medium text-foreground">
-                  <span className="hidden max-w-[160px] truncate sm:inline">{session.user.email}</span>
-                  <span className="sm:hidden">Account</span>
+                <button className="flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-1.5 transition-all hover:bg-secondary-tint active:scale-95">
+                  <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <User className="h-4 w-4 text-primary" />
+                  </div>
+                  <div className="text-left hidden sm:block">
+                    <p className="text-[10px] font-bold text-foreground leading-none">{session.user.email.split('@')[0]}</p>
+                    <p className="text-[9px] text-foreground/40 font-semibold leading-none mt-1">Admin</p>
+                  </div>
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel className="truncate">{session.business.name}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
+              <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2 border-border shadow-xl">
+                <DropdownMenuLabel className="px-3 py-2">
+                  <p className="text-xs font-bold">{session.user.email}</p>
+                  <p className="text-[10px] text-foreground/40 font-semibold">{session.business.name}</p>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-border/50 my-1" />
                 <DropdownMenuItem
+                  className="rounded-xl px-3 py-2 text-xs font-semibold focus:bg-primary/10 focus:text-primary cursor-pointer"
                   onClick={() => {
                     signOut();
                     navigate({ to: "/login" });
@@ -157,19 +182,29 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </header>
 
-        <nav className="flex gap-1 overflow-x-auto border-b border-border px-4 py-2 md:hidden">
-          {NAV.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className="whitespace-nowrap rounded-md px-2.5 py-1.5 text-xs font-medium text-muted-foreground"
-            >
-              {item.label}
-            </Link>
-          ))}
+        {/* Mobile Nav */}
+        <nav className="flex gap-2 overflow-x-auto border-b border-border bg-card px-4 py-3 md:hidden">
+          {NAV.map((item) => {
+            const active = pathname === item.to || pathname.startsWith(`${item.to}/`);
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                className={cn(
+                  "whitespace-nowrap rounded-xl px-4 py-1.5 text-xs font-bold transition-all",
+                  active ? "bg-primary text-primary-foreground" : "bg-secondary-tint text-foreground/60"
+                )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
-        <main className="min-w-0 flex-1 px-4 py-6 md:px-6 lg:px-8">{children}</main>
+        {/* Main Content */}
+        <main className="min-w-0 flex-1 px-6 py-8 md:px-8 lg:px-10">
+          {children}
+        </main>
       </div>
     </div>
   );

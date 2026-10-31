@@ -5,9 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * 45ever design system — enterprise InsurTech.
- * Deep navy foundation, single teal/blue accent, consistent risk color scale.
- * All colors are oklch semantic tokens. Never hardcode colors in components.
+ * 45ever design system — BrandPulse.
+ * Cream background, Charcoal foreground, Orange primary, Sage secondary.
  */
 
 @theme inline {
@@ -68,7 +67,7 @@
 }
 
 :root {
-  --radius: 0rem;
+  --radius: 1rem;
 
   --background: oklch(0.95 0.01 80); /* #F2EFE9 */
   --foreground: oklch(0.18 0.01 250); /* #1A1A1A */
@@ -126,6 +125,10 @@
   --sidebar-border: oklch(0.25 0.01 250);
   --sidebar-ring: oklch(0.63 0.2 35);
 
+  /* Derived Tints */
+  --primary-tint: oklch(0.92 0.04 35); /* Soft orange for buttons */
+  --secondary-tint: oklch(0.95 0.01 110); /* Soft sage for panels */
+
   --gradient-hero: linear-gradient(
     135deg,
     oklch(0.95 0.01 80) 0%,
@@ -161,6 +164,14 @@
 @layer utilities {
   .font-serif {
     font-family: var(--font-serif);
+  }
+  
+  .bg-primary-tint {
+    background-color: var(--primary-tint);
+  }
+  
+  .bg-secondary-tint {
+    background-color: var(--secondary-tint);
   }
 }
 
