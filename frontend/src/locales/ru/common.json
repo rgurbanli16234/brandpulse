@@ -119,6 +119,27 @@
     "reports_many": "{{count}} отчётов",
     "reports_other": "{{count}} отчёта"
   },
+  "time": {
+    "now": "сейчас",
+    "yesterday": "вчера",
+    "tomorrow": "завтра",
+    "twoDaysAgo": "позавчера",
+    "twoDaysAhead": "послезавтра",
+    "lastMonth": "в прошлом мес.",
+    "nextMonth": "в следующем мес.",
+    "lastYear": "в прошлом г.",
+    "nextYear": "в след. г.",
+    "ago": "{{count}} {{unit}} назад",
+    "in": "через {{count}} {{unit}}",
+    "units": {
+      "second": "сек.",
+      "minute": "мин.",
+      "hour": "ч",
+      "day": "дн.",
+      "month": "мес.",
+      "year": "г."
+    }
+  },
   "language": {
     "label": "Язык",
     "switchLabel": "Сменить язык",

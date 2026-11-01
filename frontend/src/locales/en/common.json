@@ -107,6 +107,27 @@
     "reports_one": "{{count}} report",
     "reports_other": "{{count}} reports"
   },
+  "time": {
+    "now": "now",
+    "yesterday": "yesterday",
+    "tomorrow": "tomorrow",
+    "twoDaysAgo": "2d ago",
+    "twoDaysAhead": "in 2d",
+    "lastMonth": "last mo.",
+    "nextMonth": "next mo.",
+    "lastYear": "last yr.",
+    "nextYear": "next yr.",
+    "ago": "{{count}}{{unit}} ago",
+    "in": "in {{count}}{{unit}}",
+    "units": {
+      "second": "s",
+      "minute": "m",
+      "hour": "h",
+      "day": "d",
+      "month": "mo",
+      "year": "y"
+    }
+  },
   "language": {
     "label": "Language",
     "switchLabel": "Change language",

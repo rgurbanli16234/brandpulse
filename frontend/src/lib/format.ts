@@ -33,7 +33,7 @@ export { formatDate, formatDateTime, formatNumber, formatShortDate } from "@/i18
 
 import { formatRelativeTime } from "@/i18n/format";
 
-/** Compact relative time for list rows: "5m ago" / "5 мин. назад" / "5 dəq. əvvəl". */
+/** Compact relative time for list rows: "5m ago" / "5 мин. назад" / "5 dəqiqə əvvəl". */
 export function relativeTime(iso: string): string {
-  return formatRelativeTime(iso, undefined, "narrow");
+  return formatRelativeTime(iso);
 }

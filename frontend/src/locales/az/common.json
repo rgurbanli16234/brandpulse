@@ -107,6 +107,27 @@
     "reports_one": "{{count}} müraciət",
     "reports_other": "{{count}} müraciət"
   },
+  "time": {
+    "now": "indi",
+    "yesterday": "dünən",
+    "tomorrow": "sabah",
+    "twoDaysAgo": "2 gün əvvəl",
+    "twoDaysAhead": "2 gün ərzində",
+    "lastMonth": "keçən ay",
+    "nextMonth": "gələn ay",
+    "lastYear": "keçən il",
+    "nextYear": "gələn il",
+    "ago": "{{count}} {{unit}} əvvəl",
+    "in": "{{count}} {{unit}} ərzində",
+    "units": {
+      "second": "saniyə",
+      "minute": "dəqiqə",
+      "hour": "saat",
+      "day": "gün",
+      "month": "ay",
+      "year": "il"
+    }
+  },
   "language": {
     "label": "Dil",
     "switchLabel": "Dili dəyişdirin",

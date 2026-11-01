@@ -58,7 +58,9 @@ export function formatShortDate(iso: string, language?: Language): string {
   );
 }
 
-const RELATIVE_STEPS: ReadonlyArray<readonly [Intl.RelativeTimeFormatUnit, number]> = [
+type RelativeUnit = "year" | "month" | "day" | "hour" | "minute" | "second";
+
+const RELATIVE_STEPS: ReadonlyArray<readonly [RelativeUnit, number]> = [
   ["year", 60 * 60 * 24 * 365],
   ["month", 60 * 60 * 24 * 30],
   ["day", 60 * 60 * 24],
@@ -68,20 +70,68 @@ const RELATIVE_STEPS: ReadonlyArray<readonly [Intl.RelativeTimeFormatUnit, numbe
 ];
 
 /**
- * "just now" / "5 minutes ago" / "3 дня назад" — plural rules handled by Intl.
- * `style: "narrow"` gives the compact form used in list rows ("5m ago").
+ * "5 hours ago" / "5 ч назад" / "5 saat əvvəl".
+ *
+ * This used to be `Intl.RelativeTimeFormat`, which is unusable here: its
+ * `narrow` style is signed in Russian (`-5 ч`), Chromium ships no Azerbaijani
+ * relative-time data at all (every style falls back to `-5 h`), and the two
+ * engines disagree even for `az` short. The wording therefore lives in the
+ * `common:time` bundle, so the output is the same on every ICU build.
  */
-export function formatRelativeTime(
-  iso: string,
-  language?: Language,
-  style: Intl.RelativeTimeFormatStyle = "long",
-): string {
-  const formatter = new Intl.RelativeTimeFormat(localeFor(language), { numeric: "auto", style });
+export function formatRelativeTime(iso: string, language?: Language): string {
+  const lang = language ?? activeLanguage();
   const diffSeconds = Math.round((new Date(iso).getTime() - Date.now()) / 1000);
   for (const [unit, seconds] of RELATIVE_STEPS) {
     if (Math.abs(diffSeconds) >= seconds || unit === "second") {
-      return formatter.format(Math.round(diffSeconds / seconds), unit);
+      return relativePhrase(Math.round(diffSeconds / seconds), unit, lang);
     }
   }
-  return formatter.format(0, "second");
+  return relativePhrase(0, "second", lang);
+}
+
+/** Literal keys keep the typed `t()` overloads happy; `time.units.*` mirrors them. */
+const TIME_KEYS = {
+  now: "common:time.now",
+  yesterday: "common:time.yesterday",
+  tomorrow: "common:time.tomorrow",
+  twoDaysAgo: "common:time.twoDaysAgo",
+  twoDaysAhead: "common:time.twoDaysAhead",
+  lastMonth: "common:time.lastMonth",
+  nextMonth: "common:time.nextMonth",
+  lastYear: "common:time.lastYear",
+  nextYear: "common:time.nextYear",
+  ago: "common:time.ago",
+  in: "common:time.in",
+} as const;
+
+const UNIT_KEYS = {
+  second: "common:time.units.second",
+  minute: "common:time.units.minute",
+  hour: "common:time.units.hour",
+  day: "common:time.units.day",
+  month: "common:time.units.month",
+  year: "common:time.units.year",
+} as const satisfies Record<RelativeUnit, string>;
+
+type TimeKey = (typeof TIME_KEYS)[keyof typeof TIME_KEYS] | (typeof UNIT_KEYS)[keyof typeof UNIT_KEYS];
+
+/** The `numeric: "auto"` wording ("yesterday", "позавчера") spelled out per locale. */
+function relativePhrase(
+  value: number,
+  unit: RelativeUnit,
+  language: Language,
+): string {
+  const t = (key: TimeKey, options?: { count?: number; unit?: string }) =>
+    String(i18n.t(key, { lng: language, ...options }));
+
+  if (value === 0) return t(TIME_KEYS.now);
+  const past = value < 0;
+  const count = Math.abs(value);
+  if (unit === "day") {
+    if (count === 1) return t(past ? TIME_KEYS.yesterday : TIME_KEYS.tomorrow);
+    if (count === 2) return t(past ? TIME_KEYS.twoDaysAgo : TIME_KEYS.twoDaysAhead);
+  }
+  if (count === 1 && unit === "month") return t(past ? TIME_KEYS.lastMonth : TIME_KEYS.nextMonth);
+  if (count === 1 && unit === "year") return t(past ? TIME_KEYS.lastYear : TIME_KEYS.nextYear);
+  return t(past ? TIME_KEYS.ago : TIME_KEYS.in, { count, unit: t(UNIT_KEYS[unit]) });
 }
