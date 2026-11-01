@@ -142,6 +142,21 @@
     0 12px 24px -12px color-mix(in oklab, var(--primary) 40%, transparent);
 }
 
+/* Logged-in icon rail. Light surface tokens are scoped here so the rail can use
+   the same sidebar-* utilities as the rest of the app without repainting the
+   dark sidebar mock on the landing page. */
+.app-rail {
+  --sidebar: oklch(0.99 0 0);
+  --sidebar-foreground: oklch(0.18 0.01 250);
+  --sidebar-border: oklch(0.92 0.01 80);
+  --sidebar-accent: color-mix(in oklab, var(--primary) 10%, transparent);
+  --sidebar-accent-foreground: var(--primary);
+  --sidebar-ring: var(--primary);
+  box-shadow:
+    0 1px 2px oklch(0 0 0 / 0.04),
+    0 18px 40px -20px oklch(0 0 0 / 0.22);
+}
+
 @layer base {
   * {
     border-color: var(--color-border);

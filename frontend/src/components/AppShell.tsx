@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import {
@@ -29,6 +29,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const NAV = [
   { to: "/dashboard", labelKey: "app:shell.nav.dashboard", icon: LayoutDashboard },
@@ -39,15 +45,15 @@ const NAV = [
   { to: "/settings", labelKey: "app:shell.nav.settings", icon: SettingsIcon },
 ] as const;
 
-function Logo() {
+function Logo({ textClassName }: { textClassName?: string }) {
   const { t } = useTranslation(["app", "common"]);
 
   return (
     <Link to="/dashboard" className="flex items-center gap-2.5 group">
-      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-transform group-hover:scale-110">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-transform group-hover:scale-110">
         <Activity className="h-4 w-4" />
       </span>
-      <span className="leading-none">
+      <span className={cn("leading-none", textClassName)}>
         <span className="block text-sm font-bold tracking-tight text-sidebar-foreground">BrandPulse</span>
         <span className="block text-[9px] uppercase tracking-[0.2em] text-sidebar-foreground/40 font-bold mt-0.5">
           {t("app:shell.tagline")}
@@ -63,9 +69,25 @@ export function AppShell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
+  const railRef = useRef<HTMLElement>(null);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [tapped, setTapped] = useState(false);
+  const railOpen = hovered || focused || tapped;
+
   useEffect(() => {
     if (ready && !session) navigate({ to: "/login" });
   }, [ready, session, navigate]);
+
+  // A tap opens the rail on touch; tapping anywhere else closes it again.
+  useEffect(() => {
+    if (!tapped) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!railRef.current?.contains(event.target as Node)) setTapped(false);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [tapped]);
 
   const summary = useQuery({
     queryKey: ["summary"],
@@ -86,57 +108,97 @@ export function AppShell({ children }: { children: ReactNode }) {
   const planCode = session.business.plan;
   const planLabel = isPlanId(planCode) ? t(`pricing:plans.items.${planCode}.name`) : planCode;
 
+  // Labels stay in the DOM while the rail is collapsed so the width animation
+  // never reflows them; they only fade.
+  const railLabel = cn(
+    "whitespace-nowrap motion-safe:transition-opacity motion-safe:duration-200",
+    railOpen ? "opacity-100" : "opacity-0",
+  );
+
   return (
     <div className="flex min-h-screen bg-background selection:bg-primary selection:text-primary-foreground">
-      {/* Desktop Sidebar */}
-      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar md:flex">
-        <div className="px-6 py-8">
-          <Logo />
-        </div>
-        
-        <nav className="flex-1 space-y-1 px-3">
-          <div className="text-[10px] font-bold text-sidebar-foreground/30 px-3 py-2 uppercase tracking-[0.2em]">{t("app:shell.navigation")}</div>
-          {NAV.map((item) => {
-            const active = pathname === item.to || pathname.startsWith(`${item.to}/`);
-            return (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={cn(
-                  "flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-semibold transition-all group",
-                  active
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-sm"
-                    : "text-sidebar-foreground/60 hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground",
-                )}
-              >
-                <item.icon className={cn("h-4 w-4 shrink-0 transition-colors", active ? "text-primary" : "text-sidebar-foreground/30 group-hover:text-sidebar-foreground/60")} />
-                <span className="truncate">{t(item.labelKey)}</span>
-                {item.to === "/alerts" && unread > 0 ? (
-                  <span className="text-numeric ml-auto shrink-0 rounded-full bg-primary px-2 py-0.5 text-[9px] font-bold text-primary-foreground">
-                    {unread}
-                  </span>
-                ) : null}
-              </Link>
-            );
-          })}
-        </nav>
+      <TooltipProvider>
+        {/* Desktop rail: fixed, so widening it overlays the page instead of pushing it. */}
+        <aside
+          ref={railRef}
+          className={cn(
+            "app-rail fixed bottom-4 left-4 top-4 z-40 hidden w-[72px] flex-col overflow-hidden rounded-[28px] border border-sidebar-border bg-sidebar md:flex",
+            "motion-safe:transition-[width] motion-safe:duration-200 motion-safe:ease-out",
+            railOpen && "w-[252px]",
+          )}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          onTouchStart={() => setTapped(true)}
+          onFocus={() => setFocused(true)}
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false);
+          }}
+        >
+          <div className="shrink-0 px-4 pb-2 pt-5">
+            <Logo textClassName={railLabel} />
+          </div>
 
-        <div className="mt-auto border-t border-sidebar-border/50 px-6 py-6">
-          <div className="flex items-center gap-3 rounded-2xl bg-sidebar-accent/30 p-3">
-            <div className="h-10 w-10 shrink-0 rounded-xl bg-primary/20 flex items-center justify-center text-primary font-bold">
-              {session.business.name[0]}
+          <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto overflow-x-hidden px-3 py-2">
+            <div className={cn("px-3 py-2 text-[10px] font-bold text-sidebar-foreground/30 uppercase tracking-[0.2em]", railLabel)}>
+              {t("app:shell.navigation")}
             </div>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-bold text-sidebar-foreground">{session.business.name}</p>
-              <p className="truncate text-[10px] text-sidebar-foreground/40 font-semibold uppercase tracking-wider mt-0.5">
-                {t("app:shell.planSuffix", { plan: planLabel })}
-              </p>
+            {NAV.map((item) => {
+              const active = pathname === item.to || pathname.startsWith(`${item.to}/`);
+              const name = t(item.labelKey);
+              return (
+                <Tooltip key={item.to} open={railOpen ? false : undefined} delayDuration={0}>
+                  <TooltipTrigger asChild>
+                    <Link
+                      to={item.to}
+                      aria-label={name}
+                      className={cn(
+                        "relative flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-xs font-semibold transition-all group",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:ring-offset-2 focus-visible:ring-offset-sidebar",
+                        active
+                          ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-sm"
+                          : "text-sidebar-foreground/60 hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground",
+                      )}
+                    >
+                      <item.icon className={cn("h-[22px] w-[22px] shrink-0 transition-colors", active ? "text-primary" : "text-sidebar-foreground/40 group-hover:text-sidebar-foreground/70")} strokeWidth={1.5} />
+                      <span className={cn("truncate", railLabel)}>{name}</span>
+                      {item.to === "/alerts" && unread > 0 ? (
+                        railOpen ? (
+                          <span className="text-numeric ml-auto shrink-0 rounded-full bg-primary px-2 py-0.5 text-[9px] font-bold text-primary-foreground">
+                            {unread}
+                          </span>
+                        ) : (
+                          <span className="text-numeric absolute right-1 top-1 flex h-4 min-w-4 shrink-0 items-center justify-center rounded-full bg-primary px-1 text-[9px] font-bold text-primary-foreground ring-2 ring-sidebar">
+                            {unread}
+                          </span>
+                        )
+                      ) : null}
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" sideOffset={12}>
+                    {name}
+                  </TooltipContent>
+                </Tooltip>
+              );
+            })}
+          </nav>
+
+          <div className="shrink-0 border-t border-sidebar-border/50 px-4 py-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/15 text-base font-bold text-primary">
+                {session.business.name[0]}
+              </div>
+              <div className={cn("min-w-0 flex-1", railLabel)}>
+                <p className="truncate text-xs font-bold text-sidebar-foreground">{session.business.name}</p>
+                <p className="truncate text-[10px] text-sidebar-foreground/40 font-semibold uppercase tracking-wider mt-0.5">
+                  {t("app:shell.planSuffix", { plan: planLabel })}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </aside>
+        </aside>
+      </TooltipProvider>
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col md:pl-[104px]">
         {/* Header */}
         <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border bg-background/80 px-6 backdrop-blur-md">
           <div className="md:hidden">
