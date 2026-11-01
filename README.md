@@ -79,7 +79,7 @@ Requires **Python 3.11+** and **Node 20+**.
 python -m venv .venv
 .venv\Scripts\activate            # Windows;  source .venv/bin/activate on macOS/Linux
 pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+uvicorn app.main:app --reload --host 127.0.0.1 --port 8001
 ```
 
 **2. Frontend** (from `frontend/`):
@@ -88,6 +88,24 @@ uvicorn app.main:app --reload --port 8000
 npm install
 npm run dev                       # http://localhost:8080
 ```
+
+The dev server proxies `/api` to `127.0.0.1:8001` (override with
+`VITE_API_PROXY_TARGET`), so the backend **must** listen on that port — if it does
+not, every request fails with `502` and the dashboard shows "Couldn't load …"
+panels instead of your numbers.
+
+### Option C — one command (no Docker)
+
+After step 1 of Option B has created `backend/.venv`, start both processes from
+`frontend/`:
+
+```bash
+npm run dev:all
+```
+
+It runs the API on <http://127.0.0.1:8001> and Vite on <http://localhost:8080>
+with one prefixed log, and `Ctrl+C` shuts both down (including their child
+processes, so no stale server is left holding a port).
 
 Open <http://localhost:8080>, register a business, and click **Load demo data** on the
 onboarding screen (or `POST /api/v1/demo/seed`) to fill the dashboard instantly.
